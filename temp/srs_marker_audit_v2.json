@@ -1,0 +1,16 @@
+{
+  "total_source_paragraphs": 959,
+  "meaningful_source_paragraphs": 959,
+  "empty_source_paragraphs": 0,
+  "total_target_markers": 866,
+  "unique_target_markers": 866,
+  "missing_marker_count": 93,
+  "missing_marker_ids": [8, 27, 31, 49, 50, 53, 59, 65, 71, 73, 79, 83, 85, 89, 97, 101, 103, 107, 109, 113, 121, 125, 127, 133, 137, 139, 145, 149, 151, 157, 163, 167, 169, 173, 179, 185, 187, 193, 197, 205, 209, 215, 217, 221, 227, 235, 239, 251, 257, 263, 269, 277, 283, 291, 301, 313, 337, 339, 343, 347, 355, 361, 367, 377, 383, 389, 397, 403, 419, 421, 431, 433, 445, 455, 463, 469, 473, 479, 491, 503, 509, 515, 527, 541, 553, 565, 577, 593, 601, 613, 637, 649, 653, 673, 685, 697, 713, 733, 749, 761, 773, 785, 793, 805, 817, 833, 845, 865, 885, 895, 902, 922, 948, 958],
+  "duplicate_marker_count": 0,
+  "duplicate_marker_ids": [],
+  "unexpected_marker_count": 0,
+  "unexpected_marker_ids": [],
+  "out_of_order_count": 859,
+  "content_mismatch_count": 0,
+  "content_mismatches": []
+}

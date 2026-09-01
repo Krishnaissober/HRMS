@@ -1,0 +1,14 @@
+ALTER TABLE "Candidate" ADD COLUMN "dateOfBirth" TEXT;
+ALTER TABLE "Candidate" ADD COLUMN "gender" TEXT;
+ALTER TABLE "Candidate" ADD COLUMN "currentCompany" TEXT;
+ALTER TABLE "Candidate" ADD COLUMN "howFound" TEXT;
+ALTER TABLE "Candidate" ADD COLUMN "referenceName" TEXT;
+ALTER TABLE "Candidate" ADD COLUMN "reasonForJobChange" TEXT;
+ALTER TABLE "Candidate" ADD COLUMN "professionalReferenceName" TEXT;
+ALTER TABLE "Candidate" ADD COLUMN "professionalReferenceProfile" TEXT;
+ALTER TABLE "Candidate" ADD COLUMN "professionalReferenceExperience" TEXT;
+ALTER TABLE "Candidate" ADD COLUMN "professionalReferenceContact" TEXT;
+ALTER TABLE "Candidate" ADD COLUMN "signatureName" TEXT;
+ALTER TABLE "Candidate" ADD COLUMN "acknowledgementDate" TEXT;
+ALTER TABLE "Candidate" ADD COLUMN "otherSource" TEXT;
+ALTER TABLE "Candidate" ADD COLUMN "professionalReference" TEXT;

@@ -1,0 +1,2 @@
+-- The candidate reference, acknowledgement, and source fields were already
+-- included in the applied 20260820141000 migration in this database.

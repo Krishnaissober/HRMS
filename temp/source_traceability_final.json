@@ -1,0 +1,4764 @@
+{
+  "source_profile": {
+    "total_paragraphs": 938,
+    "meaningful_paragraphs": 938,
+    "empty_paragraphs": 0
+  },
+  "source_paragraph_details": {
+    "1": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "2": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "3": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "4": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "6": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "7": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "8": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "9": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "10": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "11": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "12": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "13": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "14": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "15": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "16": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "17": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "18": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "19": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "21": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "23": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "24": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "25": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "26": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "27": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "28": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "29": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "30": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "31": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "32": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "33": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "34": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "35": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "37": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "38": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "39": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "40": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "41": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "42": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "43": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "44": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "45": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "46": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "47": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "49": {
+      "classification": "SOURCE-PARAPHRASE",
+      "target_ids": [
+        1
+      ],
+      "confidence": 0.5
+    },
+    "50": {
+      "classification": "SOURCE-PARAPHRASE",
+      "target_ids": [
+        2
+      ],
+      "confidence": 0.8
+    },
+    "51": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "52": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "53": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "54": {
+      "classification": "SOURCE-PARAPHRASE",
+      "target_ids": [
+        3
+      ],
+      "confidence": 0.67
+    },
+    "55": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "56": {
+      "classification": "SOURCE-PARAPHRASE",
+      "target_ids": [
+        4
+      ],
+      "confidence": 0.75
+    },
+    "57": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "58": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "59": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "60": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "61": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "62": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "63": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "64": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "65": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "66": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "67": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "68": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "69": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "70": {
+      "classification": "SOURCE-PARAPHRASE",
+      "target_ids": [
+        5
+      ],
+      "confidence": 0.8
+    },
+    "71": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "72": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "73": {
+      "classification": "SOURCE-PARAPHRASE",
+      "target_ids": [
+        6
+      ],
+      "confidence": 0.67
+    },
+    "74": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "75": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "76": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "77": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "78": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "79": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "80": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "81": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "82": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "83": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "84": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "85": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "86": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "87": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "88": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "89": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "90": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "91": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "92": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "93": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "94": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "95": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "96": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "97": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "98": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "99": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "100": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "101": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "102": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "103": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "104": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "105": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "106": {
+      "classification": "SOURCE-PARAPHRASE",
+      "target_ids": [
+        6
+      ],
+      "confidence": 0.33
+    },
+    "107": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "108": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "109": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "110": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "111": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "112": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "113": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "114": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "115": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "116": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "117": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "118": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "119": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "120": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "121": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "122": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "123": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "124": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "125": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "126": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "127": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "128": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "129": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "130": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "131": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "132": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "133": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "134": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "135": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "136": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "137": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "138": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "139": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "140": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "141": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "142": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "143": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "144": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "145": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "146": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "147": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "148": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "149": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "150": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "151": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "152": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "153": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "154": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "155": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "156": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "157": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "158": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "159": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "160": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "161": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "162": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "163": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "164": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "165": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "166": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "167": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "168": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "169": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "170": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "171": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "172": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "173": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "174": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "175": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "176": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "177": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "178": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "179": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "180": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "181": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "182": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "183": {
+      "classification": "SOURCE-PARAPHRASE",
+      "target_ids": [
+        4
+      ],
+      "confidence": 0.67
+    },
+    "184": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "185": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "186": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "187": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "188": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "189": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "190": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "191": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "192": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "193": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "194": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "195": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "196": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "197": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "198": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "199": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "200": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "201": {
+      "classification": "SOURCE-PARAPHRASE",
+      "target_ids": [
+        5
+      ],
+      "confidence": 0.75
+    },
+    "202": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "203": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "204": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "205": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "206": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "207": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "208": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "209": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "210": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "211": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "212": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "213": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "214": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "215": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "216": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "217": {
+      "classification": "SOURCE-PARAPHRASE",
+      "target_ids": [
+        7
+      ],
+      "confidence": 0.75
+    },
+    "218": {
+      "classification": "SOURCE-PARAPHRASE",
+      "target_ids": [
+        8
+      ],
+      "confidence": 0.67
+    },
+    "219": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "220": {
+      "classification": "SOURCE-PARAPHRASE",
+      "target_ids": [
+        9
+      ],
+      "confidence": 0.67
+    },
+    "221": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "222": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "223": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "224": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "225": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "226": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "227": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "228": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "229": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "230": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "231": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "232": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "233": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "234": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "235": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "236": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "237": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "238": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "239": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "240": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "241": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "242": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "243": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "244": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "245": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "246": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "247": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "248": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "249": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "250": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "251": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "252": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "253": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "254": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "255": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "256": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "257": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "258": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "259": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "260": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "261": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "262": {
+      "classification": "SOURCE-PARAPHRASE",
+      "target_ids": [
+        10
+      ],
+      "confidence": 0.8
+    },
+    "263": {
+      "classification": "SOURCE-PARAPHRASE",
+      "target_ids": [
+        1
+      ],
+      "confidence": 0.33
+    },
+    "265": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "266": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "267": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "268": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "269": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "270": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "271": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "272": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "273": {
+      "classification": "SOURCE-PARAPHRASE",
+      "target_ids": [
+        4
+      ],
+      "confidence": 0.33
+    },
+    "274": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "275": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "276": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "277": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "278": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "279": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "280": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "281": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "282": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "283": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "284": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "285": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "286": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "287": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "288": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "289": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "290": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "291": {
+      "classification": "SOURCE-PARAPHRASE",
+      "target_ids": [
+        2
+      ],
+      "confidence": 0.67
+    },
+    "293": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "294": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "295": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "296": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "297": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "298": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "299": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "300": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "301": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "302": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "303": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "304": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "305": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "306": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "307": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "308": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "309": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "310": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "311": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "312": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "313": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "314": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "315": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "316": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "317": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "318": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "319": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "320": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "321": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "322": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "323": {
+      "classification": "SOURCE-PARAPHRASE",
+      "target_ids": [
+        5
+      ],
+      "confidence": 0.4
+    },
+    "324": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "325": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "326": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "327": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "328": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "329": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "330": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "331": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "332": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "333": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "334": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "335": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "336": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "337": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "338": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "339": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "340": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "341": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "342": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "343": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "344": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "345": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "346": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "347": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "348": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "349": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "350": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "351": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "352": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "353": {
+      "classification": "SOURCE-PARAPHRASE",
+      "target_ids": [
+        4
+      ],
+      "confidence": 0.33
+    },
+    "354": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "355": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "356": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "357": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "358": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "359": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "360": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "361": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "362": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "363": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "364": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "365": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "366": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "367": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "368": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "369": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "370": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "371": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "372": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "373": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "374": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "375": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "376": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "378": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "379": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "380": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "381": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "382": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "383": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "384": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "385": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "386": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "387": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "388": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "389": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "390": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "391": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "392": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "393": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "394": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "395": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "396": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "397": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "398": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "399": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "400": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "401": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "402": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "403": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "404": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "405": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "406": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "407": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "408": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "409": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "410": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "411": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "412": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "413": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "414": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "415": {
+      "classification": "SOURCE-PARAPHRASE",
+      "target_ids": [
+        3
+      ],
+      "confidence": 0.5
+    },
+    "417": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "418": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "419": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "420": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "421": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "422": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "423": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "424": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "425": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "426": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "427": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "428": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "429": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "430": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "431": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "432": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "433": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "434": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "435": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "436": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "437": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "438": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "439": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "440": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "441": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "442": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "443": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "444": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "445": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "446": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "447": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "448": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "449": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "450": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "451": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "452": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "453": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "454": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "455": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "456": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "457": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "458": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "459": {
+      "classification": "SOURCE-PARAPHRASE",
+      "target_ids": [
+        4
+      ],
+      "confidence": 0.6
+    },
+    "461": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "462": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "463": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "464": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "465": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "466": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "467": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "468": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "469": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "470": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "471": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "472": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "473": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "474": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "475": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "476": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "477": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "478": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "479": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "480": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "481": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "482": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "483": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "484": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "485": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "486": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "487": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "488": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "489": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "490": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "491": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "492": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "493": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "494": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "495": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "496": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "497": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "498": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "499": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "500": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "501": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "502": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "503": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "504": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "505": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "506": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "507": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "508": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "509": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "510": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "511": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "512": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "513": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "514": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "515": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "516": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "517": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "518": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "519": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "520": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "521": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "522": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "523": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "524": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "525": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "526": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "527": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "528": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "529": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "530": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "531": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "532": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "533": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "534": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "535": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "536": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "537": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "538": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "539": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "540": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "541": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "542": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "543": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "544": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "545": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "546": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "547": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "548": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "549": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "550": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "551": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "552": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "553": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "554": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "555": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "556": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "557": {
+      "classification": "SOURCE-PARAPHRASE",
+      "target_ids": [
+        4
+      ],
+      "confidence": 0.33
+    },
+    "558": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "559": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "560": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "561": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "562": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "563": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "564": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "565": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "566": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "567": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "568": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "569": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "570": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "571": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "572": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "573": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "574": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "575": {
+      "classification": "SOURCE-PARAPHRASE",
+      "target_ids": [
+        5
+      ],
+      "confidence": 0.67
+    },
+    "577": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "578": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "579": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "580": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "581": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "582": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "583": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "584": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "585": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "586": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "587": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "588": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "589": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "590": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "591": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "592": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "593": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "594": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "595": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "596": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "597": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "598": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "599": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "600": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "601": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "602": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "603": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "604": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "605": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "606": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "607": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "608": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "609": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "610": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "611": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "612": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "613": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "614": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "615": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "616": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "617": {
+      "classification": "SOURCE-PARAPHRASE",
+      "target_ids": [
+        6
+      ],
+      "confidence": 0.5
+    },
+    "619": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "620": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "621": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "622": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "623": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "624": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "625": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "626": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "627": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "628": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "629": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "630": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "631": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "632": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "633": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "634": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "635": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "636": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "637": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "638": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "639": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "640": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "641": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "642": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "643": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "644": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "645": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "646": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "647": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "648": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "649": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "650": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "651": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "652": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "653": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "654": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "655": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "656": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "657": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "658": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "659": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "660": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "661": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "662": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "663": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "664": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "665": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "666": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "667": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "668": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "669": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "670": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "671": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "672": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "673": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "674": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "675": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "676": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "677": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "678": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "679": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "680": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "681": {
+      "classification": "SOURCE-PARAPHRASE",
+      "target_ids": [
+        5
+      ],
+      "confidence": 0.4
+    },
+    "682": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "683": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "684": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "686": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "687": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "688": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "689": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "690": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "691": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "692": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "693": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "694": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "695": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "696": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "697": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "698": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "699": {
+      "classification": "SOURCE-PARAPHRASE",
+      "target_ids": [
+        4
+      ],
+      "confidence": 0.33
+    },
+    "700": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "701": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "702": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "703": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "704": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "705": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "706": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "707": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "708": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "709": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "710": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "711": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "712": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "713": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "714": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "715": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "716": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "717": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "718": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "719": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "721": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "722": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "723": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "724": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "725": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "726": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "727": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "728": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "729": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "730": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "731": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "732": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "733": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "734": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "735": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "736": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "737": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "738": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "739": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "740": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "741": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "742": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "743": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "744": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "745": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "746": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "747": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "748": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "749": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "750": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "751": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "752": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "753": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "754": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "755": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "756": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "757": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "758": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "759": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "760": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "761": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "762": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "763": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "764": {
+      "classification": "SOURCE-PARAPHRASE",
+      "target_ids": [
+        7
+      ],
+      "confidence": 0.6
+    },
+    "766": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "767": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "768": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "769": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "770": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "771": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "772": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "773": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "774": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "775": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "776": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "777": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "778": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "779": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "780": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "781": {
+      "classification": "SOURCE-PARAPHRASE",
+      "target_ids": [
+        4
+      ],
+      "confidence": 0.33
+    },
+    "782": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "783": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "784": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "785": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "786": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "787": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "788": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "789": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "790": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "791": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "792": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "793": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "794": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "795": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "796": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "797": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "798": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "799": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "800": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "801": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "802": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "803": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "804": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "805": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "806": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "807": {
+      "classification": "SOURCE-PARAPHRASE",
+      "target_ids": [
+        8
+      ],
+      "confidence": 0.5
+    },
+    "809": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "810": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "811": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "812": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "813": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "814": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "815": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "816": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "817": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "818": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "819": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "820": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "821": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "822": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "823": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "824": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "825": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "826": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "827": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "828": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "829": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "830": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "831": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "832": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "833": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "834": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "835": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "836": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "837": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "838": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "839": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "840": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "841": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "842": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "843": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "844": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "845": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "846": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "847": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "848": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "849": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "850": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "851": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "852": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "853": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "854": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "855": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "856": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "857": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "858": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "859": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "860": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "861": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "862": {
+      "classification": "SOURCE-PARAPHRASE",
+      "target_ids": [
+        8
+      ],
+      "confidence": 0.5
+    },
+    "863": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "864": {
+      "classification": "SOURCE-PARAPHRASE",
+      "target_ids": [
+        9
+      ],
+      "confidence": 0.5
+    },
+    "866": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "867": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "868": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "869": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "870": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "871": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "872": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "873": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "874": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "875": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "876": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "877": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "878": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "879": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "880": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "881": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "882": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "883": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "884": {
+      "classification": "SOURCE-PARAPHRASE",
+      "target_ids": [
+        10
+      ],
+      "confidence": 0.67
+    },
+    "886": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "887": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "888": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "889": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "890": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "891": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "892": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "893": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "894": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "895": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "896": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "897": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "898": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "899": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "900": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "901": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "902": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "903": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "904": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "905": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "906": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "907": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "908": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "909": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "910": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "911": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "912": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "913": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "914": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "915": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "916": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "917": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "918": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "919": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "920": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "921": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "923": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "924": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "925": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "926": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "927": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "928": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "929": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "930": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "931": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "932": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "933": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "934": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "935": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "936": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "937": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "938": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "939": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "940": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "941": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "942": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "943": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "944": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "945": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "946": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "947": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "949": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "950": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "951": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "952": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "953": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "954": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "955": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "956": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "957": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    },
+    "959": {
+      "classification": "MISSING",
+      "target_ids": [],
+      "confidence": 0.0
+    }
+  },
+  "mapped_source_paragraphs": 31,
+  "missing_source_paragraphs": 907,
+  "source_coverage_pct": 3.3
+}

@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: hr_portal
+          POSTGRES_PASSWORD: hr_portal
+          POSTGRES_DB: hr_portal
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd="pg_isready -U hr_portal -d hr_portal"
+          --health-interval=10s --health-timeout=5s --health-retries=5
+    env:
+      DATABASE_URL: postgresql://hr_portal:hr_portal@localhost:5432/hr_portal?schema=public
+      BETTER_AUTH_SECRET: ci-secret-that-is-at-least-32-characters-long
+      APP_URL: http://localhost:3000
+      BETTER_AUTH_URL: http://localhost:3000
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npx prisma generate
+      - run: npx prisma migrate deploy
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build

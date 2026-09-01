@@ -1,0 +1,14 @@
+ALTER TABLE "Candidate" ADD COLUMN IF NOT EXISTS "dateOfBirth" TEXT;
+ALTER TABLE "Candidate" ADD COLUMN IF NOT EXISTS "gender" TEXT;
+ALTER TABLE "Candidate" ADD COLUMN IF NOT EXISTS "currentCompany" TEXT;
+ALTER TABLE "Candidate" ADD COLUMN IF NOT EXISTS "howFound" TEXT;
+ALTER TABLE "Candidate" ADD COLUMN IF NOT EXISTS "otherSource" TEXT;
+ALTER TABLE "Candidate" ADD COLUMN IF NOT EXISTS "referenceName" TEXT;
+ALTER TABLE "Candidate" ADD COLUMN IF NOT EXISTS "reasonForJobChange" TEXT;
+ALTER TABLE "Candidate" ADD COLUMN IF NOT EXISTS "professionalReference" TEXT;
+ALTER TABLE "Candidate" ADD COLUMN IF NOT EXISTS "professionalReferenceName" TEXT;
+ALTER TABLE "Candidate" ADD COLUMN IF NOT EXISTS "professionalReferenceProfile" TEXT;
+ALTER TABLE "Candidate" ADD COLUMN IF NOT EXISTS "professionalReferenceExperience" TEXT;
+ALTER TABLE "Candidate" ADD COLUMN IF NOT EXISTS "professionalReferenceContact" TEXT;
+ALTER TABLE "Candidate" ADD COLUMN IF NOT EXISTS "signatureName" TEXT;
+ALTER TABLE "Candidate" ADD COLUMN IF NOT EXISTS "acknowledgementDate" TEXT;

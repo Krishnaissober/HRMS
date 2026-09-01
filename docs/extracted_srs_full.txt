@@ -1,0 +1,966 @@
+=== DOCX EXTRACTION SUMMARY ===
+Total paragraphs: 959
+Total tables: 0
+
+=== ALL PARAGRAPHS (document order) ===
+P1: SOFTWARE REQUIREMENTSSPECIFICATION
+P2: HR Management & Employee Lifecycle Portal
+P3: End-to-end HRMS + Applicant Tracking + Attendance Platform
+P4: 
+P5: Item
+P6: Details
+P7: Document Version
+P8: 1.1
+P9: Date
+P10: 17 August 2026
+P11: Status
+P12: Baseline / Implementation Ready
+P13: Primary Users
+P14: HR, Recruiters, Interviewers, Managers, Employees, Administrators
+P15: Core Lifecycle
+P16: Candidate Intake -> Hiring -> Onboarding -> Employment -> Attendance -> Leave -> Payroll/Performance -> Exit
+P17: Primary Goal
+P18: Provide one controlled system of record for the employee lifecycle and the HR workflows around it.
+P19: 
+P20: Core design principle: candidate data must transition into an employee record without unnecessary re-entry, while candidate interview attendance and employee attendance remain separate business processes.
+P21: 
+P22: Document Control
+P23: Version
+P24: Date
+P25: Author / Owner
+P26: Description
+P27: 1.1
+P28: 17 Aug 2026
+P29: Project Team
+P30: Initial comprehensive SRS based on the agreed HR portal scope.
+P31: 1.1
+P32: TBD
+P33: Project Team
+P34: Future change requests / approved revisions.
+P35: 
+P36: Approval Matrix
+P37: Role
+P38: Approval Responsibility
+P39: Business Owner / HR Head
+P40: Business scope, policies, approval workflows
+P41: Product Owner
+P42: Functional scope, priorities, acceptance criteria
+P43: Technical Lead
+P44: Architecture, security, integrations, data model
+P45: QA Lead
+P46: Test coverage, acceptance validation, release readiness
+P47: 
+P48: Table of Contents
+P49: 1. Introduction
+P50: 2. Product Vision and Objectives
+P51: 3. Scope
+P52: 4. Stakeholders, Roles and Permissions
+P53: 5. High-Level Business Workflow
+P54: 6. Functional Requirements
+P55: 7. Forms and Candidate Intake
+P56: 8. Recruitment and ATS
+P57: 9. Interview Management
+P58: 10. Candidate Attendance and Visitor Management
+P59: 11. Offer and Hiring
+P60: 12. Employee Management and Onboarding
+P61: 13. Employee Attendance
+P62: 14. Leave Management
+P63: 15. Payroll and Expenses
+P64: 16. Performance and Learning
+P65: 17. Asset Management
+P66: 18. Document Management
+P67: 19. HR Helpdesk and Requests
+P68: 20. Notifications and Automation
+P69: 21. Reports and Analytics
+P70: 22. Offboarding and Exit Management
+P71: 23. Compliance, Audit and Security
+P72: 24. Multi-Tenant / Organization Architecture
+P73: 25. Data Requirements
+P74: 26. API and Integration Requirements
+P75: 26.3 Recommended Technology Stack
+P76: 26.3 Recommended Technology Stack
+P77: The recommended implementation SHALL use a TypeScript-first modular monolith for the initial production release. Domain boundaries SHALL remain explicit so modules can be extracted into separate services later if scale, integrations, or organizational needs require it.
+P78: 26.3.1 Core Stack
+P79: Frontend: Next.js, React and TypeScript.
+P80: UI system: Tailwind CSS, shadcn/ui, Radix UI and Lucide icons.
+P81: Client data/state: TanStack Query for server state and Zustand for lightweight client state.
+P82: Forms and validation: React Hook Form and Zod, including reusable schema-driven HR forms.
+P83: Backend: Next.js Route Handlers for V1, organized into controllers/routes, services, repositories and domain modules. A dedicated NestJS API may be introduced later if external clients or service separation justify it.
+P84: Database: PostgreSQL as the transactional system of record, accessed through Prisma ORM.
+P85: Authentication: Better Auth or Auth.js with session management, RBAC, granular permissions and MFA-ready architecture.
+P86: Caching and background processing: Redis and BullMQ.
+P87: File/document storage: Amazon S3 or another S3-compatible private object store such as Cloudflare R2.
+P88: Email: Resend or Amazon SES; SMS/WhatsApp can be added through approved providers later.
+P89: Calendar integration: Google Calendar and Microsoft Graph/Outlook where required.
+P90: Testing: Vitest for unit/API tests and Playwright for end-to-end workflow tests.
+P91: Observability: Sentry and OpenTelemetry, with centralized logs and health/readiness endpoints.
+P92: DevOps: Git, GitHub, GitHub Actions and Docker; deployment can begin on managed hosting and move to AWS or another cloud platform without architectural redesign.
+P93: AI: isolated AI service/module for resume parsing, candidate matching, interview assistance and HR analytics; AI SHALL remain human-in-the-loop for employment decisions.
+P94: Layer
+P95: Recommended Technology
+P96: Primary Responsibility
+P97: Selection Rationale
+P98: Frontend
+P99: Next.js, React, TypeScript
+P100: HR admin, recruiter, manager, interviewer and employee web experiences
+P101: Unified routing, strong TypeScript support, server/client rendering, and a mature React ecosystem.
+P102: UI / Design System
+P103: Tailwind CSS, shadcn/ui, Radix UI, Lucide
+P104: Enterprise dashboard, forms, tables, dialogs and accessible primitives
+P105: Fast delivery with consistent design tokens and accessible components.
+P106: Client Data
+P107: TanStack Query, Zustand
+P108: Server-state fetching/caching and limited client-only state
+P109: Predictable API state with minimal global state.
+P110: Forms / Validation
+P111: React Hook Form, Zod
+P112: Complex HR forms, conditional fields and validation
+P113: Strong fit for configurable forms and shared validation.
+P114: Backend / API
+P115: Next.js Route Handlers + domain service layer; NestJS as future extraction option
+P116: Versioned APIs, business logic and integrations
+P117: Simple V1 deployment while preserving clean boundaries for future scale.
+P118: Database
+P119: PostgreSQL
+P120: Primary transactional datastore
+P121: Strong relational integrity for employees, candidates, applications, attendance, leave, payroll and audit records.
+P122: ORM
+P123: Prisma
+P124: Type-safe database access and migrations
+P125: Strong TypeScript integration and explicit relational modeling.
+P126: Cache / Queue
+P127: Redis + BullMQ
+P128: Caching, rate limiting, scheduled work and durable background jobs
+P129: Suitable for reminders, email, workflows, notifications and asynchronous processing.
+P130: Object Storage
+P131: Amazon S3 or S3-compatible storage such as Cloudflare R2
+P132: Resumes, employee documents, payslips and attachments
+P133: Private object storage with signed access and lifecycle controls.
+P134: Authentication
+P135: Better Auth or Auth.js
+P136: Sessions, login, OAuth/OIDC foundations and authentication flows
+P137: Good web authentication base with an upgrade path to enterprise SSO.
+P138: Authorization
+P139: RBAC + granular permission matrix
+P140: Role and resource/action access control
+P141: Supports HR Admin, Recruiter, Interviewer, Manager, Employee and custom roles.
+P142: Search
+P143: PostgreSQL Full-Text Search initially; OpenSearch later if required
+P144: Candidate, employee and job search
+P145: Avoids premature infrastructure while leaving a clear path for advanced search.
+P146: Notifications
+P147: Amazon SES or Resend + in-app notification service
+P148: Interview, offer, onboarding, attendance, leave and HR alerts
+P149: Reliable transactional messaging with centralized templates and auditability.
+P150: Calendar
+P151: Google Calendar API + Microsoft Graph
+P152: Interview scheduling and meeting invitations
+P153: Supports common enterprise calendar ecosystems.
+P154: Testing
+P155: Vitest + Playwright
+P156: Unit/API and end-to-end workflow testing
+P157: Covers domain behavior and critical lifecycle workflows.
+P158: Observability
+P159: Sentry + OpenTelemetry
+P160: Errors, traces, latency and service health
+P161: Production troubleshooting and operational visibility.
+P162: DevOps
+P163: GitHub Actions + Docker
+P164: CI/CD, repeatable builds and deployment
+P165: Automated pipeline with environment consistency.
+P166: Deployment
+P167: Vercel + managed PostgreSQL/Redis initially; AWS for larger enterprise deployments
+P168: Hosting and infrastructure
+P169: Fast initial delivery with a scalable cloud path.
+P170: AI Extension
+P171: Dedicated AI service/adapter layer connected to approved LLM providers
+P172: Resume parsing, summarization, candidate matching and HR assistant capabilities
+P173: Keeps AI dependencies isolated and subject to authorization/privacy controls.
+P174: 26.3.2 Recommended Application Architecture
+P175: The application SHOULD be implemented as a modular monolith for V1, with domain modules separated by clear service/repository boundaries.
+P176: Recommended request flow: UI → API/Route Handler → Authorization → Validation → Domain Service → Repository/Prisma → PostgreSQL.
+P177: Background flow: Domain event/task → Redis/BullMQ → Worker → External provider or downstream operation → status/audit record.
+P178: File flow: Client upload → validated upload endpoint → private object storage → document metadata stored in PostgreSQL.
+P179: The system SHALL keep candidate attendance and employee attendance as separate business concepts, even if they share infrastructure and reporting primitives.
+P180: 26.3.3 Core Domain Modules
+P181: Identity & Access Management
+P182: Organizations / Multi-Tenancy
+P183: Recruitment / ATS
+P184: Candidate & Application Management
+P185: Interview Management
+P186: Offers & Hiring
+P187: Employee Management
+P188: Onboarding
+P189: Candidate Attendance / Visitor Management
+P190: Employee Attendance / Shifts / Timesheets
+P191: Leave Management
+P192: Payroll & Compensation
+P193: Expenses & Reimbursements
+P194: Performance Management
+P195: Learning & Certifications
+P196: Assets
+P197: Documents & Forms
+P198: Helpdesk / HR Requests
+P199: Notifications & Workflow Automation
+P200: Reports & Analytics
+P201: Offboarding / Exit Management
+P202: Compliance / Audit
+P203: 26.3.4 Technology Standards
+P204: TypeScript SHALL be the default language across frontend and backend application code.
+P205: PostgreSQL SHALL be the system of record for transactional HR data; SQLite SHALL not be used for production multi-user deployment.
+P206: Secrets and API credentials SHALL be stored in environment/secret management systems and SHALL never be committed to source control.
+P207: All APIs SHALL use schema validation, authentication, authorization, organization scoping and consistent error responses.
+P208: Sensitive documents SHALL be stored privately and accessed through time-limited signed URLs or equivalent authorization-controlled mechanisms.
+P209: Long-running or retryable operations SHALL use durable background jobs rather than blocking web requests.
+P210: Critical lifecycle workflows SHALL have automated end-to-end tests, especially candidate submission → interview → offer → employee conversion → attendance.
+P211: The stack SHALL support containerized deployment so application services can move between managed hosting and cloud infrastructure without codebase redesign.
+P212: 26.3.5 Recommended Environment Strategy
+P213: Development: local Next.js application, local or managed PostgreSQL, local Redis, and development object storage.
+P214: Staging: production-like configuration with isolated database, Redis, storage bucket and external integration credentials.
+P215: Production: managed PostgreSQL, managed Redis, private object storage, centralized monitoring, automated backups and controlled secrets.
+P216: 27. Non-Functional Requirements
+P217: 28. UX / UI Requirements
+P218: 29. Reporting KPIs
+P219: 30. Acceptance Criteria
+P220: 31. Implementation Roadmap
+P221: 31.1 Vibe-Coding Implementation Strategy
+P222: The portal SHALL be implemented incrementally using AI-assisted/vibe coding. AI coding tools may generate code, tests and documentation, but the SRS, architecture rules, database migrations, permissions and acceptance criteria remain the source of truth. The coding agent SHALL work only on the authorized phase and SHALL not silently redesign unrelated modules.
+P223: 31.2 Source-of-Truth Documents
+P224: 01_SRS.md: functional and non-functional requirements, business rules, roles, workflows and acceptance criteria.
+P225: 02_ARCHITECTURE.md: project structure, domain boundaries, request flow, database conventions, security rules and technology standards.
+P226: 03_IMPLEMENTATION_PLAN.md: ordered phases, dependencies, current status, known issues and completion criteria.
+P227: 31.3 AI Coding Rules
+P228: Before modifying code, the AI coding agent SHALL inspect the relevant SRS requirements, existing architecture and current implementation.
+P229: The agent SHALL implement one defined phase or task at a time and SHALL avoid unrelated refactors unless explicitly required for correctness or security.
+P230: Business logic SHALL remain in domain/service layers; React components SHALL not contain direct database access.
+P231: No hardcoded production/business data, fake APIs, placeholder success responses or mock workflows SHALL be introduced into production paths.
+P232: All database changes SHALL use reviewed, repeatable migrations and appropriate seed data SHALL be clearly separated from production data.
+P233: All new endpoints SHALL implement authentication, authorization, organization scoping, input validation and consistent errors where applicable.
+P234: Existing workflows and API contracts SHALL not be changed silently; breaking changes SHALL be documented in the implementation notes.
+P235: The AI agent SHALL run type checking, linting, automated tests and a production build after each completed phase. Failures SHALL be fixed before the phase is marked complete.
+P236: Sensitive HR data SHALL never be copied into prompts, logs or test fixtures unnecessarily; secrets SHALL never be committed to source control.
+P237: 31.4 Phase-Based Delivery Plan
+P238: Phase 0 - Foundation: repository setup, Next.js/TypeScript, UI system, PostgreSQL/Prisma, authentication, organization model, RBAC, API conventions, error handling, logging and testing baseline.
+P239: Phase 1 - Recruitment Foundation: job requisitions, online hiring form, walk-in form, candidate profile, candidate documents, application intake and status history.
+P240: Phase 2 - ATS: screening, shortlist, pipeline/Kanban, filtering, search, candidate timeline, notes and recruitment dashboards.
+P241: Phase 3 - Interviews: rounds, scheduling, interviewers, scorecards, evaluations, recommendations, reminders and rescheduling.
+P242: Phase 4 - Candidate Attendance and Hiring: candidate check-in/out, no-show tracking, offers, approval, offer acceptance and candidate-to-employee conversion.
+P243: Phase 5 - Employee Lifecycle: employee profiles, departments, designations, onboarding, document collection, employee history and onboarding checklists.
+P244: Phase 6 - Employee Attendance: check-in/out, shifts, holidays, overtime, corrections, timesheets and attendance reporting.
+P245: Phase 7 - Leave: leave types, policies, balances, requests, approvals, calendars and integrations with attendance.
+P246: Phase 8 - Documents and Notifications: secure document management, expiry alerts, email, in-app notifications and task/reminder center.
+P247: Phase 9 - Payroll: salary structures, payroll runs, payslips, reimbursements and payroll approvals, subject to applicable statutory requirements.
+P248: Phase 10 - Performance, Assets and Learning: goals, reviews, assets, training, certifications and employee development.
+P249: Phase 11 - Analytics: recruitment, workforce, attendance, leave, payroll and HR operational dashboards with drill-down.
+P250: Phase 12 - Exit and Compliance: resignation, notice, clearance, asset return, access revocation, final settlement, exit documents and compliance/audit reporting.
+P251: Phase 13 - AI and Advanced Integrations: resume parsing, candidate matching, HR assistant, calendar integrations, biometric providers, accounting/payroll integrations and workflow automation.
+P252: 31.5 Definition of Done for Each Vibe-Coding Phase
+P253: Functional implementation matches the SRS and acceptance criteria.
+P254: Database schema and migrations are complete and reviewed.
+P255: Required APIs are implemented, validated and permission-protected.
+P256: Frontend flows work on desktop and mobile/responsive layouts.
+P257: Loading, empty, validation, error and success states are implemented.
+P258: Automated tests cover critical business rules and the main workflow.
+P259: Type checking, linting and production build pass.
+P260: No hardcoded dummy business data remains in production paths.
+P261: Changed files, migrations, APIs, known limitations and follow-up work are documented.
+P262: 32. Assumptions and Open Decisions
+P263: 
+P264: 1. Introduction
+P265: 1.1 Purpose
+P266: This Software Requirements Specification (SRS) defines the requirements for a web-based Human Resources Management and Employee Lifecycle Portal. The platform is intended to provide HR teams with a single system to capture, manage, track, approve, report on, and audit employment-related workflows from initial candidate contact through hiring, employment operations, and employee exit.
+P267: The SRS is written as an implementation baseline for product, UX, frontend, backend, database, QA, security, and deployment teams. It separates mandatory functional requirements from future enhancements and identifies key entities, workflows, permissions, data, interfaces, and non-functional expectations.
+P268: 1.2 Product Definition
+P269: The product combines HRMS and ATS capabilities. It has two interconnected domains: (1) Recruitment / Candidate Lifecycle and (2) Employee Lifecycle / HR Operations. A candidate can be converted into an employee while preserving approved information and maintaining an auditable relationship between the candidate application, interview decisions, offer, and resulting employee record.
+P270: 1.3 Key Terms
+P271: Term
+P272: Meaning
+P273: ATS
+P274: Applicant Tracking System used to manage jobs, applications, candidates, interviews and offers.
+P275: HRMS
+P276: Human Resources Management System used to manage employee lifecycle and HR operations.
+P277: Candidate
+P278: A person who applies, is referred, walks into the company, or is otherwise considered for employment.
+P279: Walk-in
+P280: A candidate who physically visits the organization and is registered by HR/reception.
+P281: Employee
+P282: A person formally hired and activated in the employee master.
+P283: Form
+P284: A configurable data collection interface that can be published online, used internally, printed, and downloaded as PDF.
+P285: RBAC
+P286: Role-Based Access Control.
+P287: Audit Log
+P288: Immutable or append-only record of significant system and data changes.
+P289: Workflow
+P290: A sequence of states, actions, approvals, notifications, or automation triggered by a business event.
+P291: 
+P292: 2. Product Vision and Objectives
+P293: Create one authoritative source of HR and employment lifecycle data.
+P294: Reduce manual HR administration and duplicate data entry.
+P295: Provide a transparent and trackable recruitment pipeline from application through hiring.
+P296: Allow HR to publish online hiring forms and record walk-in candidates using standardized forms.
+P297: Capture candidate interview outcomes and candidate attendance without mixing them with employee attendance.
+P298: Allow selected candidates to be converted into employees with controlled data reuse.
+P299: Provide accurate attendance, leave, onboarding, document, payroll-supporting, performance, and exit workflows.
+P300: Give HR timely dashboards, alerts, approvals, reports, and audit history.
+P301: Protect sensitive employee and candidate data through least-privilege access, encryption, auditability, and secure document handling.
+P302: Provide an extensible foundation for future integrations, mobile use, automation, and AI-assisted HR operations.
+P303: 3. Scope
+P304: 3.1 In Scope - Core Release
+P305: Authentication, session management, organization context and RBAC.
+P306: HR dashboard and action center.
+P307: Form builder and form publishing.
+P308: Public online hiring application form.
+P309: Internal walk-in candidate form.
+P310: Candidate profile and candidate database.
+P311: Job requisitions and job postings.
+P312: Application pipeline / ATS.
+P313: Interview scheduling, scorecards and recommendations.
+P314: Candidate attendance / visitor check-in and no-show tracking.
+P315: Hiring decision, offer workflow and candidate-to-employee conversion.
+P316: Employee master and profile management.
+P317: Onboarding workflows and checklists.
+P318: Employee attendance, shifts and timesheets.
+P319: Leave requests, balances, policies and approvals.
+P320: Document repository and controlled downloads.
+P321: Notifications, reminders and task management.
+P322: Reports, analytics, exports and audit logs.
+P323: Offboarding / exit workflow.
+P324: 3.2 Planned / Extensible Modules
+P325: Payroll
+P326: Expenses and reimbursements
+P327: Performance management
+P328: Learning and development
+P329: Asset management
+P330: HR helpdesk
+P331: Advanced workflow automation
+P332: External calendar / email integrations
+P333: Biometric attendance integrations
+P334: Digital signatures
+P335: AI-assisted candidate matching and HR analytics
+P336: 4. Stakeholders, Roles and Permissions
+P337: Role
+P338: Primary Area
+P339: Expected Access
+P340: Super Administrator
+P341: Platform / tenant administration
+P342: Organizations, global settings, system-level access, audit and security configuration.
+P343: Organization Administrator
+P344: Company administration
+P345: Organization settings, users, roles, policies, departments, master data.
+P346: HR Administrator
+P347: HR operations
+P348: Full HR workflows, employee records, recruitment, attendance, leave, documents, reports.
+P349: HR Manager
+P350: HR management
+P351: Approvals, reporting, workforce and recruitment oversight; configurable access to sensitive fields.
+P352: Recruiter
+P353: Recruitment
+P354: Jobs, candidates, applications, interview scheduling, candidate notes and offers within permission scope.
+P355: Interviewer
+P356: Interview evaluation
+P357: Assigned candidate records, interview schedule, evaluation forms and recommendations.
+P358: Hiring Manager
+P359: Hiring decisions
+P360: Job requisitions, shortlist review, interview feedback, approvals for assigned positions.
+P361: Manager
+P362: Team management
+P363: Team attendance, leave approvals, performance and limited employee information.
+P364: Employee
+P365: Self-service
+P366: Own profile, attendance, leave, documents, requests and authorized self-service functions.
+P367: Reception / Front Desk
+P368: Walk-in operations
+P369: Visitor / candidate registration, check-in/out, appointment lookup; no access to confidential HR fields unless granted.
+P370: Finance / Payroll
+P371: Financial HR operations
+P372: Payroll-supporting data, expenses, reimbursements and salary information according to policy.
+P373: Auditor / Compliance
+P374: Read-only oversight
+P375: Audit logs, reports, policy and compliance evidence according to scope.
+P376: 
+P377: 4.1 Permission Model
+P378: Permissions SHALL be action-based (view, create, update, approve, export, download, delete/archive) and resource-based.
+P379: Sensitive attributes such as salary, bank data, government IDs and confidential documents SHALL support field/document-level access rules where required.
+P380: The system SHALL deny access by default and grant only explicitly assigned permissions.
+P381: Approval permissions SHALL be distinguishable from edit permissions.
+P382: Export/download access SHALL be independently permissioned because downloads can create data leakage risk.
+P383: 5. High-Level Business Workflow
+P384: The primary lifecycle is designed as a controlled state machine rather than a collection of disconnected screens.
+P385: Lifecycle Stage
+P386: Primary States / Events
+P387: Key Output
+P388: Candidate Intake
+P389: Online Apply / Walk-in / Referral / Import
+P390: Candidate profile + application
+P391: Screening
+P392: New / Screening / Shortlisted / On Hold / Rejected
+P393: Screening decision + notes
+P394: Interview
+P395: Scheduled / Checked-in / Completed / No-show / Rescheduled
+P396: Interview evaluation + recommendation
+P397: Hiring
+P398: Selected / Offer Draft / Approval / Sent / Accepted / Declined
+P399: Approved offer + hiring decision
+P400: Onboarding
+P401: Pre-joining / In Progress / Completed / Blocked
+P402: Employee activation readiness
+P403: Employment
+P404: Active / Probation / Confirmed / Transferred / Promoted
+P405: Employee master + employment history
+P406: Attendance
+P407: Present / Absent / Late / WFH / On Duty / Overtime / Leave
+P408: Daily attendance records
+P409: HR Operations
+P410: Leave / Documents / Requests / Payroll / Performance / Training
+P411: Continuous employee service record
+P412: Exit
+P413: Resignation / Notice / Clearance / Final Settlement / Exited
+P414: Closed employment record + exit evidence
+P415: 
+P416: 6. Functional Requirements
+P417: The following requirements use priority labels: Must = required for the intended product baseline; Should = strongly recommended for the first production releases; Could = optional enhancement.
+P418: FR-001 - Authentication: The system shall provide secure sign-in, sign-out, session expiration, password reset and configurable MFA/2FA support. [Must]
+P419: FR-002 - Organization Context: Every business record shall belong to an organization/tenant, with server-side organization isolation enforced for all protected APIs. [Must]
+P420: FR-003 - RBAC: The system shall support role-based permissions and permission inheritance/custom roles. [Must]
+P421: FR-004 - Global Search: Authorized users shall be able to search across candidates, employees, jobs, interviews, documents, requests and tickets. [Must]
+P422: FR-005 - Activity Timeline: Candidate and employee profiles shall show chronological business events with actor, timestamp and relevant detail. [Must]
+P423: FR-006 - Audit Logging: Sensitive create/update/delete/approve/export/download actions shall generate audit events. [Must]
+P424: 7. Forms and Candidate Intake
+P425: 7.1 Online Hiring Form
+P426: HR shall create a job-linked public application form.
+P427: The form shall collect configurable personal, contact, address, education, employment, skills, expected compensation, notice period, source, declaration and consent data.
+P428: The form shall support resume/CV and supporting document uploads subject to validation rules.
+P429: The application URL SHALL be publicly shareable without exposing administrative screens.
+P430: Submitted applications SHALL automatically create or match a candidate and create an application against the selected job/requisition.
+P431: The form shall support required fields, validation, conditional fields and anti-abuse protection.
+P432: A candidate submission confirmation SHALL be displayed and optionally emailed.
+P433: 7.2 Walk-in Form
+P434: HR/reception shall create a candidate record through an internal walk-in form.
+P435: The form shall capture candidate identity, contact details, role of interest, experience, source, resume and visit details.
+P436: The system SHALL support candidate check-in and check-out associated with the walk-in visit.
+P437: A printable/downloadable copy SHALL be available after submission.
+P438: HR SHALL be able to convert a walk-in record into a normal application against an open requisition without re-entering the candidate data.
+P439: 7.3 Form Download / Print
+P440: Both the online hiring form submission and walk-in form submission SHALL be rendered into a consistent printable format.
+P441: Authorized users SHALL be able to download PDF copies of the submitted form.
+P442: Downloaded PDFs SHALL contain form metadata, submission date/time and a unique submission/reference number.
+P443: Document download events SHALL be audited when the form contains sensitive data.
+P444: 7.4 Form Builder
+P445: Capability
+P446: Requirement
+P447: Field Types
+P448: Text, number, email, phone, date/time, dropdown, multi-select, radio, checkbox, file, signature, address, rich text/instructions.
+P449: Validation
+P450: Required/optional, length, pattern, numeric/date rules and file type/size constraints.
+P451: Conditional Logic
+P452: Show/hide or require fields based on previous responses.
+P453: Versions
+P454: Published forms shall support versioning so historical submissions remain tied to the correct form definition.
+P455: Publishing
+P456: Forms can be published/unpublished and associated with a job, event or internal process.
+P457: Exports
+P458: Authorized users can export submissions in structured formats.
+P459: 
+P460: 8. Recruitment and ATS
+P461: FR-020 - Job Requisitions: HR/hiring managers shall create requisitions with title, department, location, employment type, headcount, budget range, requirements, approvers and hiring timeline. [Must]
+P462: FR-021 - Job Publishing: Approved requisitions shall be publishable to a public jobs page with job-specific application forms. [Must]
+P463: FR-022 - Candidate Database: The system shall provide candidate profiles with personal data, applications, documents, skills, notes, tags and activity history. [Must]
+P464: FR-023 - Pipeline: Recruiters shall move applications through configurable stages such as Applied, Screening, Shortlisted, Interview, Selected, Hold and Rejected. [Must]
+P465: FR-024 - Duplicate Detection: The system should detect likely duplicate candidate records using configurable identity/contact matching rules. [Must]
+P466: FR-025 - Search and Filter: Candidates shall be searchable by name, email, phone, skills, source, job, stage, interviewer, rating and date. [Must]
+P467: FR-026 - Rejection / Hold: Every hold/rejection should capture a reason and optional notes. Rejection reasons shall be reportable. [Must]
+P468: FR-027 - Talent Pool: Authorized recruiters should be able to retain eligible candidates in a searchable talent pool separate from active applications. [Must]
+P469: FR-028 - Candidate Communications: The system should record key communication events and support templated email notifications through configured integrations. [Must]
+P470: 9. Interview Management
+P471: FR-040 - Interview Scheduling: Authorized users shall create interviews with candidate, application, round, panel/interviewer, date/time, mode, location/link and instructions. [Must]
+P472: FR-041 - Multi-round Interviews: A candidate may have multiple interview rounds with independent schedules and scorecards. [Must]
+P473: FR-042 - Interview Templates: HR shall define reusable evaluation templates with questions, competencies and scoring criteria. [Must]
+P474: FR-043 - Evaluation: Assigned interviewers shall submit structured scores, comments and recommendation. [Must]
+P475: FR-044 - Recommendation: Interviewers/hiring managers shall be able to recommend Hire, Hold or Reject, subject to approval policy. [Must]
+P476: FR-045 - Interview Status: Interviews shall support Scheduled, Checked-in, Completed, No-show, Rescheduled and Cancelled states. [Must]
+P477: FR-046 - Reminder: Configured users/candidates shall receive reminders before interviews. [Must]
+P478: FR-047 - Decision Summary: Authorized HR users shall see a consolidated candidate interview summary and stage history. [Must]
+P479: 10. Candidate Attendance and Visitor Management
+P480: FR-060 - Candidate Check-in: Reception/HR shall record candidate check-in for a scheduled interview, walk-in visit or recruitment event. [Must]
+P481: FR-061 - Candidate Check-out: The system shall record candidate departure time where required. [Must]
+P482: FR-062 - Interview Attendance: Candidate attendance shall be linked to the interview/visit and shall not modify employee attendance records. [Must]
+P483: FR-063 - No-show: HR shall mark candidates as No-show and optionally record reason/notes. [Must]
+P484: FR-064 - Visitor History: The candidate profile shall show visit history, check-in/out and purpose. [Must]
+P485: FR-065 - QR / Reception Enhancement: The system should support QR-based self check-in and reception verification as a future enhancement. [Must]
+P486: 11. Offer and Hiring
+P487: FR-080 - Selection: Authorized users shall mark an application Selected, On Hold or Rejected with decision notes. [Must]
+P488: FR-081 - Offer Draft: HR shall create an offer from candidate and approved requisition data using an offer template. [Must]
+P489: FR-082 - Offer Approval: The system shall support configurable approval steps before an offer can be sent. [Must]
+P490: FR-083 - Offer Delivery: Approved offers shall be downloadable and optionally delivered through configured communication channels. [Must]
+P491: FR-084 - Offer Status: Offer states shall include Draft, Pending Approval, Approved, Sent, Viewed, Accepted, Declined, Expired and Withdrawn as appropriate. [Must]
+P492: FR-085 - Candidate-to-Employee Conversion: Accepted candidates shall be convertible into employees with approved data mapped into the employee profile and a traceable source application reference. [Must]
+P493: 12. Employee Management and Onboarding
+P494: FR-100 - Employee Master: HR shall maintain a unique employee record with employment, personal, contact, organizational and status data. [Must]
+P495: FR-101 - Employment History: The system shall maintain history for joining, confirmation, promotion, transfer, designation, department, manager and salary-related changes where applicable. [Must]
+P496: FR-102 - Onboarding Template: HR shall create reusable onboarding templates by department, role or employment type. [Must]
+P497: FR-103 - Onboarding Checklist: Each onboarding instance shall track tasks, assignee, due date, status, notes and completion timestamp. [Must]
+P498: FR-104 - Document Collection: Onboarding shall support employee document requests, upload, verification status and acknowledgement. [Must]
+P499: FR-105 - Probation: HR shall configure probation duration and receive reminders for approaching probation completion. [Must]
+P500: FR-106 - Self-service Profile: Employees shall be able to view and update only those fields explicitly permitted by policy. [Must]
+P501: 13. Employee Attendance
+P502: FR-120 - Attendance Recording: The system shall support employee check-in/check-out through one or more configured attendance methods. [Must]
+P503: FR-121 - Attendance States: Supported states should include Present, Absent, Late, Half Day, WFH, On Duty, Overtime, Leave, Holiday and Weekly Off. [Must]
+P504: FR-122 - Shifts: HR shall define shifts, working hours, grace periods, weekly offs and rotational schedules. [Must]
+P505: FR-123 - Timesheets: The system shall calculate daily and period-based attendance totals and timesheets. [Must]
+P506: FR-124 - Corrections: Employees/managers may request attendance corrections. Approval rules shall be configurable. [Must]
+P507: FR-125 - Overtime: The system should record approved overtime hours separately from normal hours. [Must]
+P508: FR-126 - Attendance Calendar: HR and authorized managers shall have day/week/month attendance views with filters. [Must]
+P509: FR-127 - Integration: The architecture should support future biometric, device, API or import integrations. [Must]
+P510: 14. Leave Management
+P511: FR-140 - Leave Types: HR shall configure leave types, eligibility, accrual, carry-forward and approval policy. [Must]
+P512: FR-141 - Leave Request: Employees shall request leave with dates, duration, type, reason and optional attachments. [Must]
+P513: FR-142 - Approvals: Leave approvals shall support manager, HR or multi-level workflows. [Must]
+P514: FR-143 - Balance: The system shall maintain leave balances and transaction history. [Must]
+P515: FR-144 - Calendar: Managers and HR shall see team/company leave calendars. [Must]
+P516: FR-145 - Attendance Linkage: Approved leave SHALL affect attendance processing according to policy. [Must]
+P517: 15. Payroll and Expenses
+P518: Payroll is treated as an extensible module in the initial architecture, but the employee, attendance and compensation data models SHALL be designed so payroll can be added without restructuring core identity records.
+P519: FR-160 - Salary Structure: Support basic salary, allowances, deductions, incentives and other configurable components. [Should]
+P520: FR-161 - Payroll Cycle: Support monthly/periodic payroll runs with review and approval status. [Should]
+P521: FR-162 - Payslip: Authorized users shall generate/download payslips. [Should]
+P522: FR-163 - Expenses: Employees shall submit expenses with category, amount, date, receipt and notes. [Should]
+P523: FR-164 - Expense Approval: Expenses shall support configurable approval and payment statuses. [Should]
+P524: 16. Performance and Learning
+P525: These modules should share employee identity, organizational hierarchy and manager relationships with the core HRMS.
+P526: FR-180 - Goals: Managers and employees should manage goals/KPIs/OKRs with due dates and status. [Should]
+P527: FR-181 - Performance Review: The system should support review cycles, self-review, manager review and configurable rating scales. [Should]
+P528: FR-182 - Feedback: Authorized workflows should support peer/360 feedback where enabled. [Should]
+P529: FR-183 - Training: HR should assign training, track attendance/completion and store certificates. [Should]
+P530: FR-184 - Skill Matrix: The system should track employee skills and proficiency for workforce planning. [Should]
+P531: 17. Asset Management
+P532: FR-200 - Asset Inventory: Maintain assets with type, serial/identifier, purchase data, condition and status. [Should]
+P533: FR-201 - Assignment: Assign assets to employees and record issue/return dates. [Should]
+P534: FR-202 - Lifecycle: Track maintenance, repair, replacement and retirement where required. [Should]
+P535: FR-203 - Exit Return: Offboarding shall support asset return and clearance state. [Should]
+P536: 18. Document Management
+P537: FR-220 - Repository: Store candidate and employee documents with type, owner, status and metadata. [Must]
+P538: FR-221 - Versioning: Document versions shall be tracked when replaced or updated. [Must]
+P539: FR-222 - Access Control: Documents shall inherit record-level and/or document-level authorization rules. [Must]
+P540: FR-223 - Download: Authorized users shall be able to preview/download documents and forms. [Must]
+P541: FR-224 - Expiry: The system should track expiry dates and generate alerts for expiring documents. [Must]
+P542: FR-225 - Retention: Policies shall support retention/archive/soft-delete behavior rather than uncontrolled permanent deletion. [Must]
+P543: 19. HR Helpdesk and Requests
+P544: FR-240 - Request Creation: Employees shall create HR requests with category, description, priority and attachments. [Should]
+P545: FR-241 - Assignment: HR requests shall be assignable to HR staff with status and due date. [Should]
+P546: FR-242 - SLA: The system should support configurable service targets and overdue indicators. [Should]
+P547: FR-243 - History: All comments, status changes and assignments shall be retained in the request timeline. [Should]
+P548: 20. Notifications and Workflow Automation
+P549: FR-260 - Notification Center: Users shall have an in-app notification center for actionable events. [Must]
+P550: FR-261 - Email Notifications: Configurable events shall support email notifications through a pluggable provider. [Must]
+P551: FR-262 - Reminders: The system shall generate reminders for interviews, pending approvals, probation dates, expiring documents and other scheduled events. [Must]
+P552: FR-263 - Task Center: HR users shall see tasks assigned to them with status, due date and source workflow. [Must]
+P553: FR-264 - Workflow Rules: The architecture should support event-driven rules such as candidate selected -> offer approval -> onboarding checklist. [Must]
+P554: 21. Reports and Analytics
+P555: Area
+P556: Required Metrics
+P557: Recruitment
+P558: Applications, pipeline counts, source effectiveness, time to hire, interview pass rate, offer acceptance rate, open positions.
+P559: Candidate Attendance
+P560: Interview attendance, no-shows, check-in volumes, visit history.
+P561: Workforce
+P562: Headcount, department distribution, employment type, tenure, joiners/leavers.
+P563: Attendance
+P564: Present/absent/late/WFH/overtime trends, department comparisons, correction volumes.
+P565: Leave
+P566: Leave utilization, balances, leave trends, approval cycle time.
+P567: Onboarding
+P568: Task completion, overdue tasks, document completion, time to readiness.
+P569: Payroll / Expenses
+P570: Payroll totals, salary components, overtime, expense totals and approval cycle time when modules are enabled.
+P571: Performance
+P572: Review completion, goal status and rating trends when enabled.
+P573: Audit
+P574: Logins, permission changes, exports, downloads, sensitive field changes and administrative events.
+P575: 
+P576: 22. Offboarding and Exit Management
+P577: FR-280 - Resignation: Employees/managers/HR shall initiate resignation according to configured policy. [Must]
+P578: FR-281 - Notice Period: HR shall track notice period and expected last working day. [Must]
+P579: FR-282 - Clearance: The system shall provide configurable clearance tasks for HR, IT, Finance, Assets and other departments. [Must]
+P580: FR-283 - Exit Interview: HR shall record structured exit feedback and optional ratings. [Must]
+P581: FR-284 - Access Revocation: Offboarding shall trigger tasks/events for system access deactivation where integrated. [Must]
+P582: FR-285 - Final Documents: Authorized HR users shall generate or attach experience/relieving and other exit documents. [Must]
+P583: FR-286 - Employee Status: The employee shall transition to Exited/Inactive without destroying the historical record required for compliance/reporting. [Must]
+P584: 23. Compliance, Audit and Security
+P585: All protected API endpoints SHALL enforce authentication and authorization server-side.
+P586: Tenant/organization context SHALL be derived from the authenticated session or token and verified against the requested record.
+P587: Sensitive data SHALL be encrypted in transit using HTTPS/TLS and protected at rest using platform-appropriate encryption controls.
+P588: Passwords SHALL be stored using strong, salted password hashing; raw passwords SHALL never be persisted or logged.
+P589: The application SHALL validate uploaded file type/size and should validate file signatures where appropriate to prevent malicious uploads.
+P590: Audit logs SHALL record actor, action, resource, timestamp, organization, request correlation ID where available, and outcome.
+P591: Administrative and sensitive actions should require elevated permission and may require re-authentication or MFA depending on policy.
+P592: Bulk exports SHALL be permission-controlled and auditable.
+P593: Logs SHALL avoid storing unnecessary personal or secret data.
+P594: Data retention and deletion behavior SHALL be configurable and aligned with the organization’s legal/policy requirements.
+P595: The system SHALL support configurable session timeout, account lock/rate limiting and suspicious login monitoring.
+P596: Security controls SHALL be applied consistently across UI, API, background jobs, exports and integrations.
+P597: 24. Multi-Tenant / Organization Architecture
+P598: The recommended architecture is organization-scoped. A single platform instance may host multiple organizations while guaranteeing logical isolation of data. A future enterprise tier may support subsidiaries, business units, locations and departments beneath an organization.
+P599: Scope Level
+P600: Examples
+P601: Isolation / Control
+P602: Platform
+P603: System configuration, feature flags
+P604: Super-admin only
+P605: Organization
+P606: Employees, candidates, jobs, policies, attendance
+P607: Tenant-scoped
+P608: Business Unit / Location
+P609: Office, region, subsidiary
+P610: Organization child scope
+P611: Department
+P612: Engineering, HR, Sales
+P613: Org/location child scope
+P614: Employee / Candidate
+P615: Individual record
+P616: Record-level permission
+P617: 
+P618: 25. Data Requirements
+P619: 25.1 Core Entities
+P620: Entity
+P621: Purpose
+P622: Organization
+P623: Tenant/company identity, plan, settings, policies
+P624: User
+P625: Authentication identity, role assignment, status
+P626: Role / Permission
+P627: RBAC definitions and assignments
+P628: Department
+P629: Organizational grouping
+P630: Location
+P631: Office/site/remote location
+P632: Job Requisition
+P633: Internal hiring request and approvals
+P634: Job Posting
+P635: Public-facing job listing
+P636: Form Template
+P637: Form definition/version
+P638: Form Submission
+P639: Submitted application/walk-in/internal form
+P640: Candidate
+P641: Person being considered for employment
+P642: Application
+P643: Candidate-to-job relationship and lifecycle state
+P644: Interview
+P645: Scheduled interview event and state
+P646: Interview Evaluation
+P647: Structured interviewer scorecard
+P648: Candidate Visit / Attendance
+P649: Candidate check-in/out record
+P650: Offer
+P651: Offer details, approvals and status
+P652: Employee
+P653: Active/inactive workforce identity
+P654: Employment History
+P655: Status, manager, department, designation and employment events
+P656: Onboarding Instance / Task
+P657: Joining workflow and task tracking
+P658: Attendance Record
+P659: Employee daily attendance / time event
+P660: Shift
+P661: Working schedule definition
+P662: Leave Type / Balance / Request
+P663: Leave rules and transactions
+P664: Document / Document Version
+P665: Controlled HR/candidate documents
+P666: Notification
+P667: User-facing message/event
+P668: HR Request / Ticket
+P669: Employee HR service request
+P670: Expense
+P671: Employee expense/reimbursement
+P672: Payroll Run / Payslip
+P673: Payroll records where enabled
+P674: Performance Cycle / Review
+P675: Performance management data
+P676: Training / Certificate
+P677: Learning records
+P678: Asset / Assignment
+P679: Company asset inventory and ownership
+P680: Exit Case
+P681: Offboarding and clearance
+P682: Audit Event
+P683: Security and business audit record
+P684: 
+P685: 25.2 Data Quality Rules
+P686: Unique identifiers SHALL be generated for candidates, applications, employees, forms, submissions, interviews, offers and documents.
+P687: Email/phone uniqueness shall be configurable by organization and use case rather than hardcoded globally.
+P688: Dates/times SHALL be stored consistently and rendered according to user/organization timezone policy.
+P689: Historical records SHALL not be silently overwritten where business traceability matters; use version/history records where appropriate.
+P690: Soft-delete/archive SHOULD be preferred for HR and compliance records that must remain historically meaningful.
+P691: 26. API and Integration Requirements
+P692: The backend should expose versioned, documented APIs. All protected endpoints must apply authentication, authorization, validation, organization scoping, consistent errors, and audit logging where applicable.
+P693: API Group
+P694: Representative Endpoints / Capabilities
+P695: Auth
+P696: /auth/login, /auth/logout, /auth/session, /auth/password-reset, /auth/mfa
+P697: Forms
+P698: /forms, /forms/{id}, /forms/{id}/publish, /forms/{id}/submissions, /forms/{id}/export
+P699: Recruitment
+P700: /requisitions, /jobs, /candidates, /applications, /pipeline
+P701: Interviews
+P702: /interviews, /interviews/{id}/evaluations, /interviews/{id}/attendance
+P703: Hiring
+P704: /offers, /offers/{id}/approve, /offers/{id}/send, /applications/{id}/convert
+P705: Employees
+P706: /employees, /employees/{id}, /employees/{id}/history
+P707: Onboarding
+P708: /onboarding, /onboarding/{id}/tasks
+P709: Attendance
+P710: /attendance, /attendance/check-in, /attendance/check-out, /attendance/corrections
+P711: Leave
+P712: /leave/types, /leave/balances, /leave/requests, /leave/approvals
+P713: Documents
+P714: /documents, /documents/{id}/download, /documents/{id}/versions
+P715: Reports
+P716: /reports/*, /analytics/*
+P717: Audit
+P718: /audit-events
+P719: 
+P720: 26.1 External Integrations
+P721: Email provider / SMTP service
+P722: Google Calendar / Microsoft 365 calendar
+P723: Video meeting provider (optional)
+P724: Biometric attendance device / attendance provider
+P725: Cloud file storage
+P726: Accounting/payroll systems
+P727: SSO provider (OAuth/OIDC/SAML as required)
+P728: SMS/WhatsApp provider
+P729: Digital signature provider
+P730: Future AI service for parsing/summarization under explicit privacy controls
+P731: 26.2 Integration Principles
+P732: Integrations SHALL use credentials stored in secure secret storage, not source code.
+P733: External API calls SHALL have timeouts, retries with bounded backoff where safe, and observable failures.
+P734: Webhook endpoints SHALL validate authenticity/signatures when the provider supports it.
+P735: Background jobs SHALL be durable and idempotent to prevent duplicate actions.
+P736: Integration failures SHALL not corrupt core HR records; failures should be retriable and visible to administrators.
+P737: 27. Non-Functional Requirements
+P738: Category
+P739: Requirement
+P740: Availability
+P741: Production target should be defined by deployment tier; design for graceful degradation and recoverability.
+P742: Performance
+P743: Typical authenticated pages and API calls should return within an acceptable interactive target under expected load; exact SLA to be set during capacity planning.
+P744: Scalability
+P745: Architecture should support growth in organizations, employees, candidates, documents and audit events without redesigning core entities.
+P746: Reliability
+P747: Critical workflows such as offer approval, onboarding completion and leave approval must be transactionally consistent.
+P748: Security
+P749: Use TLS, secure cookies/tokens, RBAC, rate limiting, input validation, secure file handling, audit logging and secret management.
+P750: Accessibility
+P751: Target WCAG 2.1 AA principles for core workflows including keyboard navigation, contrast, labels and error feedback.
+P752: Responsive UX
+P753: Core workflows must be usable on desktop, tablet and mobile breakpoints.
+P754: Observability
+P755: Centralized logs, health/readiness endpoints, metrics and trace/correlation IDs for backend operations.
+P756: Maintainability
+P757: Modular domain architecture, typed interfaces, automated tests, migration discipline and documented APIs.
+P758: Backup / Recovery
+P759: Define automated backups, retention and recovery testing appropriate to the deployment environment.
+P760: Localization
+P761: Dates, times, number formats, timezone and future multi-language support should be modeled without hardcoding presentation formats.
+P762: Browser Support
+P763: Support current major Chromium, Firefox and Safari releases appropriate to the deployment policy.
+P764: 
+P765: 28. UX / UI Requirements
+P766: The interface SHALL use a consistent enterprise design system with clear hierarchy, accessible contrast, responsive layouts and reusable components.
+P767: Dashboard widgets shall support drill-down to the underlying records.
+P768: Data-heavy pages such as candidates, employees and attendance shall support search, filters, sorting, pagination and saved views where useful.
+P769: Critical workflows shall provide clear status chips, approval indicators, validation messages and confirmation feedback.
+P770: Tables shall avoid horizontal overflow on smaller screens by using responsive patterns such as stacked rows, responsive columns or dedicated mobile detail views.
+P771: Forms shall preserve entered data on recoverable errors where practical and display field-level validation.
+P772: Sensitive fields shall be visually identifiable and masked where appropriate.
+P773: Download/export actions shall identify format and access level clearly.
+P774: Bulk actions shall require confirmation when irreversible or high-impact.
+P775: Empty states shall guide users toward the next action rather than showing blank screens.
+P776: 28.1 Recommended Navigation
+P777: Primary Navigation
+P778: Key Submodules
+P779: Dashboard
+P780: Overview, alerts, tasks, KPIs
+P781: Recruitment
+P782: Requisitions, Jobs, Candidates, Applications, Interviews, Offers, Talent Pool
+P783: Employees
+P784: Directory, Profiles, Onboarding, Documents, Assets, History
+P785: Attendance
+P786: Daily, Timesheets, Shifts, Overtime, Corrections
+P787: Leave
+P788: Requests, Balances, Policies, Calendar
+P789: Payroll
+P790: Salary, Runs, Payslips, Expenses - when enabled
+P791: Performance
+P792: Goals, Reviews, Feedback
+P793: Learning
+P794: Courses, Training, Certificates
+P795: Forms
+P796: Builder, Published Forms, Submissions, Downloads
+P797: Helpdesk
+P798: Requests, Tickets
+P799: Reports & Analytics
+P800: Recruitment, Workforce, Attendance, Leave, HR KPIs
+P801: Automation
+P802: Rules, Jobs, Workflow History
+P803: Compliance
+P804: Audit Logs, Access Reports, Policies
+P805: Settings
+P806: Organization, Users, Roles, Master Data, Integrations
+P807: 
+P808: 29. Reporting KPIs
+P809: Time to hire: requisition approval to accepted offer / configurable definition.
+P810: Time to fill: requisition opening to accepted offer.
+P811: Candidate conversion rate by stage.
+P812: Interview no-show rate.
+P813: Offer acceptance rate.
+P814: New joiner onboarding completion rate.
+P815: Average onboarding completion time.
+P816: Attendance rate, absenteeism and late-arrival rate.
+P817: Leave utilization and approval turnaround.
+P818: Headcount by department/location/employment type.
+P819: Employee turnover / attrition rate.
+P820: Probation completion / confirmation rate.
+P821: HR request resolution time.
+P822: Document expiry risk count.
+P823: Recruitment source effectiveness.
+P824: 30. Acceptance Criteria
+P825: ID
+P826: Area
+P827: Acceptance Condition
+P828: AC-01
+P829: Online Hiring Form
+P830: A public job application can be submitted successfully; submission creates candidate + application; authorized HR can view and download the completed form.
+P831: AC-02
+P832: Walk-in Form
+P833: HR/reception can register a walk-in candidate, record visit details, check-in/out, and download/print the submitted form.
+P834: AC-03
+P835: Hiring Workflow
+P836: HR can view candidate data, move the application through stages, schedule interviews and make Hire/Hold/Reject decisions with traceability.
+P837: AC-04
+P838: Interview Evaluation
+P839: Assigned interviewers can complete evaluation scorecards and recommendations; HR can see consolidated interview history.
+P840: AC-05
+P841: Candidate Attendance
+P842: Candidate interview/visit attendance is tracked independently from employee attendance.
+P843: AC-06
+P844: Conversion
+P845: An accepted candidate can be converted into an employee without duplicate manual data entry for mapped fields; source linkage is preserved.
+P846: AC-07
+P847: Onboarding
+P848: HR can assign onboarding tasks, track completion and outstanding documents.
+P849: AC-08
+P850: Employee Attendance
+P851: Employees and authorized managers can view attendance, request corrections and apply approved leave without corrupting historical records.
+P852: AC-09
+P853: Permissions
+P854: A user without permission cannot access protected candidate/employee/salary/document data through the UI or API.
+P855: AC-10
+P856: Audit
+P857: Sensitive administrative, approval, export and download events are recorded with actor/time/resource.
+P858: AC-11
+P859: Responsive UI
+P860: Core candidate and employee workflows are usable on supported desktop, tablet and mobile breakpoints.
+P861: AC-12
+P862: Reporting
+P863: Authorized HR users can obtain recruitment and attendance reports that match underlying source records.
+P864: 
+P865: 31. Implementation Roadmap
+P866: Phase
+P867: Scope
+P868: Phase 0 - Foundation
+P869: Architecture, auth, organization/tenant model, RBAC, design system, database conventions, audit framework, file storage and observability.
+P870: Phase 1 - Recruitment Core
+P871: Jobs, online hiring form, walk-in form, candidate database, ATS pipeline, search/filter, candidate attendance.
+P872: Phase 2 - Interviews & Hiring
+P873: Interview scheduling, scorecards, feedback, Hire/Hold/Reject, offers, approvals, candidate conversion.
+P874: Phase 3 - Employee Core
+P875: Employee directory/profile, onboarding, documents, employment history, notifications.
+P876: Phase 4 - Attendance & Leave
+P877: Shifts, attendance, timesheets, correction requests, leave policies, approvals, balances.
+P878: Phase 5 - HR Operations
+P879: Helpdesk, assets, expenses, advanced reports, document expiry, workflow automation.
+P880: Phase 6 - Workforce Management
+P881: Performance, learning, advanced analytics, payroll integration/support, external integrations.
+P882: Phase 7 - Enterprise / AI
+P883: SSO, multi-organization enhancements, mobile-first employee experience, AI assistant, resume intelligence, predictive analytics.
+P884: 
+P885: 32. Assumptions and Open Decisions
+P886: The portal is web-first and responsive; native mobile apps are not required for the core release.
+P887: Payroll/tax rules are organization/country dependent and should be finalized before enabling payroll processing in production.
+P888: The organization will define its approval policies for requisitions, interviews, offers, leave, attendance corrections and expenses.
+P889: Document retention, data residency, privacy and legal compliance requirements must be finalized for the deployment geography and organization type.
+P890: Biometric devices, calendar services, email providers and other external systems may require separate integration projects.
+P891: AI features are optional and shall not make autonomous high-impact employment decisions without appropriate human review and policy controls.
+P892: Exact capacity targets (number of employees/candidates, concurrent users, API throughput) should be defined before production sizing.
+P893: Exact UI visual language, branding, color tokens and component library are to be finalized in the UX design system.
+P894: Exact list of statutory forms, employment contracts and legal documents is organization-specific and should be configurable rather than hardcoded.
+P895: 32.1 Recommended Immediate Product Decisions
+P896: Confirm the first release countries and statutory requirements.
+P897: Confirm whether the portal is single-company initially or must support multiple organizations from day one.
+P898: Confirm the attendance source for V1: manual/web, biometric integration, GPS, or a combination.
+P899: Confirm the notification stack: email only or email + SMS/WhatsApp + push.
+P900: Confirm the deployment target and database/storage strategy.
+P901: Define the initial permission matrix for HR, recruiter, interviewer, manager and employee roles.
+P902: Appendix A - Suggested Candidate Profile View
+P903: Section
+P904: Typical Information
+P905: Identity
+P906: Name, candidate ID, contact, location
+P907: Application
+P908: Job, source, application date, current stage
+P909: Resume / Documents
+P910: Resume, certificates, supporting files
+P911: Interview
+P912: Rounds, schedule, attendance, evaluators, scores, feedback
+P913: Decision
+P914: Hire / Hold / Reject, reasons, approvals
+P915: Offer
+P916: Offer status, compensation summary, dates
+P917: Visit History
+P918: Walk-in/interview visits, check-in/out
+P919: Activity
+P920: Notes, status changes, communications and audit trail
+P921: 
+P922: Appendix B - Suggested Employee Profile View
+P923: Section
+P924: Typical Information
+P925: Overview
+P926: Employee ID, name, status, designation, department, manager
+P927: Personal
+P928: Contact, address, emergency contact, dependents
+P929: Employment
+P930: Joining date, probation, confirmation, location, type
+P931: Attendance
+P932: Current period summary, corrections, shifts
+P933: Leave
+P934: Balances, requests, history
+P935: Documents
+P936: Employment and identity documents
+P937: Compensation
+P938: Salary/compensation details subject to permission
+P939: Performance
+P940: Goals, reviews, feedback, PIP where enabled
+P941: Assets
+P942: Assigned company assets
+P943: Requests
+P944: HR helpdesk tickets and service requests
+P945: Lifecycle
+P946: Onboarding, transfers, promotions, exit history
+P947: 
+P948: Appendix C - Minimum V1 Database Relationships
+P949: Organization 1:N Users, Departments, Locations, Jobs, Candidates, Employees, Policies and Audit Events.
+P950: Job Requisition 1:N Applications; Job Requisition 1:1 or 1:N Job Postings depending on publishing model.
+P951: Candidate 1:N Applications, Interviews, Visits, Documents, Offers and Activity Events.
+P952: Application 1:N Interviews; Application 0..1:N Offers depending on policy.
+P953: Application 0..1 -> Employee conversion relationship preserves source_application_id / source_candidate_id.
+P954: Employee 1:N Attendance, Leave Requests, Documents, Assets, Requests, Performance Reviews and Employment History.
+P955: Interview 1:N Interview Evaluations; Interview 0..1:1 Candidate Attendance event for the visit/check-in model, with multiple visits supported when needed.
+P956: All major records include organization_id plus created_by, created_at, updated_by, updated_at as appropriate.
+P957: 
+P958: End of Software Requirements Specification
+P959: HR Management & Employee Lifecycle Portal - Version 1.1
+
+=== TABLES ===

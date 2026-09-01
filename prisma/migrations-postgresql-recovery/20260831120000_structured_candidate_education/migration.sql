@@ -1,0 +1,12 @@
+ALTER TABLE "Candidate" ADD COLUMN IF NOT EXISTS "tenthInstitution" TEXT;
+ALTER TABLE "Candidate" ADD COLUMN IF NOT EXISTS "tenthBoard" TEXT;
+ALTER TABLE "Candidate" ADD COLUMN IF NOT EXISTS "tenthPassingYear" TEXT;
+ALTER TABLE "Candidate" ADD COLUMN IF NOT EXISTS "tenthScore" TEXT;
+ALTER TABLE "Candidate" ADD COLUMN IF NOT EXISTS "twelfthInstitution" TEXT;
+ALTER TABLE "Candidate" ADD COLUMN IF NOT EXISTS "twelfthBoard" TEXT;
+ALTER TABLE "Candidate" ADD COLUMN IF NOT EXISTS "twelfthPassingYear" TEXT;
+ALTER TABLE "Candidate" ADD COLUMN IF NOT EXISTS "twelfthScore" TEXT;
+ALTER TABLE "Candidate" ADD COLUMN IF NOT EXISTS "collegeName" TEXT;
+ALTER TABLE "Candidate" ADD COLUMN IF NOT EXISTS "collegeDegree" TEXT;
+ALTER TABLE "Candidate" ADD COLUMN IF NOT EXISTS "collegePassingYear" TEXT;
+ALTER TABLE "Candidate" ADD COLUMN IF NOT EXISTS "collegeScore" TEXT;

@@ -1,0 +1,8 @@
+ALTER TABLE "Candidate" ADD COLUMN IF NOT EXISTS "hrInterviewScheduledBy" TEXT;
+ALTER TABLE "Candidate" ADD COLUMN IF NOT EXISTS "hrInterviewerName" TEXT;
+ALTER TABLE "Candidate" ADD COLUMN IF NOT EXISTS "hrCommunicationRating" TEXT;
+ALTER TABLE "Candidate" ADD COLUMN IF NOT EXISTS "hrTechnicalSkillsRating" TEXT;
+ALTER TABLE "Candidate" ADD COLUMN IF NOT EXISTS "hrOverallFit" TEXT;
+ALTER TABLE "Candidate" ADD COLUMN IF NOT EXISTS "hrComments" TEXT;
+ALTER TABLE "Candidate" ADD COLUMN IF NOT EXISTS "hrReviewedByUserId" TEXT;
+ALTER TABLE "Candidate" ADD COLUMN IF NOT EXISTS "hrReviewedAt" TIMESTAMP(3);

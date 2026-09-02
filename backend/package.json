@@ -1,0 +1,9 @@
+{
+  "name": "hr-portal-backend",
+  "private": true,
+  "type": "commonjs",
+  "scripts": {
+    "dev": "node --watch server.cjs",
+    "start": "node server.cjs"
+  }
+}

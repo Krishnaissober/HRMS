@@ -11,7 +11,6 @@ import {
   CheckCircle2,
   Clock,
   FileCheck2,
-  FolderKanban,
   RefreshCw,
   Settings,
   Sparkles,
@@ -22,6 +21,7 @@ import {
   WalletCards,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { backendFetch } from "@/lib/backend";
 
 type DashboardData = {
   overview: { applications: number; openPositions: number; pipelineCounts: Record<string, number> };
@@ -61,6 +61,7 @@ export default function HrDashboardPage() {
   const [greeting, setGreeting] = useState("Good morning");
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [formattedDate, setFormattedDate] = useState("");
+  const [backendStatus, setBackendStatus] = useState<"checking" | "online" | "offline">("checking");
 
   useEffect(() => {
     const hour = new Date().getHours();
@@ -76,6 +77,12 @@ export default function HrDashboardPage() {
         day: "numeric",
       })
     );
+  }, []);
+
+  useEffect(() => {
+    void backendFetch("/health", { cache: "no-store" })
+      .then((response) => setBackendStatus(response.ok ? "online" : "offline"))
+      .catch(() => setBackendStatus("offline"));
   }, []);
 
   const load = useCallback(async () => {
@@ -134,6 +141,7 @@ export default function HrDashboardPage() {
             <div className="inline-flex items-center gap-2 rounded-full border border-indigo-400/30 bg-indigo-500/10 px-3.5 py-1 text-xs font-semibold text-indigo-200 backdrop-blur-md">
               <Sparkles className="h-3.5 w-3.5 text-indigo-300 animate-pulse" />
               <span>Triple Minds HR</span>
+              <span className={cn("rounded-full px-2 py-0.5 text-[10px]", backendStatus === "online" ? "bg-emerald-400/20 text-emerald-200" : backendStatus === "offline" ? "bg-rose-400/20 text-rose-200" : "bg-white/10 text-indigo-200")}>{backendStatus === "online" ? "Backend connected" : backendStatus === "offline" ? "Backend offline" : "Connecting backend…"}</span>
               {formattedDate && (
                 <>
                   <span className="h-1 w-1 rounded-full bg-indigo-400" />
@@ -170,14 +178,13 @@ export default function HrDashboardPage() {
           </div>
           <Link href="/hr/reports" className="text-sm font-bold text-indigo-600 hover:text-indigo-500">View reports <ArrowRight className="ml-1 inline h-3.5 w-3.5" /></Link>
         </div>
-        <div className="grid gap-3 md:grid-cols-4">
+        <div className="grid gap-3 md:grid-cols-3">
           {[
-            ["1", "Review", "Candidate records", "/hr/candidates", Users, "indigo"],
-            ["2", "Decide", "Interviews and offers", "/hr/interviews", CalendarDays, "blue"],
-            ["3", "Prepare", "Employees and onboarding", "/hr/employees", UserPlus, "emerald"],
-            ["4", "Support", "Attendance, leave, payroll", "/hr/attendance", UserCheck, "amber"],
+            ["Phase 1", "Hire", "Candidates, interviews, and offers", "/hr/recruitment/dashboard", Users, "indigo"],
+            ["Phase 2", "Onboard", "Employees, documents, and onboarding", "/hr/onboarding", UserPlus, "emerald"],
+            ["Phase 3", "Operate", "Attendance, leave, payroll, and reports", "/hr/attendance", UserCheck, "amber"],
           ].map(([number, title, description, href, Icon, color]) => { const stepNumber = number as string; const stepTitle = title as string; const stepDescription = description as string; const stepHref = href as string; const stepColor = color as string; const StepIcon = Icon as typeof Users; return <Link href={stepHref} key={stepNumber} className="group flex items-center gap-3 rounded-2xl border border-border/50 bg-background/60 p-4 transition-colors hover:border-indigo-500/40 hover:bg-indigo-50/50 dark:hover:bg-indigo-950/20">
-            <span className={cn("flex h-9 w-9 shrink-0 items-center justify-center rounded-xl text-sm font-black", stepColor === "emerald" ? "bg-emerald-100 text-emerald-700" : stepColor === "blue" ? "bg-blue-100 text-blue-700" : stepColor === "amber" ? "bg-amber-100 text-amber-700" : "bg-indigo-100 text-indigo-700")}>{stepNumber}</span>
+            <span className={cn("flex min-h-9 min-w-9 shrink-0 items-center justify-center rounded-xl px-2 text-xs font-black", stepColor === "emerald" ? "bg-emerald-100 text-emerald-700" : stepColor === "blue" ? "bg-blue-100 text-blue-700" : stepColor === "amber" ? "bg-amber-100 text-amber-700" : "bg-indigo-100 text-indigo-700")}>{stepNumber}</span>
             <span className="min-w-0"><strong className="block text-sm font-extrabold text-foreground">{stepTitle}</strong><small className="block truncate text-xs text-muted-foreground">{stepDescription}</small></span>
             <StepIcon className="ml-auto h-4 w-4 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
           </Link>; })}

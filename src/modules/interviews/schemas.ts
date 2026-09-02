@@ -28,7 +28,6 @@ export const interviewCreateSchema = z.object({
   ...scheduleFields,
 }).superRefine((value, context) => {
   validateWindow(value, context);
-  if (value.mode === "VIDEO" && !value.meetingLink?.trim()) context.addIssue({ code: "custom", path: ["meetingLink"], message: "A meeting link is required for video interviews" });
 });
 
 export const interviewUpdateSchema = z.object({

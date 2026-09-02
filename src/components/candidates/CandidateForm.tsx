@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import { backendFetch } from "@/lib/backend";
 
 type Mode = "ONLINE" | "WALK_IN";
 type DocumentInput = { kind: "RESUME" | "SUPPORTING"; objectKey: string; fileName: string; contentType: string; byteSize: number };
@@ -87,7 +88,7 @@ export function CandidateForm({ mode, organizationSlug, organizationId, requisit
     setAddressBusy(true);
     try {
       const position = await new Promise<GeolocationPosition>((resolve, reject) => navigator.geolocation.getCurrentPosition(resolve, reject, { enableHighAccuracy: false, timeout: 30000, maximumAge: 600000 }));
-      const response = await fetch("/api/v1/address/postal-code", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ latitude: position.coords.latitude, longitude: position.coords.longitude }) });
+      const response = await backendFetch("/api/address/postal-code", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ latitude: position.coords.latitude, longitude: position.coords.longitude }) });
       const result = await response.json();
       if (!response.ok) throw new Error(result.error?.message || "Current address lookup is unavailable.");
       if (!result.data.found) return setMessage("Your current address could not be found. Please enter it manually.");
@@ -195,7 +196,7 @@ export function CandidateForm({ mode, organizationSlug, organizationId, requisit
       <p><strong>Reference:</strong> {submittedReference}</p>
     </section>
   ) : (
-    <form className={`candidate-form${duplicateSubmission ? " is-duplicate" : ""}`} onSubmit={submit} aria-disabled={duplicateSubmission} autoComplete="off">
+    <form className={`candidate-form${duplicateSubmission ? " is-duplicate" : ""}`} onSubmit={submit} autoComplete="off">
       <fieldset disabled={duplicateSubmission}>
       {context === "hr-preview" && <div className="form-preview-banner" role="status"><strong>HR Preview · Review mode</strong><span>This is the same form candidates will complete. Submitting here saves an authenticated candidate application for your organization.</span></div>}
       <div className="form-grid">

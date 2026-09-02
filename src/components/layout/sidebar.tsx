@@ -33,7 +33,7 @@ interface SidebarProps {
 
 const navigation = [
   {
-    label: "Recruitment",
+    label: "Phase 1 · Hiring",
     icon: Users,
     items: [
       { label: "HR Dashboard", href: "/hr/dashboard", icon: LayoutDashboard },
@@ -43,7 +43,7 @@ const navigation = [
     ],
   },
   {
-    label: "People & operations",
+    label: "Phase 2 · Employee operations",
     icon: Building2,
     items: [
       { label: "Employees", href: "/hr/employees", icon: UserCheck },
@@ -56,7 +56,7 @@ const navigation = [
     ],
   },
   {
-    label: "Workplace & exit",
+    label: "Phase 3 · Workplace & exit",
     icon: Shield,
     items: [
 { label: "Shifts", href: "/hr/shifts", icon: Clock },

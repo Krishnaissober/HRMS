@@ -81,10 +81,7 @@ export function CandidateFormShareLinks() {
       params.set("description", formDescription.trim());
     return `/hr/candidates/new/preview?${params.toString()}`;
   }
-  const previewUrl = useMemo(
-    () => previewUrlFor(kind),
-    [kind, manualPosition, experienceRequired, formDescription, selectedQuestions],
-  );
+  const previewUrl = previewUrlFor(kind);
 
   async function copyUrl() {
     try {

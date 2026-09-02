@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import { backendFetch } from "@/lib/backend";
 type Doc = {
   id: string;
   title: string;
@@ -41,7 +42,7 @@ export default function Documents() {
       j = await r.json();
     const candidateResponse = await fetch("/api/v1/candidate-documents");
     const candidateBody = await candidateResponse.json();
-    const submissionResponse = await fetch("/api/v1/candidate-submissions");
+    const submissionResponse = await backendFetch("/api/candidate-submissions", { credentials: "include" });
     const submissionBody = await submissionResponse.json();
     if (r.ok) setDocs(j.data.items);
     if (candidateResponse.ok) setCandidateDocs(candidateBody.data.items);

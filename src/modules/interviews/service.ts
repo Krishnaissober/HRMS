@@ -13,7 +13,6 @@ export async function updateInterview(input: Parameters<typeof updateInterviewRe
   const isReschedule = input.patch.status === "RESCHEDULED" && Boolean(input.patch.scheduledStart || input.patch.scheduledEnd);
   if (isReschedule && current.activities.filter((activity) => activity.action === "INTERVIEW_RESCHEDULED").length > 0 && !input.patch.rescheduleReason?.trim()) throw validationError({ rescheduleReason: ["A reason is required after the first reschedule"] });
   if (input.patch.status && input.patch.status !== current.status && !canTransitionInterview(current.status as InterviewStatus, input.patch.status)) throw validationError({ status: [`Invalid transition from ${current.status} to ${input.patch.status}`] });
-  if (input.patch.mode === "VIDEO" && !input.patch.meetingLink?.trim()) throw validationError({ meetingLink: ["A meeting link is required for video interviews"] });
   if (input.patch.status === "NO_SHOW" && !input.patch.noShowReason?.trim()) throw validationError({ noShowReason: ["A reason is required when marking an interview as no-show"] });
   if (input.patch.scheduledStart && input.patch.scheduledEnd && new Date(input.patch.scheduledEnd) <= new Date(input.patch.scheduledStart)) throw validationError({ scheduledEnd: ["Interview end must be after interview start"] });
   return updateInterviewRecord(input);

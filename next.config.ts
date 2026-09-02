@@ -9,13 +9,20 @@ const storageOrigin = (() => {
     return "";
   }
 })();
+const backendOrigin = (() => {
+  try {
+    return new URL(process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:4000").origin;
+  } catch {
+    return "http://localhost:4000";
+  }
+})();
 const contentSecurityPolicy = [
   "default-src 'self'",
   `script-src 'self' 'unsafe-inline'${developmentScriptSources}`,
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: blob: https://quickchart.io",
   "font-src 'self' data:",
-  `connect-src 'self' ws: wss:${storageOrigin ? ` ${storageOrigin}` : ""}`,
+  `connect-src 'self' ws: wss: ${backendOrigin}${storageOrigin ? ` ${storageOrigin}` : ""}`,
   "frame-ancestors 'none'",
   "object-src 'none'",
   "base-uri 'self'",

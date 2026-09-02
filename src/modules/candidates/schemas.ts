@@ -65,14 +65,14 @@ export const candidateFieldsSchema = z.object({
   noticePeriod: optionalText(100),
   roleOfInterest: optionalText(200),
   experience: optionalText(100),
-  declarationAccepted: z.boolean().default(true),
-  consentAccepted: z.boolean().default(true),
+  declarationAccepted: z.literal(true),
+  consentAccepted: z.literal(true),
   documents: z.array(documentInputSchema).max(5).default([]),
 });
 
 export const publicCandidateSchema = candidateFieldsSchema.extend({
   organizationSlug: z.string().trim().min(2).max(120),
-  requisitionId: optionalText(100),
+  requisitionId: z.string().trim().min(1).max(100),
   source: z.literal("ONLINE").default("ONLINE"),
 });
 

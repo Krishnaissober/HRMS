@@ -28,5 +28,10 @@ run("node_modules/prisma/build/index.js", [
   "--schema",
   "prisma/postgresql/schema.prisma",
 ]);
-// Schema/data migration is a separate reviewed step, not a side effect of builds.
+run("node_modules/prisma/build/index.js", [
+  "migrate",
+  "deploy",
+  "--schema",
+  "prisma/postgresql/schema.prisma",
+]);
 run("node_modules/next/dist/bin/next", ["build"]);

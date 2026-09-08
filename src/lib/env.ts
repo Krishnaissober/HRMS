@@ -46,6 +46,13 @@ const optionalSettings = [
   "LOCAL_ADMIN_ORGANIZATION_SLUG",
 ] as const;
 const environment = { ...process.env };
+// Vercel can store a variable reference such as `$NEON_POSTGRES_PRISMA_URL`
+// as a literal value. Resolve references from the provider-injected environment
+// without exposing or copying the underlying secret into source control.
+for (const name of ["DATABASE_URL", "REDIS_URL"] as const) {
+  const reference = environment[name]?.match(/^\$([A-Z0-9_]+)$/)?.[1];
+  if (reference && environment[reference]) environment[name] = environment[reference];
+}
 for (const name of optionalSettings) {
   if (environment[name]?.trim() === "") environment[name] = undefined;
 }

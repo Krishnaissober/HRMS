@@ -4,6 +4,11 @@ const { spawnSync } = require("node:child_process");
 const root = path.resolve(__dirname, "..");
 require("@next/env").loadEnvConfig(root, false);
 
+for (const name of ["DATABASE_URL", "REDIS_URL"]) {
+  const reference = process.env[name]?.match(/^\$([A-Z0-9_]+)$/)?.[1];
+  if (reference && process.env[reference]) process.env[name] = process.env[reference];
+}
+
 // Never manufacture secrets or fall back to a disposable SQLite DB on Vercel.
 if (!/^postgres(ql)?:\/\//.test(process.env.DATABASE_URL || "")) {
   throw new Error("Set DATABASE_URL to the hosted PostgreSQL connection string before deploying.");

@@ -54,4 +54,11 @@ describe("deployment environment validation", () => {
     vi.stubEnv("S3_ENDPOINT", "not-a-url");
     await expect(import("../src/lib/env")).rejects.toThrow("S3_ENDPOINT");
   });
+  it("resolves provider-injected database references", async () => {
+    validEnvironment();
+    vi.stubEnv("DATABASE_URL", "$NEON_POSTGRES_PRISMA_URL");
+    vi.stubEnv("NEON_POSTGRES_PRISMA_URL", "postgresql://user:pass@host/db");
+    const { env } = await import("../src/lib/env");
+    expect(env.DATABASE_URL).toBe("postgresql://user:pass@host/db");
+  });
 });

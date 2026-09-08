@@ -15,7 +15,7 @@
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve",
+    "jsx": "react-jsx",
     "plugins": [
       {
         "name": "next"
@@ -37,7 +37,8 @@
     "src/**/*.ts",
     "src/**/*.tsx",
     "tests/**/*.ts",
-    ".next-candidate-review/types/**/*.ts"
+    ".next-candidate-review/types/**/*.ts",
+    ".next/dev/types/**/*.ts"
   ],
   "exclude": [
     "node_modules"

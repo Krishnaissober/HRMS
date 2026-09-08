@@ -14,8 +14,28 @@ export const auth = betterAuth({
   baseURL: env.BETTER_AUTH_URL,
   trustedOrigins: async (request) => {
     const origins = [env.APP_URL, env.BETTER_AUTH_URL];
-    if (env.NODE_ENV !== "production" && request) origins.push(new URL(request.url).origin);
-    return origins;
+
+    // Vercel assigns a deployment-specific hostname (for example
+    // `hrms-<deployment>.vercel.app`). The fixed APP_URL/BETTER_AUTH_URL
+    // values cannot cover that hostname, which makes Better Auth reject
+    // otherwise valid sign-up/sign-in requests with "Invalid origin".
+    for (const value of [
+      process.env.VERCEL_URL,
+      process.env.VERCEL_BRANCH_URL,
+      process.env.VERCEL_PROJECT_PRODUCTION_URL,
+    ]) {
+      if (value) origins.push(value.startsWith("http") ? value : `https://${value}`);
+    }
+
+    if (request) {
+      const requestOrigin = new URL(request.url).origin;
+      const requestHost = new URL(request.url).hostname;
+      const isHrmsVercelHost =
+        requestHost.endsWith(".vercel.app") && requestHost.startsWith("hrms-");
+      if (env.NODE_ENV !== "production" || isHrmsVercelHost) origins.push(requestOrigin);
+    }
+
+    return [...new Set(origins)];
   },
   emailAndPassword: { enabled: true, requireEmailVerification: false },
   plugins: [

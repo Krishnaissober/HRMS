@@ -4,10 +4,12 @@ import { Eye, EyeOff, LogIn, UserPlus } from "lucide-react";
 export function LoginEntry({
   signedInWithoutAccess = false,
   databaseUnavailable = false,
+  localActivationEnabled = false,
   userName,
 }: {
   signedInWithoutAccess?: boolean;
   databaseUnavailable?: boolean;
+  localActivationEnabled?: boolean;
   userName?: string;
 }) {
   const [email, setEmail] = useState("");
@@ -19,6 +21,7 @@ export function LoginEntry({
   const [busy, setBusy] = useState(false);
   const [signingOut, setSigningOut] = useState(false);
   async function activateLocalAccount() {
+    if (!localActivationEnabled) return;
     const response = await fetch("/api/auth/activate-local", {
       method: "POST",
       credentials: "include",
@@ -29,7 +32,7 @@ export function LoginEntry({
     }
   }
   useEffect(() => {
-    if (!signedInWithoutAccess) return;
+    if (!signedInWithoutAccess || !localActivationEnabled) return;
     let cancelled = false;
     void activateLocalAccount()
       .then(() => {

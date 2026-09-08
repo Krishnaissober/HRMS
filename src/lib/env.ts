@@ -25,10 +25,37 @@ const envSchema = z.object({
   LOCAL_ADMIN_ORGANIZATION_SLUG: z.string().default("triple-minds"),
 });
 
-const parsed = envSchema.safeParse(process.env);
+// Hosting dashboards often supply unused optional settings as empty strings.
+// Zod defaults apply to undefined, so normalize only optional/defaulted settings.
+// Connection URLs and encryption/auth secrets must still reject invalid values.
+const optionalSettings = [
+  "S3_ENDPOINT",
+  "S3_REGION",
+  "S3_BUCKET",
+  "S3_ACCESS_KEY_ID",
+  "S3_SECRET_ACCESS_KEY",
+  "EMAIL_PROVIDER",
+  "EMAIL_FROM",
+  "RESEND_API_KEY",
+  "SENTRY_DSN",
+  "OTEL_EXPORTER_OTLP_ENDPOINT",
+  "LOG_LEVEL",
+  "ADMIN_EMAIL",
+  "ADMIN_ROLE_SLUG",
+  "LOCAL_ADMIN_EMAIL",
+  "LOCAL_ADMIN_ORGANIZATION_SLUG",
+] as const;
+const environment = { ...process.env };
+for (const name of optionalSettings) {
+  if (environment[name]?.trim() === "") environment[name] = undefined;
+}
+const parsed = envSchema.safeParse(environment);
 
 if (!parsed.success) {
-  throw new Error(`Invalid environment configuration: ${parsed.error.message}`);
+  const issues = parsed.error.issues.map((issue) => `${issue.path.join(".")}: ${issue.message}`);
+  throw new Error(
+    `Invalid environment configuration. Set these variables in the build/deployment environment:\n${issues.join("\n")}`,
+  );
 }
 
 if (

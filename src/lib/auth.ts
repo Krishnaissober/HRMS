@@ -4,9 +4,12 @@ import { emailOTP } from "better-auth/plugins";
 import { db } from "@/lib/db";
 import { env } from "@/lib/env";
 import { emailProvider } from "@/lib/notifications";
+import { databaseProvider } from "@/lib/database-provider";
 
 export const auth = betterAuth({
-  database: prismaAdapter(db, { provider: "sqlite" }),
+  database: prismaAdapter(db, {
+    provider: databaseProvider(env.DATABASE_URL),
+  }),
   secret: env.BETTER_AUTH_SECRET,
   baseURL: env.BETTER_AUTH_URL,
   trustedOrigins: async (request) => {

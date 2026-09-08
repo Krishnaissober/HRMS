@@ -53,25 +53,25 @@ The application validations exposed one test-only race after the environment iss
 
 ## Fresh validation results
 
-| Check | Status | Fresh result |
-|---|---|---|
-| Minimal Windows child-process execution | PASS | `cmd.exe` and nested Node processes exited successfully |
-| Lint | PASS | `npm run lint`, exit 0 |
-| Typecheck | PASS | `npm run typecheck`, exit 0 |
-| Unit/API tests | PASS | 20 files, 75 tests |
-| Full Playwright regression | PASS | 10 of 10 tests passed in 3.5 minutes |
-| Persisted Phase 9 workflow | PASS | Salary, payroll, payslip, expense, audit, RBAC and tenant-boundary scenario passed |
-| Production build | PASS | Next.js optimized build completed; 79 static pages generated |
-| Prisma schema validation | PASS | Schema valid |
-| Prisma migration status | PASS | 13 migrations; database schema up to date |
-| Prisma migration diff | PASS | No difference detected between database and schema |
-| Health endpoint | PASS | `/api/health` returned HTTP 200 and `status: ok` |
-| Readiness endpoint | PASS | `/api/ready` returned HTTP 200; database and Redis both `ok` |
-| PostgreSQL persistence | PASS | Persisted E2E workflows wrote and read real records |
-| Redis connectivity | PASS | Compose service healthy and readiness reported Redis `ok` |
-| S3-compatible storage | PASS | MinIO healthy; persisted workflows exercised real object upload/download behavior |
-| Root route | PASS | HTTP 200 and authenticated/unauthenticated behavior passed in Playwright |
-| Phase 0-9 regression | PASS | Full project Playwright suite passed |
+| Check                                   | Status | Fresh result                                                                       |
+| --------------------------------------- | ------ | ---------------------------------------------------------------------------------- |
+| Minimal Windows child-process execution | PASS   | `cmd.exe` and nested Node processes exited successfully                            |
+| Lint                                    | PASS   | `npm run lint`, exit 0                                                             |
+| Typecheck                               | PASS   | `npm run typecheck`, exit 0                                                        |
+| Unit/API tests                          | PASS   | 20 files, 75 tests                                                                 |
+| Full Playwright regression              | PASS   | 10 of 10 tests passed in 3.5 minutes                                               |
+| Persisted Phase 9 workflow              | PASS   | Salary, payroll, payslip, expense, audit, RBAC and tenant-boundary scenario passed |
+| Production build                        | PASS   | Next.js optimized build completed; 79 static pages generated                       |
+| Prisma schema validation                | PASS   | Schema valid                                                                       |
+| Prisma migration status                 | PASS   | 13 migrations; database schema up to date                                          |
+| Prisma migration diff                   | PASS   | No difference detected between database and schema                                 |
+| Health endpoint                         | PASS   | `/api/health` returned HTTP 200 and `status: ok`                                   |
+| Readiness endpoint                      | PASS   | `/api/ready` returned HTTP 200; database and Redis both `ok`                       |
+| PostgreSQL persistence                  | PASS   | Persisted E2E workflows wrote and read real records                                |
+| Redis connectivity                      | PASS   | Compose service healthy and readiness reported Redis `ok`                          |
+| S3-compatible storage                   | PASS   | MinIO healthy; persisted workflows exercised real object upload/download behavior  |
+| Root route                              | PASS   | HTTP 200 and authenticated/unauthenticated behavior passed in Playwright           |
+| Phase 0-9 regression                    | PASS   | Full project Playwright suite passed                                               |
 
 ## Warnings that do not fail the gate
 

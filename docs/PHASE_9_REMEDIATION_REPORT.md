@@ -4,23 +4,23 @@ Date: 2026-08-19
 
 ## Finding status
 
-| Finding | Status |
-|---|---|
-| Original RBAC permission persistence failure | RESOLVED — canonical catalog is upserted and assigned; `payroll.review` is distinct |
-| Original stale Prisma Client/typecheck failure | RESOLVED |
-| Missing Phase 9 migration and drift | RESOLVED |
-| Salary/history/audit implementation | RESOLVED |
-| Payroll state and approval workflow | RESOLVED |
-| Payslip generation/download and ownership | RESOLVED |
-| Expense receipt/submission/approval/payment | RESOLVED |
-| Reports component/overtime completeness | RESOLVED |
-| Employee self-service UI/receipt ownership | RESOLVED |
-| Receipt download audit | RESOLVED |
-| Unit/API suite | CODE VERIFIED; last successful run 75/75 |
-| Persisted Phase 9 workflow | INTEGRATION VERIFIED with PostgreSQL and S3 |
-| Fresh final full-suite rerun | ENVIRONMENT BLOCKED — `spawn EPERM` |
-| Fresh final production build rerun | ENVIRONMENT BLOCKED — `spawn EPERM` |
-| Fresh final Prisma status rerun | ENVIRONMENT BLOCKED — schema-engine `spawn EPERM` |
+| Finding                                        | Status                                                                              |
+| ---------------------------------------------- | ----------------------------------------------------------------------------------- |
+| Original RBAC permission persistence failure   | RESOLVED — canonical catalog is upserted and assigned; `payroll.review` is distinct |
+| Original stale Prisma Client/typecheck failure | RESOLVED                                                                            |
+| Missing Phase 9 migration and drift            | RESOLVED                                                                            |
+| Salary/history/audit implementation            | RESOLVED                                                                            |
+| Payroll state and approval workflow            | RESOLVED                                                                            |
+| Payslip generation/download and ownership      | RESOLVED                                                                            |
+| Expense receipt/submission/approval/payment    | RESOLVED                                                                            |
+| Reports component/overtime completeness        | RESOLVED                                                                            |
+| Employee self-service UI/receipt ownership     | RESOLVED                                                                            |
+| Receipt download audit                         | RESOLVED                                                                            |
+| Unit/API suite                                 | CODE VERIFIED; last successful run 75/75                                            |
+| Persisted Phase 9 workflow                     | INTEGRATION VERIFIED with PostgreSQL and S3                                         |
+| Fresh final full-suite rerun                   | ENVIRONMENT BLOCKED — `spawn EPERM`                                                 |
+| Fresh final production build rerun             | ENVIRONMENT BLOCKED — `spawn EPERM`                                                 |
+| Fresh final Prisma status rerun                | ENVIRONMENT BLOCKED — schema-engine `spawn EPERM`                                   |
 
 ## Required recovery
 

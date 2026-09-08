@@ -2,27 +2,255 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
-import { ArrowLeft, BriefcaseBusiness, FileText, GraduationCap, Mail, MapPin, Phone, UserRound } from "lucide-react";
-import { cn } from "@/lib/utils";
+import {
+  ArrowLeft,
+  BriefcaseBusiness,
+  FileText,
+  GraduationCap,
+  Mail,
+  MapPin,
+  Phone,
+  UserRound,
+} from "lucide-react";
 
-type Candidate = { referenceNo: string; firstName: string; lastName: string; email: string; phone: string; status: string; source: string; roleOfInterest: string; experience?: string | null; skills?: string | null; education?: string | null; currentCompany?: string | null; employmentHistory?: string | null; addressLine1?: string | null; addressLine2?: string | null; city?: string | null; state?: string | null; postalCode?: string | null; applications: Array<{ referenceNo: string; status: string; requisition: { title: string } }> };
+type Candidate = {
+  referenceNo: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  status: string;
+  source: string;
+  roleOfInterest: string;
+  experience?: string | null;
+  skills?: string | null;
+  education?: string | null;
+  currentCompany?: string | null;
+  employmentHistory?: string | null;
+  addressLine1?: string | null;
+  addressLine2?: string | null;
+  city?: string | null;
+  state?: string | null;
+  postalCode?: string | null;
+  applications: Array<{ referenceNo: string; status: string; requisition: { title: string } }>;
+};
 
 const valueOrFallback = (value?: string | null) => value?.trim() || "Not provided";
 
 export default function SelectedEmployeePreview({ params }: { params: Promise<{ id: string }> }) {
   const [employee, setEmployee] = useState<Candidate | null>(null);
   const [message, setMessage] = useState("Loading employee details…");
-  useEffect(() => { void (async () => { const { id } = await params; const response = await fetch(`/api/v1/candidates/${id}`); const result = await response.json(); if (!response.ok) return setMessage(result.error?.message || "Could not load employee details"); if (result.data.status !== "SELECTED") return setMessage("This record is no longer a selected employee"); setEmployee(result.data); setMessage(""); })(); }, [params]);
-  const initials = useMemo(() => employee ? `${employee.firstName[0] || ""}${employee.lastName[0] || ""}`.toUpperCase() : "", [employee]);
-  if (!employee) return <main className="page-shell"><section className="rounded-3xl border border-slate-200/80 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900/80"><p role="status" className="text-sm font-semibold text-slate-600 dark:text-slate-300">{message}</p></section></main>;
+  useEffect(() => {
+    void (async () => {
+      const { id } = await params;
+      const response = await fetch(`/api/v1/candidates/${id}`);
+      const result = await response.json();
+      if (!response.ok)
+        return setMessage(result.error?.message || "Could not load employee details");
+      if (result.data.status !== "SELECTED")
+        return setMessage("This record is no longer a selected employee");
+      setEmployee(result.data);
+      setMessage("");
+    })();
+  }, [params]);
+  const initials = useMemo(
+    () =>
+      employee ? `${employee.firstName[0] || ""}${employee.lastName[0] || ""}`.toUpperCase() : "",
+    [employee],
+  );
+  if (!employee)
+    return (
+      <main className="page-shell">
+        <section className="rounded-3xl border border-slate-200/80 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900/80">
+          <p role="status" className="text-sm font-semibold text-slate-600 dark:text-slate-300">
+            {message}
+          </p>
+        </section>
+      </main>
+    );
   const address = [employee.addressLine1, employee.addressLine2].filter(Boolean).join(", ");
-  return <main className="page-shell space-y-6 pb-12">
-    <section className="relative overflow-hidden rounded-3xl border border-indigo-500/20 bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 p-6 text-white shadow-2xl md:p-8"><div className="pointer-events-none absolute -right-16 -top-20 h-64 w-64 rounded-full bg-indigo-500/20 blur-3xl" /><div className="pointer-events-none absolute bottom-0 left-1/3 h-36 w-36 rounded-full bg-emerald-500/15 blur-3xl" /><div className="relative z-10"><Link href="/hr/employees" className="mb-8 inline-flex items-center gap-2 text-sm font-bold text-indigo-200 transition hover:text-white"><ArrowLeft className="h-4 w-4" /> Employee directory</Link><div className="flex flex-col justify-between gap-6 md:flex-row md:items-end"><div className="flex items-center gap-4"><div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-white/15 text-xl font-black ring-1 ring-white/20 backdrop-blur-md">{initials}</div><div><p className="text-xs font-extrabold uppercase tracking-[0.2em] text-indigo-300">Selected hire · employee preview</p><h1 className="mt-1 text-3xl font-black tracking-tight md:text-4xl">{employee.firstName} {employee.lastName}</h1><p className="mt-1 text-sm font-medium text-indigo-100/75">{employee.referenceNo} · {employee.roleOfInterest || "Position not provided"}</p></div></div><span className="inline-flex w-fit items-center rounded-full bg-emerald-100 px-3 py-1.5 text-xs font-black uppercase tracking-wide text-emerald-700">Employee</span></div></div></section>
-    <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">{[[UserRound, "Source", employee.source === "WALK_IN" ? "Walk-in" : "Online"], [BriefcaseBusiness, "Position", valueOrFallback(employee.roleOfInterest)], [GraduationCap, "Education", valueOrFallback(employee.education)], [FileText, "Applications", employee.applications.length]].map(([Icon, label, value]) => { const MetricIcon = Icon as typeof UserRound; return <div key={String(label)} className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900/80"><div className="flex items-center justify-between"><span className="text-[11px] font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400">{String(label)}</span><span className="flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600 dark:bg-indigo-950/50 dark:text-indigo-300"><MetricIcon className="h-4 w-4" /></span></div><p className="mt-3 truncate text-lg font-black tracking-tight text-slate-950 dark:text-white">{String(value)}</p></div>; })}</section>
-    <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
-      <section className="rounded-3xl border border-slate-200/80 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900/80"><p className="text-xs font-extrabold uppercase tracking-[0.18em] text-indigo-600 dark:text-indigo-300">Candidate information</p><h2 className="mt-1 text-2xl font-black tracking-tight text-slate-950 dark:text-white">Personal and professional details</h2><div className="mt-6 grid gap-3 sm:grid-cols-2">{[[Mail, "Email", employee.email], [Phone, "Phone", employee.phone], [BriefcaseBusiness, "Current company", valueOrFallback(employee.currentCompany)], [GraduationCap, "Experience", valueOrFallback(employee.experience)]].map(([Icon, label, value]) => { const DetailIcon = Icon as typeof Mail; return <div key={String(label)} className="flex items-start gap-3 rounded-2xl border border-slate-200/70 bg-slate-50/70 p-4 dark:border-slate-800 dark:bg-slate-950/30"><span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-indigo-100 text-indigo-600 dark:bg-indigo-950/60 dark:text-indigo-300"><DetailIcon className="h-4 w-4" /></span><div className="min-w-0"><p className="text-[11px] font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400">{String(label)}</p><p className="mt-1 break-words text-sm font-bold text-slate-800 dark:text-slate-200">{String(value)}</p></div></div>; })}</div><div className="mt-4 rounded-2xl border border-slate-200/70 bg-slate-50/70 p-4 dark:border-slate-800 dark:bg-slate-950/30"><p className="text-[11px] font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400">Skills</p><p className="mt-2 whitespace-pre-wrap text-sm font-semibold leading-6 text-slate-700 dark:text-slate-300">{valueOrFallback(employee.skills)}</p></div></section>
-      <section className="rounded-3xl border border-slate-200/80 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900/80"><p className="text-xs font-extrabold uppercase tracking-[0.18em] text-emerald-600 dark:text-emerald-300">Contact location</p><h2 className="mt-1 text-2xl font-black tracking-tight text-slate-950 dark:text-white">Address</h2><div className="mt-6 flex gap-3 rounded-2xl border border-slate-200/70 bg-slate-50/70 p-4 dark:border-slate-800 dark:bg-slate-950/30"><span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-emerald-100 text-emerald-600 dark:bg-emerald-950/60 dark:text-emerald-300"><MapPin className="h-4 w-4" /></span><div><p className="text-sm font-bold text-slate-800 dark:text-slate-200">{valueOrFallback(address)}</p><p className="mt-2 text-sm font-semibold text-slate-500 dark:text-slate-400">{valueOrFallback(employee.city)} · {valueOrFallback(employee.state)}</p><p className="mt-1 text-sm font-semibold text-slate-500 dark:text-slate-400">Postal code: {valueOrFallback(employee.postalCode)}</p></div></div><div className="mt-4 rounded-2xl border border-indigo-200 bg-indigo-50/70 p-4 dark:border-indigo-900 dark:bg-indigo-950/30"><p className="text-xs font-extrabold uppercase tracking-wider text-indigo-600 dark:text-indigo-300">Employment history</p><p className="mt-2 whitespace-pre-wrap text-sm font-semibold leading-6 text-slate-700 dark:text-slate-300">{valueOrFallback(employee.employmentHistory)}</p></div></section>
-    </div>
-    <section className="rounded-3xl border border-slate-200/80 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900/80"><div className="flex items-center justify-between gap-4"><div><p className="text-xs font-extrabold uppercase tracking-[0.18em] text-indigo-600 dark:text-indigo-300">Hiring record</p><h2 className="mt-1 text-2xl font-black tracking-tight text-slate-950 dark:text-white">Applications</h2></div><span className="rounded-xl bg-indigo-100 px-3 py-1.5 text-xs font-black text-indigo-700 dark:bg-indigo-950/50 dark:text-indigo-300">{employee.applications.length} total</span></div>{employee.applications.length === 0 ? <p className="mt-5 rounded-2xl border border-dashed border-slate-300 p-6 text-sm font-semibold text-slate-500 dark:border-slate-700 dark:text-slate-400">No applications recorded.</p> : <div className="mt-5 grid gap-3 md:grid-cols-2">{employee.applications.map((application) => <div key={application.referenceNo} className="flex items-center justify-between gap-4 rounded-2xl border border-slate-200/70 bg-slate-50/70 p-4 dark:border-slate-800 dark:bg-slate-950/30"><div><p className="font-extrabold text-slate-900 dark:text-white">{application.requisition.title}</p><p className="mt-1 text-xs font-semibold text-slate-500 dark:text-slate-400">{application.referenceNo}</p></div><span className="rounded-full bg-emerald-100 px-2.5 py-1 text-[10px] font-black uppercase text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-300">{application.status.replaceAll("_", " ")}</span></div>)}</div>}</section>
-  </main>;
+  return (
+    <main className="page-shell space-y-6 pb-12">
+      <section className="relative overflow-hidden rounded-3xl border border-indigo-500/20 bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 p-6 text-white shadow-2xl md:p-8">
+        <div className="pointer-events-none absolute -right-16 -top-20 h-64 w-64 rounded-full bg-indigo-500/20 blur-3xl" />
+        <div className="pointer-events-none absolute bottom-0 left-1/3 h-36 w-36 rounded-full bg-emerald-500/15 blur-3xl" />
+        <div className="relative z-10">
+          <Link
+            href="/hr/employees"
+            className="mb-8 inline-flex items-center gap-2 text-sm font-bold text-indigo-200 transition hover:text-white"
+          >
+            <ArrowLeft className="h-4 w-4" /> Employee directory
+          </Link>
+          <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
+            <div className="flex items-center gap-4">
+              <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-white/15 text-xl font-black ring-1 ring-white/20 backdrop-blur-md">
+                {initials}
+              </div>
+              <div>
+                <p className="text-xs font-extrabold uppercase tracking-[0.2em] text-indigo-300">
+                  Selected hire · employee preview
+                </p>
+                <h1 className="mt-1 text-3xl font-black tracking-tight md:text-4xl">
+                  {employee.firstName} {employee.lastName}
+                </h1>
+                <p className="mt-1 text-sm font-medium text-indigo-100/75">
+                  {employee.referenceNo} · {employee.roleOfInterest || "Position not provided"}
+                </p>
+              </div>
+            </div>
+            <span className="inline-flex w-fit items-center rounded-full bg-emerald-100 px-3 py-1.5 text-xs font-black uppercase tracking-wide text-emerald-700">
+              Employee
+            </span>
+          </div>
+        </div>
+      </section>
+      <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {[
+          [UserRound, "Source", employee.source === "WALK_IN" ? "Walk-in" : "Online"],
+          [BriefcaseBusiness, "Position", valueOrFallback(employee.roleOfInterest)],
+          [GraduationCap, "Education", valueOrFallback(employee.education)],
+          [FileText, "Applications", employee.applications.length],
+        ].map(([Icon, label, value]) => {
+          const MetricIcon = Icon as typeof UserRound;
+          return (
+            <div
+              key={String(label)}
+              className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900/80"
+            >
+              <div className="flex items-center justify-between">
+                <span className="text-[11px] font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                  {String(label)}
+                </span>
+                <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600 dark:bg-indigo-950/50 dark:text-indigo-300">
+                  <MetricIcon className="h-4 w-4" />
+                </span>
+              </div>
+              <p className="mt-3 truncate text-lg font-black tracking-tight text-slate-950 dark:text-white">
+                {String(value)}
+              </p>
+            </div>
+          );
+        })}
+      </section>
+      <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
+        <section className="rounded-3xl border border-slate-200/80 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900/80">
+          <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-indigo-600 dark:text-indigo-300">
+            Candidate information
+          </p>
+          <h2 className="mt-1 text-2xl font-black tracking-tight text-slate-950 dark:text-white">
+            Personal and professional details
+          </h2>
+          <div className="mt-6 grid gap-3 sm:grid-cols-2">
+            {[
+              [Mail, "Email", employee.email],
+              [Phone, "Phone", employee.phone],
+              [BriefcaseBusiness, "Current company", valueOrFallback(employee.currentCompany)],
+              [GraduationCap, "Experience", valueOrFallback(employee.experience)],
+            ].map(([Icon, label, value]) => {
+              const DetailIcon = Icon as typeof Mail;
+              return (
+                <div
+                  key={String(label)}
+                  className="flex items-start gap-3 rounded-2xl border border-slate-200/70 bg-slate-50/70 p-4 dark:border-slate-800 dark:bg-slate-950/30"
+                >
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-indigo-100 text-indigo-600 dark:bg-indigo-950/60 dark:text-indigo-300">
+                    <DetailIcon className="h-4 w-4" />
+                  </span>
+                  <div className="min-w-0">
+                    <p className="text-[11px] font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                      {String(label)}
+                    </p>
+                    <p className="mt-1 break-words text-sm font-bold text-slate-800 dark:text-slate-200">
+                      {String(value)}
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+          <div className="mt-4 rounded-2xl border border-slate-200/70 bg-slate-50/70 p-4 dark:border-slate-800 dark:bg-slate-950/30">
+            <p className="text-[11px] font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+              Skills
+            </p>
+            <p className="mt-2 whitespace-pre-wrap text-sm font-semibold leading-6 text-slate-700 dark:text-slate-300">
+              {valueOrFallback(employee.skills)}
+            </p>
+          </div>
+        </section>
+        <section className="rounded-3xl border border-slate-200/80 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900/80">
+          <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-emerald-600 dark:text-emerald-300">
+            Contact location
+          </p>
+          <h2 className="mt-1 text-2xl font-black tracking-tight text-slate-950 dark:text-white">
+            Address
+          </h2>
+          <div className="mt-6 flex gap-3 rounded-2xl border border-slate-200/70 bg-slate-50/70 p-4 dark:border-slate-800 dark:bg-slate-950/30">
+            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-emerald-100 text-emerald-600 dark:bg-emerald-950/60 dark:text-emerald-300">
+              <MapPin className="h-4 w-4" />
+            </span>
+            <div>
+              <p className="text-sm font-bold text-slate-800 dark:text-slate-200">
+                {valueOrFallback(address)}
+              </p>
+              <p className="mt-2 text-sm font-semibold text-slate-500 dark:text-slate-400">
+                {valueOrFallback(employee.city)} · {valueOrFallback(employee.state)}
+              </p>
+              <p className="mt-1 text-sm font-semibold text-slate-500 dark:text-slate-400">
+                Postal code: {valueOrFallback(employee.postalCode)}
+              </p>
+            </div>
+          </div>
+          <div className="mt-4 rounded-2xl border border-indigo-200 bg-indigo-50/70 p-4 dark:border-indigo-900 dark:bg-indigo-950/30">
+            <p className="text-xs font-extrabold uppercase tracking-wider text-indigo-600 dark:text-indigo-300">
+              Employment history
+            </p>
+            <p className="mt-2 whitespace-pre-wrap text-sm font-semibold leading-6 text-slate-700 dark:text-slate-300">
+              {valueOrFallback(employee.employmentHistory)}
+            </p>
+          </div>
+        </section>
+      </div>
+      <section className="rounded-3xl border border-slate-200/80 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900/80">
+        <div className="flex items-center justify-between gap-4">
+          <div>
+            <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-indigo-600 dark:text-indigo-300">
+              Hiring record
+            </p>
+            <h2 className="mt-1 text-2xl font-black tracking-tight text-slate-950 dark:text-white">
+              Applications
+            </h2>
+          </div>
+          <span className="rounded-xl bg-indigo-100 px-3 py-1.5 text-xs font-black text-indigo-700 dark:bg-indigo-950/50 dark:text-indigo-300">
+            {employee.applications.length} total
+          </span>
+        </div>
+        {employee.applications.length === 0 ? (
+          <p className="mt-5 rounded-2xl border border-dashed border-slate-300 p-6 text-sm font-semibold text-slate-500 dark:border-slate-700 dark:text-slate-400">
+            No applications recorded.
+          </p>
+        ) : (
+          <div className="mt-5 grid gap-3 md:grid-cols-2">
+            {employee.applications.map((application) => (
+              <div
+                key={application.referenceNo}
+                className="flex items-center justify-between gap-4 rounded-2xl border border-slate-200/70 bg-slate-50/70 p-4 dark:border-slate-800 dark:bg-slate-950/30"
+              >
+                <div>
+                  <p className="font-extrabold text-slate-900 dark:text-white">
+                    {application.requisition.title}
+                  </p>
+                  <p className="mt-1 text-xs font-semibold text-slate-500 dark:text-slate-400">
+                    {application.referenceNo}
+                  </p>
+                </div>
+                <span className="rounded-full bg-emerald-100 px-2.5 py-1 text-[10px] font-black uppercase text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-300">
+                  {application.status.replaceAll("_", " ")}
+                </span>
+              </div>
+            ))}
+          </div>
+        )}
+      </section>
+    </main>
+  );
 }

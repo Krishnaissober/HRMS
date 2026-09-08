@@ -199,19 +199,19 @@ Configured:
 
 Results:
 
-| Check | Result |
-|---|---|
-| `npm run lint` | PASS |
-| `npm run typecheck` | PASS |
-| `npm test` | PASS — 7 tests |
-| Playwright smoke test | PASS — 1 test |
-| `npx prisma validate` | PASS |
-| Prisma migration diff | PASS |
-| `/` runtime smoke | PASS — HTTP 200 |
-| `/api/health` runtime smoke | PASS — HTTP 200 |
-| unauthenticated session | PASS — HTTP 401 |
-| `/api/ready` | PASS — correctly returns HTTP 503 with `database: unavailable`, `redis: unavailable` |
-| Docker build | BLOCKED — Docker Desktop Linux daemon unavailable |
+| Check                       | Result                                                                               |
+| --------------------------- | ------------------------------------------------------------------------------------ |
+| `npm run lint`              | PASS                                                                                 |
+| `npm run typecheck`         | PASS                                                                                 |
+| `npm test`                  | PASS — 7 tests                                                                       |
+| Playwright smoke test       | PASS — 1 test                                                                        |
+| `npx prisma validate`       | PASS                                                                                 |
+| Prisma migration diff       | PASS                                                                                 |
+| `/` runtime smoke           | PASS — HTTP 200                                                                      |
+| `/api/health` runtime smoke | PASS — HTTP 200                                                                      |
+| unauthenticated session     | PASS — HTTP 401                                                                      |
+| `/api/ready`                | PASS — correctly returns HTTP 503 with `database: unavailable`, `redis: unavailable` |
+| Docker build                | BLOCKED — Docker Desktop Linux daemon unavailable                                    |
 
 Database-backed auth, tenant isolation and migration-apply tests remain environment-blocked. Unit-level tenant-isolation and RBAC tests pass.
 
@@ -258,22 +258,22 @@ The multi-stage Dockerfile installs dependencies, generates Prisma Client, build
 
 ## 26. Hardening issue classification
 
-| Issue | Classification | Evidence and disposition |
-|---|---|---|
-| PostgreSQL service reachability | RESOLVED | PostgreSQL services are running and `pg_isready` reports accepting connections on port 5432. |
-| PostgreSQL credentials and database | BLOCKED BY ENVIRONMENT | The repository has no `.env.local`; the documented sample credentials fail authentication. A local setup path is documented; no system database credentials were invented or changed. |
-| Prisma schema validation | RESOLVED | `npx prisma validate` passes. |
-| Prisma migration status/apply | BLOCKED BY ENVIRONMENT | `prisma migrate status` and `migrate deploy` cannot authenticate to the local server. |
-| Redis configuration | RESOLVED | `REDIS_URL` is centralized and Compose setup is documented. |
-| Redis service/worker execution | BLOCKED BY ENVIRONMENT | No Redis service or listener exists on port 6379. Readiness reports `redis: unavailable`. |
-| Docker availability | BLOCKED BY ENVIRONMENT | Docker client and Compose configuration are available; Docker Desktop Linux engine is not running, so image build is unverified. |
-| npm audit advisories | DEFERRED WITH JUSTIFICATION | Advisories affect transitive PostCSS and sharp versions pulled by Next 15.5.23. npm offers Next 16.3.1 only, which is a breaking upgrade explicitly disallowed for this hardening pass. |
-| Lint/typecheck/unit/Playwright/build | RESOLVED | All checks pass; Playwright smoke test passes with Chromium installed. |
-| Health endpoint | RESOLVED | `/api/health` returns HTTP 200. |
-| Readiness endpoint | RESOLVED | `/api/ready` returns HTTP 503 with explicit database and Redis dependency states when unavailable. |
-| Authentication verification | RESOLVED | Unauthenticated `/api/v1/auth/session` returns HTTP 401; database-backed login remains environment-blocked. |
-| Tenant isolation tests | RESOLVED | Unit-level mismatch rejection and same-tenant acceptance tests pass; database-backed query tests await PostgreSQL credentials. |
-| RBAC tests | RESOLVED | Permission allow/deny and inactive-membership tests pass. |
+| Issue                                | Classification              | Evidence and disposition                                                                                                                                                                |
+| ------------------------------------ | --------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| PostgreSQL service reachability      | RESOLVED                    | PostgreSQL services are running and `pg_isready` reports accepting connections on port 5432.                                                                                            |
+| PostgreSQL credentials and database  | BLOCKED BY ENVIRONMENT      | The repository has no `.env.local`; the documented sample credentials fail authentication. A local setup path is documented; no system database credentials were invented or changed.   |
+| Prisma schema validation             | RESOLVED                    | `npx prisma validate` passes.                                                                                                                                                           |
+| Prisma migration status/apply        | BLOCKED BY ENVIRONMENT      | `prisma migrate status` and `migrate deploy` cannot authenticate to the local server.                                                                                                   |
+| Redis configuration                  | RESOLVED                    | `REDIS_URL` is centralized and Compose setup is documented.                                                                                                                             |
+| Redis service/worker execution       | BLOCKED BY ENVIRONMENT      | No Redis service or listener exists on port 6379. Readiness reports `redis: unavailable`.                                                                                               |
+| Docker availability                  | BLOCKED BY ENVIRONMENT      | Docker client and Compose configuration are available; Docker Desktop Linux engine is not running, so image build is unverified.                                                        |
+| npm audit advisories                 | DEFERRED WITH JUSTIFICATION | Advisories affect transitive PostCSS and sharp versions pulled by Next 15.5.23. npm offers Next 16.3.1 only, which is a breaking upgrade explicitly disallowed for this hardening pass. |
+| Lint/typecheck/unit/Playwright/build | RESOLVED                    | All checks pass; Playwright smoke test passes with Chromium installed.                                                                                                                  |
+| Health endpoint                      | RESOLVED                    | `/api/health` returns HTTP 200.                                                                                                                                                         |
+| Readiness endpoint                   | RESOLVED                    | `/api/ready` returns HTTP 503 with explicit database and Redis dependency states when unavailable.                                                                                      |
+| Authentication verification          | RESOLVED                    | Unauthenticated `/api/v1/auth/session` returns HTTP 401; database-backed login remains environment-blocked.                                                                             |
+| Tenant isolation tests               | RESOLVED                    | Unit-level mismatch rejection and same-tenant acceptance tests pass; database-backed query tests await PostgreSQL credentials.                                                          |
+| RBAC tests                           | RESOLVED                    | Permission allow/deny and inactive-membership tests pass.                                                                                                                               |
 
 ## 27. Exact external prerequisites
 

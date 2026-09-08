@@ -10,5 +10,24 @@ import { checkInCandidate } from "@/modules/attendance/service";
 
 export async function POST(request: NextRequest) {
   const id = requestId(request);
-  try { const context = await getAuthenticatedContext(request); await requirePermission(context.session.user.id, context.organizationId, ATTENDANCE_PERMISSIONS.checkIn); const parsed = parseBody(attendanceCheckInSchema, await request.json()); return successResponse(await checkInCandidate({ organizationId: context.organizationId, actorUserId: context.session.user.id, ...parsed, requestId: id }), id); } catch (error) { return errorResponse(error, id); }
+  try {
+    const context = await getAuthenticatedContext(request);
+    await requirePermission(
+      context.session.user.id,
+      context.organizationId,
+      ATTENDANCE_PERMISSIONS.checkIn,
+    );
+    const parsed = parseBody(attendanceCheckInSchema, await request.json());
+    return successResponse(
+      await checkInCandidate({
+        organizationId: context.organizationId,
+        actorUserId: context.session.user.id,
+        ...parsed,
+        requestId: id,
+      }),
+      id,
+    );
+  } catch (error) {
+    return errorResponse(error, id);
+  }
 }

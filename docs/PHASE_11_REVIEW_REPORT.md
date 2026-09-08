@@ -16,27 +16,27 @@ The implementation compiles and all existing automated checks pass, but source r
 
 ## Requirement-by-requirement assessment
 
-| Area | Status | Review result |
-|---|---|---|
-| Analytics metrics/KPIs | PARTIAL / DEFECTIVE | Recruitment reuse is generally coherent, but candidate no-shows, stage conversion, historical workforce values, leave balances, salary components, and temporal trends have material defects or incomplete definitions. |
-| Cross-domain aggregation | PARTIAL | All required enabled domains have an API path, but several domain calculations do not faithfully aggregate their persisted source. |
-| Date filtering | DEFECTIVE | UTC boundaries are hardcoded; several metrics use the wrong event date or ignore the selected period. |
-| Required filters/dimensions | PARTIAL | Date and department controls exist; `employeeId` is API-only, and accepted filters are silently ignored by several domains. |
-| Server-side aggregation | PARTIAL | Security filtering is server-side, but large datasets are loaded with unbounded `findMany` calls and grouped in application memory. |
-| Tables/charts | IMPLEMENTED TO SRS MINIMUM | Responsive tables/cards exist. The SRS does not explicitly require a chart library or a particular chart type. |
-| Drill-downs | PARTIAL / DEFECTIVE | Links exist, but hash-fragment links lose tenant context and drill-downs do not preserve active date/dimension filters. |
-| Exports | PARTIAL | CSV is authorized, tenant-scoped, filtered through the same service, and audited; incorrect source metrics are exported unchanged, and UI exposes export links before checking export permission. |
-| RBAC | DEFECTIVE | Resource permissions are checked, but manager team scope and recruiter assignment scope are not enforced in analytics queries. |
-| Tenant isolation | PARTIAL | Organization predicates and active membership checks are present and tested; some drill-down URLs omit the tenant query due to fragment handling. |
-| Audit logging | IMPLEMENTED WITH LOW GAP | Successful exports are audited. Denied export attempts are not recorded as failed outcomes. |
-| API contracts | PARTIAL | Versioned routes, validation, standard envelopes, and permissions exist; filter applicability is not domain-specific. |
-| Empty/loading/error states | IMPLEMENTED | Loading, permission/error, empty, and populated states exist. |
-| Performance/query efficiency | DEFECTIVE | No N+1 loop was found, but several full-table reads and in-memory groupings violate the intended scalable aggregate-query approach. |
-| PostgreSQL persistence | VERIFIED | Metrics use real Prisma/PostgreSQL records; fresh connectivity and persisted E2E passed. |
-| Security | PARTIAL / DEFECTIVE | Authentication and tenant predicates pass, but actor-specific manager/recruiter scope is absent. |
-| Unit/API coverage | INSUFFICIENT | Only two generic rate helpers and route mocks are directly tested; most required formulas and data semantics have no service-level tests. |
-| Persisted Playwright coverage | PARTIAL | One persisted test covers workforce, attendance, leave, export, basic RBAC, and tenant isolation; required HR/payroll/audit and affected edge cases are not covered. |
-| Full Phase 0–10 regression | VERIFIED | Fresh 12/12 Playwright suite passed. |
+| Area                          | Status                     | Review result                                                                                                                                                                                                           |
+| ----------------------------- | -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Analytics metrics/KPIs        | PARTIAL / DEFECTIVE        | Recruitment reuse is generally coherent, but candidate no-shows, stage conversion, historical workforce values, leave balances, salary components, and temporal trends have material defects or incomplete definitions. |
+| Cross-domain aggregation      | PARTIAL                    | All required enabled domains have an API path, but several domain calculations do not faithfully aggregate their persisted source.                                                                                      |
+| Date filtering                | DEFECTIVE                  | UTC boundaries are hardcoded; several metrics use the wrong event date or ignore the selected period.                                                                                                                   |
+| Required filters/dimensions   | PARTIAL                    | Date and department controls exist; `employeeId` is API-only, and accepted filters are silently ignored by several domains.                                                                                             |
+| Server-side aggregation       | PARTIAL                    | Security filtering is server-side, but large datasets are loaded with unbounded `findMany` calls and grouped in application memory.                                                                                     |
+| Tables/charts                 | IMPLEMENTED TO SRS MINIMUM | Responsive tables/cards exist. The SRS does not explicitly require a chart library or a particular chart type.                                                                                                          |
+| Drill-downs                   | PARTIAL / DEFECTIVE        | Links exist, but hash-fragment links lose tenant context and drill-downs do not preserve active date/dimension filters.                                                                                                 |
+| Exports                       | PARTIAL                    | CSV is authorized, tenant-scoped, filtered through the same service, and audited; incorrect source metrics are exported unchanged, and UI exposes export links before checking export permission.                       |
+| RBAC                          | DEFECTIVE                  | Resource permissions are checked, but manager team scope and recruiter assignment scope are not enforced in analytics queries.                                                                                          |
+| Tenant isolation              | PARTIAL                    | Organization predicates and active membership checks are present and tested; some drill-down URLs omit the tenant query due to fragment handling.                                                                       |
+| Audit logging                 | IMPLEMENTED WITH LOW GAP   | Successful exports are audited. Denied export attempts are not recorded as failed outcomes.                                                                                                                             |
+| API contracts                 | PARTIAL                    | Versioned routes, validation, standard envelopes, and permissions exist; filter applicability is not domain-specific.                                                                                                   |
+| Empty/loading/error states    | IMPLEMENTED                | Loading, permission/error, empty, and populated states exist.                                                                                                                                                           |
+| Performance/query efficiency  | DEFECTIVE                  | No N+1 loop was found, but several full-table reads and in-memory groupings violate the intended scalable aggregate-query approach.                                                                                     |
+| PostgreSQL persistence        | VERIFIED                   | Metrics use real Prisma/PostgreSQL records; fresh connectivity and persisted E2E passed.                                                                                                                                |
+| Security                      | PARTIAL / DEFECTIVE        | Authentication and tenant predicates pass, but actor-specific manager/recruiter scope is absent.                                                                                                                        |
+| Unit/API coverage             | INSUFFICIENT               | Only two generic rate helpers and route mocks are directly tested; most required formulas and data semantics have no service-level tests.                                                                               |
+| Persisted Playwright coverage | PARTIAL                    | One persisted test covers workforce, attendance, leave, export, basic RBAC, and tenant isolation; required HR/payroll/audit and affected edge cases are not covered.                                                    |
+| Full Phase 0–10 regression    | VERIFIED                   | Fresh 12/12 Playwright suite passed.                                                                                                                                                                                    |
 
 ## Findings
 
@@ -176,21 +176,21 @@ The implementation compiles and all existing automated checks pass, but source r
 
 All checks below were run fresh during this review on 2026-08-19.
 
-| Check | Result | Evidence |
-|---|---|---|
-| Lint | PASS | `npm run lint` exited 0 |
-| Typecheck | PASS | `npm run typecheck` exited 0 |
-| Unit/API tests | PASS | 24 files, 88 tests |
-| Full Playwright | PASS | 12/12 persisted/browser tests in approximately 4.5 minutes |
-| Production build | PASS WITH WARNING | 84 pages generated; BullMQ optional Valkey warning |
-| Prisma validation | PASS | Schema valid |
-| Migration status | PASS | 15 migrations; database up to date |
-| Migration diff | PASS | No difference detected |
-| Health | PASS | `/api/health` HTTP 200 |
-| Readiness | PASS | `/api/ready` HTTP 200; database OK; Redis OK |
-| PostgreSQL verification | PASS | Connected to `hr_portal` at localhost:5433; live organization and audit counts read |
-| Redis verification | PASS | Readiness reports Redis OK |
-| SRS integrity | PASS | Frozen SRS was not modified by this review |
+| Check                   | Result            | Evidence                                                                            |
+| ----------------------- | ----------------- | ----------------------------------------------------------------------------------- |
+| Lint                    | PASS              | `npm run lint` exited 0                                                             |
+| Typecheck               | PASS              | `npm run typecheck` exited 0                                                        |
+| Unit/API tests          | PASS              | 24 files, 88 tests                                                                  |
+| Full Playwright         | PASS              | 12/12 persisted/browser tests in approximately 4.5 minutes                          |
+| Production build        | PASS WITH WARNING | 84 pages generated; BullMQ optional Valkey warning                                  |
+| Prisma validation       | PASS              | Schema valid                                                                        |
+| Migration status        | PASS              | 15 migrations; database up to date                                                  |
+| Migration diff          | PASS              | No difference detected                                                              |
+| Health                  | PASS              | `/api/health` HTTP 200                                                              |
+| Readiness               | PASS              | `/api/ready` HTTP 200; database OK; Redis OK                                        |
+| PostgreSQL verification | PASS              | Connected to `hr_portal` at localhost:5433; live organization and audit counts read |
+| Redis verification      | PASS              | Readiness reports Redis OK                                                          |
+| SRS integrity           | PASS              | Frozen SRS was not modified by this review                                          |
 
 Fresh test warnings also included Next.js development cross-origin guidance, `NO_COLOR` notices, and one development-process listener warning. They did not fail tests and are not Phase 11 application blockers.
 

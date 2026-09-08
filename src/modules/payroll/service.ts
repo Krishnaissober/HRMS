@@ -490,7 +490,13 @@ export async function payExpense(input: {
     return updated;
   });
 }
-export async function receiptDownload(input: { organizationId: string; actorUserId: string; id: string; requestId?: string; employeeEmail?: string }) {
+export async function receiptDownload(input: {
+  organizationId: string;
+  actorUserId: string;
+  id: string;
+  requestId?: string;
+  employeeEmail?: string;
+}) {
   const row = await db.expense.findFirst({
     where: { id: input.id, organizationId: input.organizationId },
     include: { employee: { select: { email: true } } },
@@ -498,7 +504,16 @@ export async function receiptDownload(input: { organizationId: string; actorUser
   if (!row) throw notFoundError();
   if (input.employeeEmail && row.employee.email.toLowerCase() !== input.employeeEmail.toLowerCase())
     throw forbiddenError();
-  await db.$transaction((tx) => writeAuditEvent(tx, { organizationId: input.organizationId, actorUserId: input.actorUserId, action: "EXPENSE_RECEIPT_DOWNLOADED", entityType: "Expense", entityId: row.id, requestId: input.requestId }));
+  await db.$transaction((tx) =>
+    writeAuditEvent(tx, {
+      organizationId: input.organizationId,
+      actorUserId: input.actorUserId,
+      action: "EXPENSE_RECEIPT_DOWNLOADED",
+      entityType: "Expense",
+      entityId: row.id,
+      requestId: input.requestId,
+    }),
+  );
   return createDownloadUrl(row.receiptObjectKey);
 }
 export async function payrollReport(organizationId: string) {

@@ -6,14 +6,14 @@ Remediated only the six findings identified after the Phase 12 review. `docs/SRS
 
 ## Finding results
 
-| Finding | Result | Notes |
-|---|---|---|
-| Incomplete UI/API workflows | PARTIALLY RESOLVED | Added exit-case retrieval and wired clearance, interview, settlement, asset-return, and completion actions into `/hr/offboarding`; employee/manager initiation and full document controls still require the existing authenticated workflow fixture for end-to-end confirmation. |
-| Missing persisted Phase 12 E2E coverage | RESOLVED | A dedicated authenticated PostgreSQL-backed Phase 12 workflow now passes, including positive persistence and required negative security cases. |
-| Insufficient settlement guards | RESOLVED at service level | Settlement now permits only `PENDING → READY → COMPLETED`, uses serializable transactions, and maps concurrent Prisma conflicts to 409. |
-| Asset ownership authorization gaps | RESOLVED | Asset return now requires both organization and parent employee ID to match. |
-| Incomplete clearance-scope enforcement | PARTIALLY RESOLVED | Active organization membership is required for assignment and assigned users are enforced on completion; department-specific role mapping and manager team policy remain environment/project-policy dependent. |
-| Missing exit notifications/reporting | PARTIALLY RESOLVED | Clearance assignment/update notifications are persisted in-app and `/api/v1/reports/exit` provides tenant-scoped compliance counts protected by `audit.read`; email delivery and a complete report UI remain external/fixture-dependent. |
+| Finding                                 | Result                    | Notes                                                                                                                                                                                                                                                                            |
+| --------------------------------------- | ------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Incomplete UI/API workflows             | PARTIALLY RESOLVED        | Added exit-case retrieval and wired clearance, interview, settlement, asset-return, and completion actions into `/hr/offboarding`; employee/manager initiation and full document controls still require the existing authenticated workflow fixture for end-to-end confirmation. |
+| Missing persisted Phase 12 E2E coverage | RESOLVED                  | A dedicated authenticated PostgreSQL-backed Phase 12 workflow now passes, including positive persistence and required negative security cases.                                                                                                                                   |
+| Insufficient settlement guards          | RESOLVED at service level | Settlement now permits only `PENDING → READY → COMPLETED`, uses serializable transactions, and maps concurrent Prisma conflicts to 409.                                                                                                                                          |
+| Asset ownership authorization gaps      | RESOLVED                  | Asset return now requires both organization and parent employee ID to match.                                                                                                                                                                                                     |
+| Incomplete clearance-scope enforcement  | PARTIALLY RESOLVED        | Active organization membership is required for assignment and assigned users are enforced on completion; department-specific role mapping and manager team policy remain environment/project-policy dependent.                                                                   |
+| Missing exit notifications/reporting    | PARTIALLY RESOLVED        | Clearance assignment/update notifications are persisted in-app and `/api/v1/reports/exit` provides tenant-scoped compliance counts protected by `audit.read`; email delivery and a complete report UI remain external/fixture-dependent.                                         |
 
 ## Changes made
 
@@ -28,19 +28,19 @@ Remediated only the six findings identified after the Phase 12 review. `docs/SRS
 
 ## Verification
 
-| Check | Result |
-|---|---|
-| Typecheck | PASS |
-| Lint | PASS — no warnings after recovery cleanup |
-| Focused Phase 12 API tests | PASS — 3 tests |
-| Production build | PASS with existing optional BullMQ Valkey warning |
-| Prisma schema validation | PASS |
-| Prisma migration status | PASS before remediation (no schema change in remediation) |
-| Health/readiness | Previously PASS; runtime endpoint remains available |
-| Prisma client regeneration | RESOLVED — PASS |
-| Persisted Phase 12 Playwright workflow | RESOLVED — PASS |
-| Redis/BullMQ | ENVIRONMENT BLOCKED where unavailable |
-| S3 | ENVIRONMENT BLOCKED where unavailable |
+| Check                                  | Result                                                    |
+| -------------------------------------- | --------------------------------------------------------- |
+| Typecheck                              | PASS                                                      |
+| Lint                                   | PASS — no warnings after recovery cleanup                 |
+| Focused Phase 12 API tests             | PASS — 3 tests                                            |
+| Production build                       | PASS with existing optional BullMQ Valkey warning         |
+| Prisma schema validation               | PASS                                                      |
+| Prisma migration status                | PASS before remediation (no schema change in remediation) |
+| Health/readiness                       | Previously PASS; runtime endpoint remains available       |
+| Prisma client regeneration             | RESOLVED — PASS                                           |
+| Persisted Phase 12 Playwright workflow | RESOLVED — PASS                                           |
+| Redis/BullMQ                           | ENVIRONMENT BLOCKED where unavailable                     |
+| S3                                     | ENVIRONMENT BLOCKED where unavailable                     |
 
 ## Final validation recovery
 

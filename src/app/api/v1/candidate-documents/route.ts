@@ -10,12 +10,19 @@ export async function GET(request: NextRequest) {
   const id = requestId(request);
   try {
     const context = await getAuthenticatedContext(request);
-    await requirePermission(context.session.user.id, context.organizationId, CANDIDATE_PERMISSIONS.read);
+    await requirePermission(
+      context.session.user.id,
+      context.organizationId,
+      CANDIDATE_PERMISSIONS.read,
+    );
     const items = await db.candidateDocument.findMany({
       where: { organizationId: context.organizationId },
-      include: { candidate: { select: { id: true, referenceNo: true, firstName: true, lastName: true, email: true } } },
+      include: {
+        candidate: {
+          select: { id: true, referenceNo: true, firstName: true, lastName: true, email: true },
+        },
+      },
       orderBy: { createdAt: "desc" },
-      take: 100,
     });
     return successResponse({ items, total: items.length }, id);
   } catch (error) {

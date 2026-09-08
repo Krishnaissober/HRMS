@@ -22,13 +22,35 @@ function average(values: number[]) {
 function zonedInstant(date: string, endExclusive: boolean, timezone: string) {
   const [year, month, day] = date.split("-").map(Number);
   const target = Date.UTC(year, month - 1, day + (endExclusive ? 1 : 0));
-  const parts = new Intl.DateTimeFormat("en-US", { timeZone: timezone, year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit", hourCycle: "h23" }).formatToParts(new Date(target));
-  const values = Object.fromEntries(parts.filter((part) => part.type !== "literal").map((part) => [part.type, Number(part.value)]));
-  const represented = Date.UTC(values.year, values.month - 1, values.day, values.hour, values.minute, values.second);
+  const parts = new Intl.DateTimeFormat("en-US", {
+    timeZone: timezone,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hourCycle: "h23",
+  }).formatToParts(new Date(target));
+  const values = Object.fromEntries(
+    parts.filter((part) => part.type !== "literal").map((part) => [part.type, Number(part.value)]),
+  );
+  const represented = Date.UTC(
+    values.year,
+    values.month - 1,
+    values.day,
+    values.hour,
+    values.minute,
+    values.second,
+  );
   return new Date(target - (represented - target));
 }
 
-export function analyticsDateRange(query: Pick<AnalyticsQuery, "from" | "to">, timezone: string, fallbackToNow = false): { gte?: Date; lt?: Date; lte?: Date } {
+export function analyticsDateRange(
+  query: Pick<AnalyticsQuery, "from" | "to">,
+  timezone: string,
+  fallbackToNow = false,
+): { gte?: Date; lt?: Date; lte?: Date } {
   new Intl.DateTimeFormat("en-US", { timeZone: timezone }).format();
   return {
     ...(query.from ? { gte: zonedInstant(query.from, false, timezone) } : {}),
@@ -46,8 +68,15 @@ function dateFilter(query: AnalyticsQuery, field: string, timezone: string) {
 }
 
 function dateKey(date: Date, timezone: string) {
-  const parts = new Intl.DateTimeFormat("en-CA", { timeZone: timezone, year: "numeric", month: "2-digit", day: "2-digit" }).formatToParts(date);
-  const values = Object.fromEntries(parts.filter((part) => part.type !== "literal").map((part) => [part.type, part.value]));
+  const parts = new Intl.DateTimeFormat("en-CA", {
+    timeZone: timezone,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).formatToParts(date);
+  const values = Object.fromEntries(
+    parts.filter((part) => part.type !== "literal").map((part) => [part.type, part.value]),
+  );
   return `${values.year}-${values.month}-${values.day}`;
 }
 
@@ -57,12 +86,23 @@ export function temporalGroups(rows: Array<{ date: Date; status: string }>, time
     const key = `${dateKey(row.date, timezone)}\u0000${row.status}`;
     grouped.set(key, (grouped.get(key) ?? 0) + 1);
   }
-  return [...grouped.entries()].map(([key, count]) => { const [date, status] = key.split("\u0000"); return { date, status, count }; }).sort((a, b) => a.date.localeCompare(b.date) || a.status.localeCompare(b.status));
+  return [...grouped.entries()]
+    .map(([key, count]) => {
+      const [date, status] = key.split("\u0000");
+      return { date, status, count };
+    })
+    .sort((a, b) => a.date.localeCompare(b.date) || a.status.localeCompare(b.status));
 }
 
-export function employeeStatusAtEnd(employee: { status: string; history: Array<{ fromValue: string | null; effectiveDate: Date }> }, endExclusive?: Date) {
+export function employeeStatusAtEnd(
+  employee: { status: string; history: Array<{ fromValue: string | null; effectiveDate: Date }> },
+  endExclusive?: Date,
+) {
   if (!endExclusive) return employee.status;
-  return employee.history.find((event) => event.effectiveDate >= endExclusive)?.fromValue ?? employee.status;
+  return (
+    employee.history.find((event) => event.effectiveDate >= endExclusive)?.fromValue ??
+    employee.status
+  );
 }
 
 export function aggregateSalaryComponents(rows: Array<{ components: unknown }>) {
@@ -72,7 +112,8 @@ export function aggregateSalaryComponents(rows: Array<{ components: unknown }>) 
       for (const component of result.components) {
         if (component && typeof component === "object" && !Array.isArray(component)) {
           const value = component as Record<string, unknown>;
-          if (typeof value.name === "string" && typeof value.amount === "number") components.set(value.name, (components.get(value.name) ?? 0) + value.amount);
+          if (typeof value.name === "string" && typeof value.amount === "number")
+            components.set(value.name, (components.get(value.name) ?? 0) + value.amount);
         }
       }
     }
@@ -80,23 +121,46 @@ export function aggregateSalaryComponents(rows: Array<{ components: unknown }>) 
   return [...components.entries()].map(([label, total]) => ({ label, total }));
 }
 
-export async function resolveAnalyticsScope(organizationId: string, actor?: AnalyticsActor): Promise<AnalyticsScope> {
+export async function resolveAnalyticsScope(
+  organizationId: string,
+  actor?: AnalyticsActor,
+): Promise<AnalyticsScope> {
   if (!actor) return {};
-  const membership = await db.membership.findUnique({ where: { organizationId_userId: { organizationId, userId: actor.userId } }, include: { roles: { include: { role: true } } } });
-  const roleKeys = membership?.roles.flatMap(({ role }) => [role.slug.toLowerCase(), role.name.toLowerCase()]) ?? [];
-  const isHr = roleKeys.some((value) => value === "hr-administrator" || value === "hr-admin" || value === "hr-manager" || value === "local-admin" || value.includes("e2e hr"));
+  const membership = await db.membership.findUnique({
+    where: { organizationId_userId: { organizationId, userId: actor.userId } },
+    include: { roles: { include: { role: true } } },
+  });
+  const roleKeys =
+    membership?.roles.flatMap(({ role }) => [role.slug.toLowerCase(), role.name.toLowerCase()]) ??
+    [];
+  const isHr = roleKeys.some(
+    (value) =>
+      value === "hr-administrator" ||
+      value === "hr-admin" ||
+      value === "hr-manager" ||
+      value === "local-admin" ||
+      value.includes("e2e hr"),
+  );
   if (!isHr && roleKeys.some((value) => value === "manager")) {
-    const manager = await db.employee.findFirst({ where: { organizationId, email: { equals: actor.email } }, select: { id: true } });
+    const manager = await db.employee.findFirst({
+      where: { organizationId, email: { equals: actor.email } },
+      select: { id: true },
+    });
     if (!manager) return { employeeIds: [] };
-    const reports = await db.employee.findMany({ where: { organizationId, managerEmployeeId: manager.id }, select: { id: true } });
+    const reports = await db.employee.findMany({
+      where: { organizationId, managerEmployeeId: manager.id },
+      select: { id: true },
+    });
     return { employeeIds: reports.map((item) => item.id) };
   }
-  if (!isHr && roleKeys.some((value) => value === "recruiter")) return { recruiterRestricted: true };
+  if (!isHr && roleKeys.some((value) => value === "recruiter"))
+    return { recruiterRestricted: true };
   return {};
 }
 
 export function scopedEmployeeWhere(query: AnalyticsQuery, scope: AnalyticsScope) {
-  if (query.employeeId && scope.employeeIds && !scope.employeeIds.includes(query.employeeId)) throw forbiddenError();
+  if (query.employeeId && scope.employeeIds && !scope.employeeIds.includes(query.employeeId))
+    throw forbiddenError();
   if (query.employeeId) return { id: query.employeeId };
   if (scope.employeeIds) return { id: { in: scope.employeeIds } };
   return {};
@@ -140,9 +204,11 @@ async function recruitment(organizationId: string, query: AnalyticsQuery, scope:
   return {
     domain: "recruitment",
     ...data,
-    candidateConversionRateByStage: Object.entries(data.pipelineCounts).map(
-      ([stage, count]) => ({ stage, count, rate: percent(count, data.applications) }),
-    ),
+    candidateConversionRateByStage: Object.entries(data.pipelineCounts).map(([stage, count]) => ({
+      stage,
+      count,
+      rate: percent(count, data.applications),
+    })),
     drilldowns: {
       applications: "/hr/candidates",
       interviews: "/hr/interviews",
@@ -152,7 +218,12 @@ async function recruitment(organizationId: string, query: AnalyticsQuery, scope:
   };
 }
 
-async function workforce(organizationId: string, query: AnalyticsQuery, timezone: string, scope: AnalyticsScope) {
+async function workforce(
+  organizationId: string,
+  query: AnalyticsQuery,
+  timezone: string,
+  scope: AnalyticsScope,
+) {
   const employeeScope = scopedEmployeeWhere(query, scope);
   const where = {
     organizationId,
@@ -170,24 +241,42 @@ async function workforce(organizationId: string, query: AnalyticsQuery, timezone
       joiningDate: true,
       confirmationDate: true,
       status: true,
-      history: { where: { eventType: "STATUS_CHANGED" }, select: { fromValue: true, toValue: true, effectiveDate: true }, orderBy: { effectiveDate: "asc" } },
+      history: {
+        where: { eventType: "STATUS_CHANGED" },
+        select: { fromValue: true, toValue: true, effectiveDate: true },
+        orderBy: { effectiveDate: "asc" },
+      },
     },
   });
   const period = analyticsDateRange(query, timezone);
   const inPeriod = (date: Date | null) =>
     Boolean(date && (!period.gte || date >= period.gte) && (!period.lt || date < period.lt));
   const joiners = employees.filter((employee) => inPeriod(employee.joiningDate)).length;
-  const leavers = employees.filter((employee) => employee.history.some((event) => inPeriod(event.effectiveDate) && inactiveEmployeeStatuses.includes(event.toValue ?? "")) || (!query.from && !query.to && inactiveEmployeeStatuses.includes(employee.status))).length;
+  const leavers = employees.filter(
+    (employee) =>
+      employee.history.some(
+        (event) =>
+          inPeriod(event.effectiveDate) && inactiveEmployeeStatuses.includes(event.toValue ?? ""),
+      ) ||
+      (!query.from && !query.to && inactiveEmployeeStatuses.includes(employee.status)),
+  ).length;
   const confirmed = employees.filter(
     (employee) => employee.status === "CONFIRMED" || Boolean(employee.confirmationDate),
   ).length;
   const tenureDays = employees.map((employee) =>
-    Math.max(0, (((period.lt ? new Date(period.lt.getTime() - 1) : new Date())).getTime() - employee.joiningDate.getTime()) / DAY),
+    Math.max(
+      0,
+      ((period.lt ? new Date(period.lt.getTime() - 1) : new Date()).getTime() -
+        employee.joiningDate.getTime()) /
+        DAY,
+    ),
   );
   return {
     domain: "workforce",
     filters: query,
-    headcount: employees.filter((employee) => !inactiveEmployeeStatuses.includes(employeeStatusAtEnd(employee, period.lt))).length,
+    headcount: employees.filter(
+      (employee) => !inactiveEmployeeStatuses.includes(employeeStatusAtEnd(employee, period.lt)),
+    ).length,
     totalEmployeeRecords: employees.length,
     departmentDistribution: countGroups(employees, "department"),
     locationDistribution: countGroups(employees, "location"),
@@ -206,7 +295,12 @@ async function workforce(organizationId: string, query: AnalyticsQuery, timezone
   };
 }
 
-async function attendance(organizationId: string, query: AnalyticsQuery, timezone: string, scope: AnalyticsScope) {
+async function attendance(
+  organizationId: string,
+  query: AnalyticsQuery,
+  timezone: string,
+  scope: AnalyticsScope,
+) {
   const employeeScope = scopedEmployeeWhere(query, scope);
   const employeeWhere = {
     organizationId,
@@ -214,10 +308,18 @@ async function attendance(organizationId: string, query: AnalyticsQuery, timezon
     ...(query.department ? { employee: { department: query.department } } : {}),
     ...dateFilter(query, "workDate", timezone),
   };
-  if (scope.employeeIds && !query.employeeId) Object.assign(employeeWhere, { employeeId: { in: scope.employeeIds } });
+  if (scope.employeeIds && !query.employeeId)
+    Object.assign(employeeWhere, { employeeId: { in: scope.employeeIds } });
   const candidateVisitWhere = { organizationId, ...dateFilter(query, "visitDate", timezone) };
   const interviewWhere = { organizationId, ...dateFilter(query, "scheduledStart", timezone) };
-  const [records, corrections, interviewAttendance, candidateNoShows, checkInVolumes, visitHistoryCount] = await db.$transaction([
+  const [
+    records,
+    corrections,
+    interviewAttendance,
+    candidateNoShows,
+    checkInVolumes,
+    visitHistoryCount,
+  ] = await db.$transaction([
     db.attendanceRecord.findMany({
       where: employeeWhere,
       select: {
@@ -235,7 +337,9 @@ async function attendance(organizationId: string, query: AnalyticsQuery, timezon
         ...dateFilter(query, "createdAt", timezone),
       },
     }),
-    db.candidateVisit.count({ where: { ...candidateVisitWhere, interviewId: { not: null }, checkedInAt: { not: null } } }),
+    db.candidateVisit.count({
+      where: { ...candidateVisitWhere, interviewId: { not: null }, checkedInAt: { not: null } },
+    }),
     db.interview.count({ where: { ...interviewWhere, status: "NO_SHOW" } }),
     db.candidateVisit.count({ where: { ...candidateVisitWhere, checkedInAt: { not: null } } }),
     db.candidateVisit.count({ where: candidateVisitWhere }),
@@ -249,7 +353,10 @@ async function attendance(organizationId: string, query: AnalyticsQuery, timezon
     filters: query,
     employee: {
       totalRecords: records.length,
-      statusTrends: temporalGroups(records.map((row) => ({ date: row.workDate, status: row.status })), timezone),
+      statusTrends: temporalGroups(
+        records.map((row) => ({ date: row.workDate, status: row.status })),
+        timezone,
+      ),
       departmentComparisons: countGroups(
         records.map((row) => ({ department: row.employee.department })),
         "department",
@@ -274,9 +381,18 @@ async function attendance(organizationId: string, query: AnalyticsQuery, timezon
   };
 }
 
-async function leave(organizationId: string, query: AnalyticsQuery, timezone: string, scope: AnalyticsScope) {
+async function leave(
+  organizationId: string,
+  query: AnalyticsQuery,
+  timezone: string,
+  scope: AnalyticsScope,
+) {
   const employeeScope = scopedEmployeeWhere(query, scope);
-  const requestEmployeeWhere = employeeScope.id ? { employeeId: employeeScope.id } : scope.employeeIds ? { employeeId: { in: scope.employeeIds } } : {};
+  const requestEmployeeWhere = employeeScope.id
+    ? { employeeId: employeeScope.id }
+    : scope.employeeIds
+      ? { employeeId: { in: scope.employeeIds } }
+      : {};
   const selectedRange = analyticsDateRange(query, timezone);
   const requests = await db.leaveRequest.findMany({
     where: {
@@ -292,8 +408,19 @@ async function leave(organizationId: string, query: AnalyticsQuery, timezone: st
     },
     select: { status: true, durationDays: true, startDate: true, createdAt: true, decidedAt: true },
   });
-  const approvalRequests = await db.leaveRequest.findMany({ where: { organizationId, ...requestEmployeeWhere, decidedAt: analyticsDateRange(query, timezone) }, select: { createdAt: true, decidedAt: true } });
-  const balanceYear = query.to ? Number(query.to.slice(0, 4)) : query.from ? Number(query.from.slice(0, 4)) : undefined;
+  const approvalRequests = await db.leaveRequest.findMany({
+    where: {
+      organizationId,
+      ...requestEmployeeWhere,
+      decidedAt: analyticsDateRange(query, timezone),
+    },
+    select: { createdAt: true, decidedAt: true },
+  });
+  const balanceYear = query.to
+    ? Number(query.to.slice(0, 4))
+    : query.from
+      ? Number(query.from.slice(0, 4))
+      : undefined;
   const balances = await db.leaveBalance.findMany({
     where: {
       organizationId,
@@ -314,10 +441,18 @@ async function leave(organizationId: string, query: AnalyticsQuery, timezone: st
   return {
     domain: "leave",
     filters: query,
-    requestTrends: temporalGroups(requests.map((request) => ({ date: request.startDate, status: request.status })), timezone),
+    requestTrends: temporalGroups(
+      requests.map((request) => ({ date: request.startDate, status: request.status })),
+      timezone,
+    ),
     utilizationDays: used,
     utilizationRate: percent(used, allocated + carried),
-    balances: { allocatedDays: allocated, carriedDays: carried, usedDays: used, availableDays: allocated + carried - used },
+    balances: {
+      allocatedDays: allocated,
+      carriedDays: carried,
+      usedDays: used,
+      availableDays: allocated + carried - used,
+    },
     approvalCycleDays: average(approvalDays),
     drilldowns: { requests: "/hr/leave/manage", balances: "/hr/leave" },
   };
@@ -353,7 +488,14 @@ async function hr(organizationId: string, query: AnalyticsQuery, timezone: strin
   ]);
   const completedInstances = instances.filter((item) => item.status === "COMPLETED");
   const readinessDays = completedInstances.flatMap((item) =>
-    item.completedAt ? [Math.max(0, (item.completedAt.getTime() - (item.startedAt ?? item.completedAt).getTime()) / DAY)] : [],
+    item.completedAt
+      ? [
+          Math.max(
+            0,
+            (item.completedAt.getTime() - (item.startedAt ?? item.completedAt).getTime()) / DAY,
+          ),
+        ]
+      : [],
   );
   const completedTasks = tasks.filter((task) => task.status === "COMPLETED").length;
   const overdueTasks = tasks.filter(
@@ -361,19 +503,27 @@ async function hr(organizationId: string, query: AnalyticsQuery, timezone: strin
   ).length;
   const completedDocuments = documents.filter((doc) => doc.status === "VERIFIED").length;
   const resolutionDays = workflowTasks.flatMap((task) =>
-    task.completedAt ? [Math.max(0, (task.completedAt.getTime() - task.createdAt.getTime()) / DAY)] : [],
+    task.completedAt
+      ? [Math.max(0, (task.completedAt.getTime() - task.createdAt.getTime()) / DAY)]
+      : [],
   );
   return {
     domain: "hr",
     filters: query,
     onboarding: {
       instanceCount: instances.length,
-      completionRate: calculateCompletion({ total: instances.length, completed: completedInstances.length }),
+      completionRate: calculateCompletion({
+        total: instances.length,
+        completed: completedInstances.length,
+      }),
       averageCompletionDays: average(readinessDays),
       timeToReadinessDays: average(readinessDays),
       taskCompletionRate: calculateCompletion({ total: tasks.length, completed: completedTasks }),
       overdueTasks,
-      documentCompletionRate: calculateCompletion({ total: documents.length, completed: completedDocuments }),
+      documentCompletionRate: calculateCompletion({
+        total: documents.length,
+        completed: completedDocuments,
+      }),
     },
     hrRequests: {
       total: workflowTasks.length,
@@ -382,9 +532,14 @@ async function hr(organizationId: string, query: AnalyticsQuery, timezone: strin
     },
     documentExpiryRiskCount: expiryRiskCount,
     definitions: {
-      documentExpiryRisk: "Active documents expiring within the selected date range, or by now when no end date is selected",
+      documentExpiryRisk:
+        "Active documents expiring within the selected date range, or by now when no end date is selected",
     },
-    drilldowns: { onboarding: "/hr/onboarding", documents: "/hr/documents", tasks: "/hr/notifications" },
+    drilldowns: {
+      onboarding: "/hr/onboarding",
+      documents: "/hr/documents",
+      tasks: "/hr/notifications",
+    },
   };
 }
 
@@ -392,26 +547,70 @@ async function payroll(organizationId: string, query: AnalyticsQuery, timezone: 
   const [runs, results, expenses] = await db.$transaction([
     db.payrollRun.findMany({
       where: { organizationId, ...dateFilter(query, "periodStart", timezone) },
-      select: { status: true, currency: true, grossTotal: true, deductionTotal: true, netTotal: true, createdAt: true, approvedAt: true },
+      select: {
+        status: true,
+        currency: true,
+        grossTotal: true,
+        deductionTotal: true,
+        netTotal: true,
+        createdAt: true,
+        approvedAt: true,
+      },
     }),
     db.payrollResult.findMany({
-      where: { organizationId, ...(query.employeeId ? { employeeId: query.employeeId } : {}), payrollRun: dateFilter(query, "periodStart", timezone) },
-      select: { currency: true, basicSalary: true, grossAmount: true, deductionAmount: true, netAmount: true, overtimeMinutes: true, components: true },
+      where: {
+        organizationId,
+        ...(query.employeeId ? { employeeId: query.employeeId } : {}),
+        payrollRun: dateFilter(query, "periodStart", timezone),
+      },
+      select: {
+        currency: true,
+        basicSalary: true,
+        grossAmount: true,
+        deductionAmount: true,
+        netAmount: true,
+        overtimeMinutes: true,
+        components: true,
+      },
     }),
     db.expense.findMany({
-      where: { organizationId, ...(query.employeeId ? { employeeId: query.employeeId } : {}), ...dateFilter(query, "expenseDate", timezone) },
-      select: { amount: true, currency: true, category: true, approvalStatus: true, createdAt: true, decidedAt: true },
+      where: {
+        organizationId,
+        ...(query.employeeId ? { employeeId: query.employeeId } : {}),
+        ...dateFilter(query, "expenseDate", timezone),
+      },
+      select: {
+        amount: true,
+        currency: true,
+        category: true,
+        approvalStatus: true,
+        createdAt: true,
+        decidedAt: true,
+      },
     }),
   ]);
-  const approvalDays = expenses.flatMap((item) => item.decidedAt ? [Math.max(0, (item.decidedAt.getTime() - item.createdAt.getTime()) / DAY)] : []);
+  const approvalDays = expenses.flatMap((item) =>
+    item.decidedAt
+      ? [Math.max(0, (item.decidedAt.getTime() - item.createdAt.getTime()) / DAY)]
+      : [],
+  );
   const components = aggregateSalaryComponents(results);
   return {
     domain: "payroll",
     filters: query,
-    payrollTotals: runs.map((run) => ({ currency: run.currency, gross: Number(run.grossTotal), deductions: Number(run.deductionTotal), net: Number(run.netTotal), status: run.status })),
+    payrollTotals: runs.map((run) => ({
+      currency: run.currency,
+      gross: Number(run.grossTotal),
+      deductions: Number(run.deductionTotal),
+      net: Number(run.netTotal),
+      status: run.status,
+    })),
     salaryComponents: components,
     overtimeMinutes: sumNumbers(results.map((result) => result.overtimeMinutes)),
-    expenseTotals: expenses.reduce<Record<string, number>>((totals, item) => { totals[item.currency] = (totals[item.currency] ?? 0) + Number(item.amount); return totals; }, {}),
+    expenseTotals: expenses.reduce<Record<string, number>>((totals, item) => {
+      totals[item.currency] = (totals[item.currency] ?? 0) + Number(item.amount);
+      return totals;
+    }, {}),
     expensesByCategory: countGroups(expenses, "category"),
     expenseApprovalCycleDays: average(approvalDays),
     drilldowns: { payroll: "/hr/payroll", expenses: "/hr/payroll#expenses" },
@@ -436,29 +635,52 @@ async function audit(organizationId: string, query: AnalyticsQuery, timezone: st
     domain: "audit",
     filters: query,
     totalEvents: rows.length,
-    eventCategories: countGroups(rows.map((row) => ({ category: category(row.action) })), "category"),
+    eventCategories: countGroups(
+      rows.map((row) => ({ category: category(row.action) })),
+      "category",
+    ),
     outcomes: countGroups(rows, "outcome"),
     drilldowns: { audit: "/hr/reports?view=audit" },
   };
 }
 
-export async function analyticsForDomain(domain: AnalyticsDomain, organizationId: string, query: AnalyticsQuery, actor?: AnalyticsActor) {
-  const [organization, scope] = await Promise.all([db.organization.findUniqueOrThrow({ where: { id: organizationId }, select: { timezone: true } }), resolveAnalyticsScope(organizationId, actor)]);
+export async function analyticsForDomain(
+  domain: AnalyticsDomain,
+  organizationId: string,
+  query: AnalyticsQuery,
+  actor?: AnalyticsActor,
+) {
+  const [organization, scope] = await Promise.all([
+    db.organization.findUniqueOrThrow({
+      where: { id: organizationId },
+      select: { timezone: true },
+    }),
+    resolveAnalyticsScope(organizationId, actor),
+  ]);
   const timezone = organization.timezone;
   switch (domain) {
-    case "recruitment": return recruitment(organizationId, query, scope);
-    case "workforce": return workforce(organizationId, query, timezone, scope);
-    case "attendance": return attendance(organizationId, query, timezone, scope);
-    case "leave": return leave(organizationId, query, timezone, scope);
-    case "hr": return hr(organizationId, query, timezone);
-    case "payroll": return payroll(organizationId, query, timezone);
-    case "audit": return audit(organizationId, query, timezone);
+    case "recruitment":
+      return recruitment(organizationId, query, scope);
+    case "workforce":
+      return workforce(organizationId, query, timezone, scope);
+    case "attendance":
+      return attendance(organizationId, query, timezone, scope);
+    case "leave":
+      return leave(organizationId, query, timezone, scope);
+    case "hr":
+      return hr(organizationId, query, timezone);
+    case "payroll":
+      return payroll(organizationId, query, timezone);
+    case "audit":
+      return audit(organizationId, query, timezone);
   }
 }
 
 function scalarRows(value: unknown, prefix = ""): Array<[string, string]> {
-  if (value == null || typeof value !== "object") return [[prefix, value == null ? "" : String(value)]];
-  if (Array.isArray(value)) return value.flatMap((item, index) => scalarRows(item, `${prefix}[${index}]`));
+  if (value == null || typeof value !== "object")
+    return [[prefix, value == null ? "" : String(value)]];
+  if (Array.isArray(value))
+    return value.flatMap((item, index) => scalarRows(item, `${prefix}[${index}]`));
   return Object.entries(value as Record<string, unknown>).flatMap(([key, child]) => {
     const path = prefix ? `${prefix}.${key}` : key;
     return scalarRows(child, path);
@@ -467,5 +689,8 @@ function scalarRows(value: unknown, prefix = ""): Array<[string, string]> {
 
 export function analyticsCsv(data: unknown) {
   const escape = (value: string) => `"${value.replaceAll('"', '""')}"`;
-  return ["metric,value", ...scalarRows(data).map(([key, value]) => `${escape(key)},${escape(value)}`)].join("\r\n");
+  return [
+    "metric,value",
+    ...scalarRows(data).map(([key, value]) => `${escape(key)},${escape(value)}`),
+  ].join("\r\n");
 }

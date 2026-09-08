@@ -24,27 +24,20 @@ const Breadcrumb = React.forwardRef<HTMLElement, BreadcrumbProps>(
         {children}
       </nav>
     ) : (
-      <ol
-        className={cn("flex flex-wrap items-center gap-1.5 text-sm", className)}
-        {...props}
-      >
+      <ol className={cn("flex flex-wrap items-center gap-1.5 text-sm", className)} {...props}>
         {children}
       </ol>
     );
-  }
+  },
 );
 Breadcrumb.displayName = "Breadcrumb";
 
 const BreadcrumbList = React.forwardRef<HTMLOListElement, React.HTMLAttributes<HTMLOListElement>>(
   ({ className, children, ...props }, ref) => (
-    <ol
-      ref={ref}
-      className={cn("flex flex-wrap items-center gap-1.5", className)}
-      {...props}
-    >
+    <ol ref={ref} className={cn("flex flex-wrap items-center gap-1.5", className)} {...props}>
       {children}
     </ol>
-  )
+  ),
 );
 BreadcrumbList.displayName = "BreadcrumbList";
 
@@ -53,7 +46,7 @@ const BreadcrumbItem = React.forwardRef<HTMLLIElement, React.HTMLAttributes<HTML
     <li ref={ref} className={cn("", className)} {...props}>
       {children}
     </li>
-  )
+  ),
 );
 BreadcrumbItem.displayName = "BreadcrumbItem";
 
@@ -64,8 +57,17 @@ interface BreadcrumbLinkProps extends React.AnchorHTMLAttributes<HTMLAnchorEleme
 const BreadcrumbLink = React.forwardRef<HTMLAnchorElement, BreadcrumbLinkProps>(
   ({ className, asChild, children, href, ...props }, ref) => {
     if (asChild) return <>{children}</>;
-    return <a ref={ref} href={href} className={cn("transition-colors hover:text-foreground", className)} {...props}>{children}</a>;
-  }
+    return (
+      <a
+        ref={ref}
+        href={href}
+        className={cn("transition-colors hover:text-foreground", className)}
+        {...props}
+      >
+        {children}
+      </a>
+    );
+  },
 );
 BreadcrumbLink.displayName = "BreadcrumbLink";
 
@@ -79,7 +81,7 @@ const BreadcrumbPage = React.forwardRef<HTMLSpanElement, React.HTMLAttributes<HT
     >
       {children}
     </span>
-  )
+  ),
 );
 BreadcrumbPage.displayName = "BreadcrumbPage";
 
@@ -94,7 +96,7 @@ const BreadcrumbSeparator = React.forwardRef<HTMLLIElement, React.HTMLAttributes
       <ChevronRight className="h-3.5 w-3.5" />
       <span className="sr-only">/</span>
     </li>
-  )
+  ),
 );
 BreadcrumbSeparator.displayName = "BreadcrumbSeparator";
 

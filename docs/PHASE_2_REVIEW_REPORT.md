@@ -34,18 +34,18 @@ The implementation was reviewed in:
 
 The completion-report verification was also checked. Existing verification results are:
 
-| Check | Result |
-|---|---|
-| Lint | PASS |
-| Typecheck | PASS |
-| Unit/API tests | PASS — 27 tests |
-| Playwright | PASS — 4 tests, UI surface coverage |
-| Production build | PASS, with the documented optional BullMQ `@valkey/valkey-glide` warning |
-| Prisma validation and migration status | PASS; schema up to date |
-| Real PostgreSQL interview workflow | PASS |
-| Redis/BullMQ worker | ENVIRONMENT BLOCKED |
-| External calendar synchronization | ENVIRONMENT BLOCKED |
-| External email delivery | ENVIRONMENT BLOCKED |
+| Check                                  | Result                                                                   |
+| -------------------------------------- | ------------------------------------------------------------------------ |
+| Lint                                   | PASS                                                                     |
+| Typecheck                              | PASS                                                                     |
+| Unit/API tests                         | PASS — 27 tests                                                          |
+| Playwright                             | PASS — 4 tests, UI surface coverage                                      |
+| Production build                       | PASS, with the documented optional BullMQ `@valkey/valkey-glide` warning |
+| Prisma validation and migration status | PASS; schema up to date                                                  |
+| Real PostgreSQL interview workflow     | PASS                                                                     |
+| Redis/BullMQ worker                    | ENVIRONMENT BLOCKED                                                      |
+| External calendar synchronization      | ENVIRONMENT BLOCKED                                                      |
+| External email delivery                | ENVIRONMENT BLOCKED                                                      |
 
 ## Requirements reviewed
 
@@ -53,34 +53,34 @@ FR-040 through FR-047 were reviewed for interview scheduling, rounds, templates,
 
 ## Coverage matrix
 
-| Area | Classification | Evidence / finding |
-|---|---|---|
-| Interview creation | PASS | `POST /api/v1/interviews` validates the candidate/application relationship, tenant, active panel membership, time window and required scheduling fields; the real PostgreSQL workflow created a linked record. |
-| Scheduling | PARTIAL — MEDIUM | Creation checks candidate and interviewer conflicts and availability. `PATCH /interviews/{id}` validates time ordering but does not repeat candidate conflict, interviewer conflict or availability checks when rescheduling or changing the panel. |
-| Interviewer assignment | PASS | Active organization membership is required and duplicate participant IDs are rejected. Evaluation submission also requires the current user to be an assigned interviewer. |
-| Panel management | PASS | Panel members are persisted through `InterviewParticipant` and can be replaced through the protected update flow. |
-| Availability | PARTIAL — MEDIUM | Availability windows are persisted and enforced on creation, but are not rechecked by the update/reschedule path. |
-| Timezone handling | PASS | ISO datetime validation and a persisted timezone field are present; the UI displays the stored timezone. Provider-specific calendar conversion is not live. |
-| Status transitions | PARTIAL — MEDIUM | Statuses and transition rules exist and check-in/check-out transitions are protected. The general update path can set `NO_SHOW` but provides no no-show-specific reason or notes. |
-| No-show workflow | HIGH | SRS FR-063 requires HR to mark a candidate No-show and optionally record reason/notes. There is no dedicated UI/API input for reason or notes, and the status-change audit metadata does not capture them. |
-| Candidate check-in/check-out | PASS | Protected endpoints persist timestamps and actor IDs, create activity entries and audit events, and reject invalid state transitions. |
-| Candidate attendance separation | PASS | Interview attendance is stored on interview records and does not use employee attendance records. |
-| Evaluation submission | PASS | Assigned interviewers can submit structured numeric scores, comments and Hire/Hold/Reject recommendations; duplicate submitted evaluations are rejected. |
-| Templates / scorecards | PARTIAL — MEDIUM | Template creation persists structured questions, competencies and scoring guidance. There is no template management/update/publish UI, the selected template is not persisted on the `Interview` record during creation, and submitted score keys/ranges are not checked against the selected template. |
-| Multi-round interviews | PARTIAL — MEDIUM | `round` is persisted and independent interview rows are supported. The creation UI always submits round 1 and does not expose a round selector or round-specific template/evaluation experience. |
-| Interview history | PASS | Activity history is persisted and returned with actor name/email where permitted. The live workflow read back actor details. |
-| Consolidated decision summary | PASS | Interview detail includes candidate, application/requisition, panel, evaluations and activity history behind protected APIs. |
-| Notifications / reminders | PARTIAL — ENVIRONMENT BLOCKED | Interview creation persists recipient notification records and scheduled reminder times. Redis/BullMQ and external email delivery are unavailable, and no live reminder worker execution was verified. The send helper exists but is not a demonstrated scheduled worker workflow. |
-| Calendar integration | ENVIRONMENT BLOCKED | The provider abstraction fails explicitly when unconfigured. Google Calendar/Microsoft Graph credentials and live synchronization are unavailable; no fake provider result was counted as success. |
-| RBAC | PASS | Protected routes require authentication and interview permissions; evaluation submission has the additional assigned-interviewer check. Existing API tests cover unauthenticated and unauthorized requests. |
-| Tenant isolation | PASS | Organization context is applied to reads, mutations, candidate/application linkage and participant membership. The real cross-tenant interview read was rejected with HTTP 403. |
-| Audit logging | PASS | Create, update/status, check-in, check-out, evaluation, template and availability mutations write audit events transactionally with their business mutations. |
-| API validation | PASS | Versioned route handlers use Zod schemas and standard response/error envelopes for core request fields and state transitions. |
-| Security | PARTIAL — MEDIUM | API authorization and tenant boundaries are sound in reviewed paths. HR pages accept an organization ID in the URL/query and rely on APIs for enforcement; a server-side page guard would provide defense in depth. Evaluation reads are organization-permission scoped but have no finer-grained field visibility policy. |
-| Persisted workflow | PASS — CODE/INTEGRATION VERIFIED | A real PostgreSQL workflow covered template, availability, interview creation/linkage, panel, check-in, evaluation, check-out, history and cross-tenant rejection. |
-| Automated end-to-end testing | PARTIAL — MEDIUM | Existing Playwright coverage verifies page rendering and navigation only. It does not persist an interview, perform check-in/evaluation/check-out, verify audit/history, or exercise tenant isolation in a browser workflow. |
-| Test completeness | PARTIAL — MEDIUM | Missing automated regression coverage includes reschedule conflict/availability checks, no-show reason/notes, template score validation, reminder dispatch, calendar contract behavior, and assigned-versus-unassigned evaluation authorization. |
-| Phase boundary | PASS | No Phase 3 implementation was started; offers, approvals, employee conversion and later employee modules remain outside the reviewed Phase 2 implementation. |
+| Area                            | Classification                   | Evidence / finding                                                                                                                                                                                                                                                                                                         |
+| ------------------------------- | -------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Interview creation              | PASS                             | `POST /api/v1/interviews` validates the candidate/application relationship, tenant, active panel membership, time window and required scheduling fields; the real PostgreSQL workflow created a linked record.                                                                                                             |
+| Scheduling                      | PARTIAL — MEDIUM                 | Creation checks candidate and interviewer conflicts and availability. `PATCH /interviews/{id}` validates time ordering but does not repeat candidate conflict, interviewer conflict or availability checks when rescheduling or changing the panel.                                                                        |
+| Interviewer assignment          | PASS                             | Active organization membership is required and duplicate participant IDs are rejected. Evaluation submission also requires the current user to be an assigned interviewer.                                                                                                                                                 |
+| Panel management                | PASS                             | Panel members are persisted through `InterviewParticipant` and can be replaced through the protected update flow.                                                                                                                                                                                                          |
+| Availability                    | PARTIAL — MEDIUM                 | Availability windows are persisted and enforced on creation, but are not rechecked by the update/reschedule path.                                                                                                                                                                                                          |
+| Timezone handling               | PASS                             | ISO datetime validation and a persisted timezone field are present; the UI displays the stored timezone. Provider-specific calendar conversion is not live.                                                                                                                                                                |
+| Status transitions              | PARTIAL — MEDIUM                 | Statuses and transition rules exist and check-in/check-out transitions are protected. The general update path can set `NO_SHOW` but provides no no-show-specific reason or notes.                                                                                                                                          |
+| No-show workflow                | HIGH                             | SRS FR-063 requires HR to mark a candidate No-show and optionally record reason/notes. There is no dedicated UI/API input for reason or notes, and the status-change audit metadata does not capture them.                                                                                                                 |
+| Candidate check-in/check-out    | PASS                             | Protected endpoints persist timestamps and actor IDs, create activity entries and audit events, and reject invalid state transitions.                                                                                                                                                                                      |
+| Candidate attendance separation | PASS                             | Interview attendance is stored on interview records and does not use employee attendance records.                                                                                                                                                                                                                          |
+| Evaluation submission           | PASS                             | Assigned interviewers can submit structured numeric scores, comments and Hire/Hold/Reject recommendations; duplicate submitted evaluations are rejected.                                                                                                                                                                   |
+| Templates / scorecards          | PARTIAL — MEDIUM                 | Template creation persists structured questions, competencies and scoring guidance. There is no template management/update/publish UI, the selected template is not persisted on the `Interview` record during creation, and submitted score keys/ranges are not checked against the selected template.                    |
+| Multi-round interviews          | PARTIAL — MEDIUM                 | `round` is persisted and independent interview rows are supported. The creation UI always submits round 1 and does not expose a round selector or round-specific template/evaluation experience.                                                                                                                           |
+| Interview history               | PASS                             | Activity history is persisted and returned with actor name/email where permitted. The live workflow read back actor details.                                                                                                                                                                                               |
+| Consolidated decision summary   | PASS                             | Interview detail includes candidate, application/requisition, panel, evaluations and activity history behind protected APIs.                                                                                                                                                                                               |
+| Notifications / reminders       | PARTIAL — ENVIRONMENT BLOCKED    | Interview creation persists recipient notification records and scheduled reminder times. Redis/BullMQ and external email delivery are unavailable, and no live reminder worker execution was verified. The send helper exists but is not a demonstrated scheduled worker workflow.                                         |
+| Calendar integration            | ENVIRONMENT BLOCKED              | The provider abstraction fails explicitly when unconfigured. Google Calendar/Microsoft Graph credentials and live synchronization are unavailable; no fake provider result was counted as success.                                                                                                                         |
+| RBAC                            | PASS                             | Protected routes require authentication and interview permissions; evaluation submission has the additional assigned-interviewer check. Existing API tests cover unauthenticated and unauthorized requests.                                                                                                                |
+| Tenant isolation                | PASS                             | Organization context is applied to reads, mutations, candidate/application linkage and participant membership. The real cross-tenant interview read was rejected with HTTP 403.                                                                                                                                            |
+| Audit logging                   | PASS                             | Create, update/status, check-in, check-out, evaluation, template and availability mutations write audit events transactionally with their business mutations.                                                                                                                                                              |
+| API validation                  | PASS                             | Versioned route handlers use Zod schemas and standard response/error envelopes for core request fields and state transitions.                                                                                                                                                                                              |
+| Security                        | PARTIAL — MEDIUM                 | API authorization and tenant boundaries are sound in reviewed paths. HR pages accept an organization ID in the URL/query and rely on APIs for enforcement; a server-side page guard would provide defense in depth. Evaluation reads are organization-permission scoped but have no finer-grained field visibility policy. |
+| Persisted workflow              | PASS — CODE/INTEGRATION VERIFIED | A real PostgreSQL workflow covered template, availability, interview creation/linkage, panel, check-in, evaluation, check-out, history and cross-tenant rejection.                                                                                                                                                         |
+| Automated end-to-end testing    | PARTIAL — MEDIUM                 | Existing Playwright coverage verifies page rendering and navigation only. It does not persist an interview, perform check-in/evaluation/check-out, verify audit/history, or exercise tenant isolation in a browser workflow.                                                                                               |
+| Test completeness               | PARTIAL — MEDIUM                 | Missing automated regression coverage includes reschedule conflict/availability checks, no-show reason/notes, template score validation, reminder dispatch, calendar contract behavior, and assigned-versus-unassigned evaluation authorization.                                                                           |
+| Phase boundary                  | PASS                             | No Phase 3 implementation was started; offers, approvals, employee conversion and later employee modules remain outside the reviewed Phase 2 implementation.                                                                                                                                                               |
 
 ## Issues found
 
@@ -133,4 +133,3 @@ These are not counted as code failures, but they prevent a full operational PASS
 ## Phase 3 readiness decision
 
 **PHASE 2 NOT READY FOR PHASE 3**
-

@@ -72,53 +72,53 @@ Phase 6 permissions were added to the existing RBAC model. Service operations ve
 
 ## 3. Requirements coverage
 
-| Requirement | Result | Notes |
-|---|---|---|
-| FR-120 employee check-in/out | PASS | Session identity, duplicate prevention, persisted timestamps |
-| FR-121 attendance statuses | PASS | Supported status enum includes all SRS statuses |
-| FR-122 shifts and working rules | PASS | Shifts, grace periods, weekly offs, rotation metadata, assignments |
+| Requirement                               | Result          | Notes                                                                                               |
+| ----------------------------------------- | --------------- | --------------------------------------------------------------------------------------------------- |
+| FR-120 employee check-in/out              | PASS            | Session identity, duplicate prevention, persisted timestamps                                        |
+| FR-121 attendance statuses                | PASS            | Supported status enum includes all SRS statuses                                                     |
+| FR-122 shifts and working rules           | PASS            | Shifts, grace periods, weekly offs, rotation metadata, assignments                                  |
 | FR-123 daily/period totals and timesheets | PASS WITH ISSUE | Persisted duration/overtime and report API; summary currently operates over the returned report set |
-| FR-124 correction requests | PASS | Employee request and authorized review workflow |
-| FR-125 approved overtime | PASS | Separate approved overtime value and permission-protected update |
-| FR-126 calendar day/week/month views | PARTIAL | Filtered attendance list/report exists; dedicated calendar views are not yet complete |
-| FR-127 future integrations | PARTIAL | Source field and API boundary support future integrations; no biometric/device connector was added |
-| Tenant isolation | PASS | Organization-scoped queries and mutation checks |
-| RBAC | PASS | New permissions are enforced at route/service boundaries |
-| Audit/history | PASS | Attendance mutations and workflow events are persisted with actors |
+| FR-124 correction requests                | PASS            | Employee request and authorized review workflow                                                     |
+| FR-125 approved overtime                  | PASS            | Separate approved overtime value and permission-protected update                                    |
+| FR-126 calendar day/week/month views      | PARTIAL         | Filtered attendance list/report exists; dedicated calendar views are not yet complete               |
+| FR-127 future integrations                | PARTIAL         | Source field and API boundary support future integrations; no biometric/device connector was added  |
+| Tenant isolation                          | PASS            | Organization-scoped queries and mutation checks                                                     |
+| RBAC                                      | PASS            | New permissions are enforced at route/service boundaries                                            |
+| Audit/history                             | PASS            | Attendance mutations and workflow events are persisted with actors                                  |
 
 ## 4. Verification results
 
-| Check | Status | Evidence |
-|---|---|---|
-| PostgreSQL connectivity | PASS | Existing local PostgreSQL at configured port used by persisted E2E |
-| Prisma validation | PASS | `npx prisma validate` |
-| Prisma migration status | PASS | Database reports all migrations applied |
-| Prisma migration diff | PASS | No schema difference detected |
-| Migration application | PASS | Phase 6 migration applied successfully without reset |
-| Candidate/employee attendance workflow | PASS | Persisted Playwright workflow passed |
-| Shift creation | PASS | Persisted Playwright workflow passed |
-| Shift assignment | PASS | Persisted Playwright workflow passed |
-| Employee check-in | PASS | Real authenticated workflow and PostgreSQL persistence |
-| Duplicate check-in rejection | PASS | Persisted regression assertion |
-| Employee check-out | PASS | Real authenticated workflow and duration persistence |
-| Duplicate check-out rejection | PASS | Persisted regression assertion |
-| Attendance history | PASS | Self-service history retrieval verified |
-| Correction request/review | PASS | Persisted request and approval workflow verified |
-| Holiday creation | PASS | Persisted workflow verified |
-| Attendance report | PASS | Authenticated report retrieval verified |
-| Audit events | PASS | Shift, assignment, check-in/out, correction, and holiday events verified |
-| Unit/API tests | PASS | 56 tests passed across 14 files |
-| Targeted persisted E2E | PASS | 1 workflow passed |
-| Full Playwright regression | PASS | 9 tests passed |
-| Lint | PASS | No lint errors |
-| Typecheck | PASS | TypeScript validation passed |
-| Production build | PASS WITH WARNING | Build passed; optional BullMQ Valkey module warning remains |
-| Docker availability | PASS | Docker Linux engine available |
-| Docker image build | PASS | `hr-portal:phase6` built successfully |
-| `/api/health` live probe | ENVIRONMENT BLOCKED | No application process was listening on port 3000 during probe |
-| `/api/ready` live probe | ENVIRONMENT BLOCKED | No application process was listening on port 3000 during probe |
-| Redis/BullMQ | ENVIRONMENT BLOCKED | Redis service is not available; no fake implementation was used |
-| S3-compatible storage | ENVIRONMENT BLOCKED | Existing storage provider is unavailable; Phase 6 does not claim live object-storage verification |
+| Check                                  | Status              | Evidence                                                                                          |
+| -------------------------------------- | ------------------- | ------------------------------------------------------------------------------------------------- |
+| PostgreSQL connectivity                | PASS                | Existing local PostgreSQL at configured port used by persisted E2E                                |
+| Prisma validation                      | PASS                | `npx prisma validate`                                                                             |
+| Prisma migration status                | PASS                | Database reports all migrations applied                                                           |
+| Prisma migration diff                  | PASS                | No schema difference detected                                                                     |
+| Migration application                  | PASS                | Phase 6 migration applied successfully without reset                                              |
+| Candidate/employee attendance workflow | PASS                | Persisted Playwright workflow passed                                                              |
+| Shift creation                         | PASS                | Persisted Playwright workflow passed                                                              |
+| Shift assignment                       | PASS                | Persisted Playwright workflow passed                                                              |
+| Employee check-in                      | PASS                | Real authenticated workflow and PostgreSQL persistence                                            |
+| Duplicate check-in rejection           | PASS                | Persisted regression assertion                                                                    |
+| Employee check-out                     | PASS                | Real authenticated workflow and duration persistence                                              |
+| Duplicate check-out rejection          | PASS                | Persisted regression assertion                                                                    |
+| Attendance history                     | PASS                | Self-service history retrieval verified                                                           |
+| Correction request/review              | PASS                | Persisted request and approval workflow verified                                                  |
+| Holiday creation                       | PASS                | Persisted workflow verified                                                                       |
+| Attendance report                      | PASS                | Authenticated report retrieval verified                                                           |
+| Audit events                           | PASS                | Shift, assignment, check-in/out, correction, and holiday events verified                          |
+| Unit/API tests                         | PASS                | 56 tests passed across 14 files                                                                   |
+| Targeted persisted E2E                 | PASS                | 1 workflow passed                                                                                 |
+| Full Playwright regression             | PASS                | 9 tests passed                                                                                    |
+| Lint                                   | PASS                | No lint errors                                                                                    |
+| Typecheck                              | PASS                | TypeScript validation passed                                                                      |
+| Production build                       | PASS WITH WARNING   | Build passed; optional BullMQ Valkey module warning remains                                       |
+| Docker availability                    | PASS                | Docker Linux engine available                                                                     |
+| Docker image build                     | PASS                | `hr-portal:phase6` built successfully                                                             |
+| `/api/health` live probe               | ENVIRONMENT BLOCKED | No application process was listening on port 3000 during probe                                    |
+| `/api/ready` live probe                | ENVIRONMENT BLOCKED | No application process was listening on port 3000 during probe                                    |
+| Redis/BullMQ                           | ENVIRONMENT BLOCKED | Redis service is not available; no fake implementation was used                                   |
+| S3-compatible storage                  | ENVIRONMENT BLOCKED | Existing storage provider is unavailable; Phase 6 does not claim live object-storage verification |
 
 ## 5. Known issues and follow-up
 

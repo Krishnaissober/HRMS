@@ -5,14 +5,14 @@ Source: the attached Triple Minds HR quick-actions/address-lookup brief. `docs/S
 
 ## Quick actions
 
-| Action | Route wired | Workflow |
-|---|---|---|
-| Add Candidate | `/hr/candidates/new` | Opens the HR chooser for the two real intake links below. |
-| Schedule Interview | `/hr/interviews/new` | Existing interview scheduling form and API validation. |
-| Create Offer | `/hr/offers` | Existing offer template/creation/approval/send workflow. |
-| Add Employee | `/hr/candidates?status=SELECTED` | Existing selected-candidate conversion path; no duplicate employee model or fake page. |
-| Start Onboarding | `/hr/onboarding` | Existing persisted onboarding workflow. |
-| Run Payroll | `/hr/payroll` | Existing controlled payroll workspace; navigation does not execute payroll. |
+| Action             | Route wired                      | Workflow                                                                               |
+| ------------------ | -------------------------------- | -------------------------------------------------------------------------------------- |
+| Add Candidate      | `/hr/candidates/new`             | Opens the HR chooser for the two real intake links below.                              |
+| Schedule Interview | `/hr/interviews/new`             | Existing interview scheduling form and API validation.                                 |
+| Create Offer       | `/hr/offers`                     | Existing offer template/creation/approval/send workflow.                               |
+| Add Employee       | `/hr/candidates?status=SELECTED` | Existing selected-candidate conversion path; no duplicate employee model or fake page. |
+| Start Onboarding   | `/hr/onboarding`                 | Existing persisted onboarding workflow.                                                |
+| Run Payroll        | `/hr/payroll`                    | Existing controlled payroll workspace; navigation does not execute payroll.            |
 
 All cards remain real keyboard-accessible links with existing icon, title, description, hover/focus styling, and arrow affordance. No organization or tenant identifier is included in quick-action URLs.
 
@@ -20,10 +20,10 @@ All cards remain real keyboard-accessible links with existing icon, title, descr
 
 The Add Candidate chooser now exposes two hiring-first forms:
 
-| Form | Shareable route | Workflow |
-|---|---|---|
-| Social media hiring form | `/apply` | Redirects to the Triple Minds public application form, which loads published positions server-side and accepts resume/supporting documents. |
-| Walk-in form | `/walk-in` | Public QR/link form with the walk-in field set, published-position selection, and email/mobile matching for prefill when an earlier submission exists. |
+| Form                     | Shareable route | Workflow                                                                                                                                               |
+| ------------------------ | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Social media hiring form | `/apply`        | Redirects to the Triple Minds public application form, which loads published positions server-side and accepts resume/supporting documents.            |
+| Walk-in form             | `/walk-in`      | Public QR/link form with the walk-in field set, published-position selection, and email/mobile matching for prefill when an earlier submission exists. |
 
 The authenticated HR-only walk-in form remains available at `/hr/candidates/new/walk-in`. Public submissions use the existing candidate intake service, validation, rate limiting, notifications, audit behavior, and tenant ownership checks. No organization ID is required in the user-facing links.
 

@@ -11,7 +11,9 @@ test("root shows sign-in and redirects an authenticated member to the HR workspa
   expect(signIn.ok()).toBeTruthy();
   await page.goto("/");
   await expect(page).toHaveURL(/\/hr\/dashboard$/);
-  await expect(page.getByRole("heading", { name: /Good morning/ })).toBeVisible();
+  await expect(page.getByRole("heading", { name: /Good (morning|afternoon|evening)/ })).toBeVisible(
+    { timeout: 20_000 },
+  );
   await page.goto("/hr/candidates");
   await expect(page).toHaveURL(/\/hr\/candidates$/);
   await expect(page.getByRole("heading", { name: "Candidates" })).toBeVisible();
@@ -23,8 +25,9 @@ test("root shows sign-in and redirects an authenticated member to the HR workspa
   const candidate = (await candidateResponse.json()).data;
   await page.getByPlaceholder("Search name, email, phone or skills").fill(candidate.email);
   const [searchResponse] = await Promise.all([
-    page.waitForResponse((response) =>
-      response.url().includes("/api/v1/candidates?q=") && response.request().method() === "GET",
+    page.waitForResponse(
+      (response) =>
+        response.url().includes("/api/v1/candidates?q=") && response.request().method() === "GET",
     ),
     page.getByRole("button", { name: "Search" }).click(),
   ]);

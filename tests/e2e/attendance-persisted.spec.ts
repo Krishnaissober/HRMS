@@ -1,41 +1,99 @@
 import { test, expect } from "@playwright/test";
 import { db } from "@/lib/db";
 
-test("persists authenticated interview attendance, timing outcomes, exceptions and audit history", async ({ page }) => {
-  const signIn = await page.request.post("/api/auth/sign-in/email", { data: { email: process.env.E2E_EMAIL, password: process.env.E2E_PASSWORD } });
+test("persists authenticated interview attendance, timing outcomes, exceptions and audit history", async ({
+  page,
+}) => {
+  const signIn = await page.request.post("/api/auth/sign-in/email", {
+    data: { email: process.env.E2E_EMAIL, password: process.env.E2E_PASSWORD },
+  });
   expect(signIn.ok()).toBeTruthy();
   const organizationId = process.env.E2E_ORGANIZATION_ID!;
   const otherOrganizationId = process.env.E2E_OTHER_ORGANIZATION_ID!;
   const headers = { "content-type": "application/json", "x-organization-id": organizationId };
   const start = new Date(Date.now() - 15 * 60 * 1000);
   const end = new Date(Date.now() + 15 * 60 * 1000);
-  const interviewResponse = await page.request.post("/api/v1/interviews", { headers, data: { candidateId: process.env.E2E_CANDIDATE_ID, applicationId: process.env.E2E_APPLICATION_ID, participantIds: [process.env.E2E_INTERVIEWER_ID], round: 1, scheduledStart: start.toISOString(), scheduledEnd: end.toISOString(), timezone: "UTC", mode: "IN_PERSON", location: "Reception" } });
+  const interviewResponse = await page.request.post("/api/v1/interviews", {
+    headers,
+    data: {
+      candidateId: process.env.E2E_CANDIDATE_ID,
+      applicationId: process.env.E2E_APPLICATION_ID,
+      participantIds: [process.env.E2E_INTERVIEWER_ID],
+      round: 1,
+      scheduledStart: start.toISOString(),
+      scheduledEnd: end.toISOString(),
+      timezone: "UTC",
+      mode: "IN_PERSON",
+      location: "Reception",
+    },
+  });
   expect(interviewResponse.status()).toBe(201);
   const interview = (await interviewResponse.json()).data;
-  const checkInResponse = await page.request.post(`/api/v1/interviews/${interview.id}/check-in`, { headers, data: {} });
+  const checkInResponse = await page.request.post(`/api/v1/interviews/${interview.id}/check-in`, {
+    headers,
+    data: {},
+  });
   expect(checkInResponse.ok()).toBeTruthy();
   expect((await checkInResponse.json()).data.status).toBe("CHECKED_IN");
-  const checkedInList = await page.request.get("/api/v1/attendance?page=1&pageSize=50", { headers: { "x-organization-id": organizationId } });
+  const checkedInList = await page.request.get("/api/v1/attendance?page=1&pageSize=50", {
+    headers: { "x-organization-id": organizationId },
+  });
   expect(checkedInList.ok()).toBeTruthy();
-  const checkedInVisit = (await checkedInList.json()).data.items.find((item: { interview?: { id: string }; status: string }) => item.interview?.id === interview.id);
+  const checkedInVisit = (await checkedInList.json()).data.items.find(
+    (item: { interview?: { id: string }; status: string }) => item.interview?.id === interview.id,
+  );
   expect(checkedInVisit?.status).toBe("CHECKED_IN");
   expect(checkedInVisit?.host?.id).toBe(process.env.E2E_INTERVIEWER_ID);
   expect(checkedInVisit?.lateArrivalMinutes).toBeGreaterThanOrEqual(0);
-  const checkOutResponse = await page.request.post(`/api/v1/interviews/${interview.id}/check-out`, { headers, data: {} });
+  const checkOutResponse = await page.request.post(`/api/v1/interviews/${interview.id}/check-out`, {
+    headers,
+    data: {},
+  });
   expect(checkOutResponse.ok()).toBeTruthy();
-  const checkedOutList = await page.request.get("/api/v1/attendance?page=1&pageSize=50", { headers: { "x-organization-id": organizationId } });
-  const checkedOutVisit = (await checkedOutList.json()).data.items.find((item: { interview?: { id: string }; status: string }) => item.interview?.id === interview.id);
+  const checkedOutList = await page.request.get("/api/v1/attendance?page=1&pageSize=50", {
+    headers: { "x-organization-id": organizationId },
+  });
+  const checkedOutVisit = (await checkedOutList.json()).data.items.find(
+    (item: { interview?: { id: string }; status: string }) => item.interview?.id === interview.id,
+  );
   expect(checkedOutVisit?.status).toBe("CHECKED_OUT");
   expect(checkedOutVisit?.earlyDepartureMinutes).toBeGreaterThanOrEqual(0);
   expect(checkedOutVisit?.durationMinutes).toBeGreaterThanOrEqual(0);
-  const exceptionResponse = await page.request.post(`/api/v1/attendance/${checkedOutVisit.id}/exception`, { headers, data: { exceptionType: "INVALID_ATTENDANCE_STATE", notes: "Validated Phase 3 E2E exception" } });
+  const exceptionResponse = await page.request.post(
+    `/api/v1/attendance/${checkedOutVisit.id}/exception`,
+    {
+      headers,
+      data: { exceptionType: "INVALID_ATTENDANCE_STATE", notes: "Validated Phase 3 E2E exception" },
+    },
+  );
   expect(exceptionResponse.ok()).toBeTruthy();
   expect((await exceptionResponse.json()).data.exceptionType).toBe("INVALID_ATTENDANCE_STATE");
-  const crossTenantResponse = await page.request.get(`/api/v1/attendance/${checkedOutVisit.id}`, { headers: { "x-organization-id": otherOrganizationId } });
+  const crossTenantResponse = await page.request.get(`/api/v1/attendance/${checkedOutVisit.id}`, {
+    headers: { "x-organization-id": otherOrganizationId },
+  });
   expect(crossTenantResponse.status()).toBe(404);
-  const audit = await db.auditLog.findFirst({ where: { organizationId, entityType: "CandidateVisit", entityId: checkedOutVisit.id, action: "CANDIDATE_ATTENDANCE_CHECKED_OUT" } });
+  const audit = await db.auditLog.findFirst({
+    where: {
+      organizationId,
+      entityType: "CandidateVisit",
+      entityId: checkedOutVisit.id,
+      action: "CANDIDATE_ATTENDANCE_CHECKED_OUT",
+    },
+  });
   expect(audit?.actorUserId).toBe(process.env.E2E_INTERVIEWER_ID);
-  const activities = await db.candidateActivity.findMany({ where: { organizationId, candidateId: process.env.E2E_CANDIDATE_ID, action: "CANDIDATE_ATTENDANCE_CHECKED_OUT" } });
-  const activity = activities.find((item) => typeof item.metadata === "object" && item.metadata !== null && "visitId" in item.metadata && item.metadata.visitId === checkedOutVisit.id);
+  const activities = await db.candidateActivity.findMany({
+    where: {
+      organizationId,
+      candidateId: process.env.E2E_CANDIDATE_ID,
+      action: "CANDIDATE_ATTENDANCE_CHECKED_OUT",
+    },
+  });
+  const activity = activities.find(
+    (item) =>
+      typeof item.metadata === "object" &&
+      item.metadata !== null &&
+      "visitId" in item.metadata &&
+      item.metadata.visitId === checkedOutVisit.id,
+  );
   expect(activity?.actorUserId).toBe(process.env.E2E_INTERVIEWER_ID);
 });

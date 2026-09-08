@@ -1,4 +1,70 @@
 "use client";
 import { useEffect, useState } from "react";
 type Holiday = { id: string; holidayDate: string; name: string };
-export default function HolidaysPage() { const [items,setItems]=useState<Holiday[]>([]); const [name,setName]=useState(""); const [holidayDate,setHolidayDate]=useState(""); const [message,setMessage]=useState("Loading holidays…"); async function load(){const response=await fetch("/api/v1/holidays");const result=await response.json();if(response.ok){setItems(result.data);setMessage("")}else setMessage(result.error?.message||"Could not load holidays")} async function create(event:React.FormEvent){event.preventDefault();const response=await fetch("/api/v1/holidays",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({name,holidayDate})});const result=await response.json();setMessage(response.ok?"Holiday created":result.error?.message||"Could not create holiday");if(response.ok){setName("");setHolidayDate("");await load()}} useEffect(()=>{void load()},[]); return <main className="page-shell"><section className="panel"><p className="eyebrow">Holiday calendar</p><h1>Company holidays</h1><form className="form-grid" onSubmit={create}><label>Name<input required value={name} onChange={e=>setName(e.target.value)}/></label><label>Date<input required type="date" value={holidayDate} onChange={e=>setHolidayDate(e.target.value)}/></label><button type="submit">Add holiday</button></form>{message&&<p role="status">{message}</p>}<div className="candidate-list">{items.map(item=><div className="candidate-row" key={item.id}><span>{item.holidayDate.slice(0,10)}</span><span>{item.name}</span></div>)}</div></section></main> }
+export default function HolidaysPage() {
+  const [items, setItems] = useState<Holiday[]>([]);
+  const [name, setName] = useState("");
+  const [holidayDate, setHolidayDate] = useState("");
+  const [message, setMessage] = useState("Loading holidays…");
+  async function load() {
+    const response = await fetch("/api/v1/holidays");
+    const result = await response.json();
+    if (response.ok) {
+      setItems(result.data);
+      setMessage("");
+    } else setMessage(result.error?.message || "Could not load holidays");
+  }
+  async function create(event: React.FormEvent) {
+    event.preventDefault();
+    const response = await fetch("/api/v1/holidays", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ name, holidayDate }),
+    });
+    const result = await response.json();
+    setMessage(
+      response.ok ? "Holiday created" : result.error?.message || "Could not create holiday",
+    );
+    if (response.ok) {
+      setName("");
+      setHolidayDate("");
+      await load();
+    }
+  }
+  useEffect(() => {
+    void load();
+  }, []);
+  return (
+    <main className="page-shell">
+      <section className="panel">
+        <p className="eyebrow">Holiday calendar</p>
+        <h1>Company holidays</h1>
+        <form className="form-grid" onSubmit={create}>
+          <label>
+            Name
+            <input required value={name} onChange={(e) => setName(e.target.value)} />
+          </label>
+          <label>
+            Date
+            <input
+              required
+              type="date"
+              value={holidayDate}
+              onChange={(e) => setHolidayDate(e.target.value)}
+            />
+          </label>
+          <button type="submit">Add holiday</button>
+        </form>
+        {message && <p role="status">{message}</p>}
+        <div className="candidate-list">
+          {items.map((item) => (
+            <div className="candidate-row" key={item.id}>
+              <span>{item.holidayDate.slice(0, 10)}</span>
+              <span>{item.name}</span>
+            </div>
+          ))}
+        </div>
+      </section>
+    </main>
+  );
+}

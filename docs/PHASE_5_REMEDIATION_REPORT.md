@@ -14,14 +14,14 @@ The two HIGH application findings are resolved and regression verification passe
 
 ## Finding results
 
-| Finding | Status | Evidence |
-|---|---|---|
-| FR-106 self-service employee profile | **RESOLVED** | Dedicated authenticated self-service API, permitted-field allowlist, tenant/RBAC checks, audit/history and persisted PostgreSQL verification. |
-| FR-104 document request workflow | **RESOLVED** | HR request creation, employee-owned request listing, upload URL/submission contract, verification/rejection transitions, acknowledgement and audit/history. Live object storage remains blocked separately. |
-| Security regression tests | **RESOLVED** | Protected-field, authentication, permission, tenant, concurrent conversion and invalid document-transition coverage added. |
-| Redis | **ENVIRONMENT BLOCKED** | No usable Redis/BullMQ service was available. |
-| S3 | **ENVIRONMENT BLOCKED** | No usable S3-compatible provider was available. |
-| Health/readiness | **ENVIRONMENT BLOCKED** | No application process was listening on localhost:3000 during the final direct probe. |
+| Finding                              | Status                  | Evidence                                                                                                                                                                                                    |
+| ------------------------------------ | ----------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| FR-106 self-service employee profile | **RESOLVED**            | Dedicated authenticated self-service API, permitted-field allowlist, tenant/RBAC checks, audit/history and persisted PostgreSQL verification.                                                               |
+| FR-104 document request workflow     | **RESOLVED**            | HR request creation, employee-owned request listing, upload URL/submission contract, verification/rejection transitions, acknowledgement and audit/history. Live object storage remains blocked separately. |
+| Security regression tests            | **RESOLVED**            | Protected-field, authentication, permission, tenant, concurrent conversion and invalid document-transition coverage added.                                                                                  |
+| Redis                                | **ENVIRONMENT BLOCKED** | No usable Redis/BullMQ service was available.                                                                                                                                                               |
+| S3                                   | **ENVIRONMENT BLOCKED** | No usable S3-compatible provider was available.                                                                                                                                                             |
+| Health/readiness                     | **ENVIRONMENT BLOCKED** | No application process was listening on localhost:3000 during the final direct probe.                                                                                                                       |
 
 ## FR-106 self-service profile
 
@@ -103,18 +103,18 @@ The persisted Playwright workflow uses real PostgreSQL and verifies conversion, 
 
 ## Regression verification
 
-| Check | Status | Result |
-|---|---|---|
-| Unit/API tests | PASSED | 52 tests passed across 13 files. |
-| Playwright | PASSED | Full suite: 9 persisted tests passed. Remediation-targeted workflow: 1 passed. |
-| Lint | PASSED | No lint errors. |
-| Typecheck | PASSED | `tsc --noEmit` passed. |
-| Production build | PASSED WITH WARNING | Build completed successfully; BullMQ reports optional unresolved `@valkey/valkey-glide`. |
-| Prisma validation | PASSED | Schema valid. |
-| Migration status | PASSED | 9 migrations found; database up to date. |
-| Migration diff | PASSED | No difference detected. No schema migration was required for this remediation because the existing document status model already supported `REQUESTED`. |
-| `/api/health` | ENVIRONMENT BLOCKED | No app process listening on localhost:3000 during final direct probe. |
-| `/api/ready` | ENVIRONMENT BLOCKED | Same process issue; Redis is also unavailable. |
+| Check             | Status              | Result                                                                                                                                                  |
+| ----------------- | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Unit/API tests    | PASSED              | 52 tests passed across 13 files.                                                                                                                        |
+| Playwright        | PASSED              | Full suite: 9 persisted tests passed. Remediation-targeted workflow: 1 passed.                                                                          |
+| Lint              | PASSED              | No lint errors.                                                                                                                                         |
+| Typecheck         | PASSED              | `tsc --noEmit` passed.                                                                                                                                  |
+| Production build  | PASSED WITH WARNING | Build completed successfully; BullMQ reports optional unresolved `@valkey/valkey-glide`.                                                                |
+| Prisma validation | PASSED              | Schema valid.                                                                                                                                           |
+| Migration status  | PASSED              | 9 migrations found; database up to date.                                                                                                                |
+| Migration diff    | PASSED              | No difference detected. No schema migration was required for this remediation because the existing document status model already supported `REQUESTED`. |
+| `/api/health`     | ENVIRONMENT BLOCKED | No app process listening on localhost:3000 during final direct probe.                                                                                   |
+| `/api/ready`      | ENVIRONMENT BLOCKED | Same process issue; Redis is also unavailable.                                                                                                          |
 
 ## Environment blockers
 

@@ -36,9 +36,14 @@ export function LoginEntry({
         if (!cancelled) window.location.assign("/");
       })
       .catch((error) => {
-        if (!cancelled) setMessage(error instanceof Error ? error.message : "Could not activate the local account.");
+        if (!cancelled)
+          setMessage(
+            error instanceof Error ? error.message : "Could not activate the local account.",
+          );
       });
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, [signedInWithoutAccess]);
   async function signIn(event: React.FormEvent) {
     event.preventDefault();
@@ -134,10 +139,17 @@ export function LoginEntry({
     <main className="shell">
       <section className="card" aria-labelledby="title">
         <p className="eyebrow">Triple Minds HR</p>
-        <h1 id="title">{databaseUnavailable ? "Database connection required" : signedInWithoutAccess ? "Triple Minds access required" : "Sign in"}</h1>
+        <h1 id="title">
+          {databaseUnavailable
+            ? "Database connection required"
+            : signedInWithoutAccess
+              ? "Triple Minds access required"
+              : "Sign in"}
+        </h1>
         {databaseUnavailable ? (
           <p role="alert">
-            The HR portal cannot connect to its local database. Check the PostgreSQL credentials in your
+            The HR portal cannot connect to its local database. Check the PostgreSQL credentials in
+            your
             <code> .env.local </code> file and restart the application.
           </p>
         ) : signedInWithoutAccess ? (
@@ -152,52 +164,84 @@ export function LoginEntry({
           </>
         ) : (
           <>
-          <form className="candidate-form" onSubmit={creating ? signUp : signIn}>
-            {creating && <label>Name<input required autoComplete="name" value={name} onChange={(e) => setName(e.target.value)} /></label>}
-            <label>
-              Email
-              <input
-                required
-                type="email"
-                autoComplete="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </label>
-            <label>
-              Password
-              <span className="password-input-wrap">
+            <form className="candidate-form" onSubmit={creating ? signUp : signIn}>
+              {creating && (
+                <label>
+                  Name
+                  <input
+                    required
+                    autoComplete="name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                  />
+                </label>
+              )}
+              <label>
+                Email
                 <input
                   required
-                  type={showPassword ? "text" : "password"}
-                  autoComplete={creating ? "new-password" : "current-password"}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  type="email"
+                  autoComplete="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
-                <button
-                  type="button"
-                  className="password-toggle"
-                  aria-label={showPassword ? "Hide password" : "Show password"}
-                  aria-pressed={showPassword}
-                  onClick={() => setShowPassword((visible) => !visible)}
-                >
-                  {showPassword ? <EyeOff aria-hidden="true" /> : <Eye aria-hidden="true" />}
-                </button>
-              </span>
-            </label>
-            <button type="submit" disabled={busy}>
-              {creating ? <UserPlus className="h-4 w-4" aria-hidden="true" /> : <LogIn className="h-4 w-4" aria-hidden="true" />}
-              {busy ? (creating ? "Creating account…" : "Signing in…") : creating ? "Create account" : "Sign in"}
+              </label>
+              <label>
+                Password
+                <span className="password-input-wrap">
+                  <input
+                    required
+                    type={showPassword ? "text" : "password"}
+                    autoComplete={creating ? "new-password" : "current-password"}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                  <button
+                    type="button"
+                    className="password-toggle"
+                    aria-label={showPassword ? "Hide password" : "Show password"}
+                    aria-pressed={showPassword}
+                    onClick={() => setShowPassword((visible) => !visible)}
+                  >
+                    {showPassword ? <EyeOff aria-hidden="true" /> : <Eye aria-hidden="true" />}
+                  </button>
+                </span>
+              </label>
+              <button type="submit" disabled={busy}>
+                {creating ? (
+                  <UserPlus className="h-4 w-4" aria-hidden="true" />
+                ) : (
+                  <LogIn className="h-4 w-4" aria-hidden="true" />
+                )}
+                {busy
+                  ? creating
+                    ? "Creating account…"
+                    : "Signing in…"
+                  : creating
+                    ? "Create account"
+                    : "Sign in"}
+              </button>
+              {message && (
+                <p className="form-message" role="alert">
+                  {message}
+                </p>
+              )}
+            </form>
+            <button
+              type="button"
+              className="button-link secondary auth-mode-toggle"
+              onClick={() => {
+                setCreating((value) => !value);
+                setMessage("");
+              }}
+            >
+              {creating ? "Already have an account? Sign in" : "Create a new account"}
             </button>
-            {message && (
-              <p className="form-message" role="alert">
-                {message}
-              </p>
+            {!creating && (
+              <a className="button-link secondary auth-mode-toggle" href="/forgot-password">
+                Forgot password?
+              </a>
             )}
-          </form>
-          <button type="button" className="button-link secondary auth-mode-toggle" onClick={() => { setCreating((value) => !value); setMessage(""); }}>
-            {creating ? "Already have an account? Sign in" : "Create a new account"}
-          </button>
           </>
         )}
       </section>

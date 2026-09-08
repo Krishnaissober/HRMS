@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { membershipHasPermission } from "@/lib/rbac";
+import { membershipHasAdminAccess } from "@/lib/admin-access";
 import { LoginEntry } from "@/components/login-entry";
 
 export default async function HomePage() {
@@ -25,13 +26,11 @@ export default async function HomePage() {
     },
   });
   if (!membership) return <LoginEntry signedInWithoutAccess userName={session.user.name} />;
-  if (membershipHasPermission(membership, "dashboard.hr.read"))
-    redirect("/hr/dashboard");
+  if (membershipHasAdminAccess(membership, session.user.email)) redirect("/admin");
+  if (membershipHasPermission(membership, "dashboard.hr.read")) redirect("/hr/dashboard");
   if (membershipHasPermission(membership, "dashboard.recruitment.read"))
     redirect("/hr/recruitment/dashboard");
-  if (membershipHasPermission(membership, "candidates.read"))
-    redirect("/hr/candidates");
-  if (membershipHasPermission(membership, "leave.read"))
-    redirect("/hr/leave");
+  if (membershipHasPermission(membership, "candidates.read")) redirect("/hr/candidates");
+  if (membershipHasPermission(membership, "leave.read")) redirect("/hr/leave");
   return <LoginEntry signedInWithoutAccess userName={session.user.name} />;
 }

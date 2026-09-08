@@ -43,22 +43,22 @@ The review mapped implementation against:
 
 These items are present in code and are not the primary reason for the readiness decision:
 
-| Area | Review result |
-|---|---|
-| Modular boundary | Candidate code is separated into constants, schemas, repository and service layers. |
-| Versioned APIs | Candidate APIs are under `/api/v1/`; response/error envelopes reuse Phase 0 helpers. |
-| Candidate schema scope | Candidate fields are explicit and broadly traceable to the SRS; no arbitrary production candidate fields were found. |
-| Organization query scoping | Protected list, profile, status and document paths resolve membership and query with `organizationId`. |
-| RBAC enforcement | Protected candidate routes call reusable permission checks; no parallel candidate authorization system was introduced. |
-| Validation foundation | Zod validates candidate input, status updates, filters and document metadata. |
-| Status vocabulary | The implemented status values match the SRS pipeline vocabulary. |
-| Candidate timeline storage | `CandidateActivity` stores actions, transitions, notes, timestamps and actor IDs. |
-| Candidate collision intent | Online and walk-in submissions share one intake service and attempt organization-scoped email/phone matching. |
-| Audit integration points | Intake, status changes and document downloads call the Phase 0 audit service. |
-| Search/pagination shape | Query supports text, status, source, date, page, page size and direction, with tenant-scoped repository queries. |
-| Responsive baseline | CSS includes mobile breakpoints and the forms use responsive grids. |
-| Hardcoded/mock data | No hardcoded candidate records, fake production responses or seeded candidate data were found. |
-| Phase 2 containment | No offer, employee, onboarding, leave, payroll, performance, asset, helpdesk or offboarding source files were found. The `INTERVIEW` status is an SRS-supported candidate stage, not an interview module. |
+| Area                       | Review result                                                                                                                                                                                             |
+| -------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Modular boundary           | Candidate code is separated into constants, schemas, repository and service layers.                                                                                                                       |
+| Versioned APIs             | Candidate APIs are under `/api/v1/`; response/error envelopes reuse Phase 0 helpers.                                                                                                                      |
+| Candidate schema scope     | Candidate fields are explicit and broadly traceable to the SRS; no arbitrary production candidate fields were found.                                                                                      |
+| Organization query scoping | Protected list, profile, status and document paths resolve membership and query with `organizationId`.                                                                                                    |
+| RBAC enforcement           | Protected candidate routes call reusable permission checks; no parallel candidate authorization system was introduced.                                                                                    |
+| Validation foundation      | Zod validates candidate input, status updates, filters and document metadata.                                                                                                                             |
+| Status vocabulary          | The implemented status values match the SRS pipeline vocabulary.                                                                                                                                          |
+| Candidate timeline storage | `CandidateActivity` stores actions, transitions, notes, timestamps and actor IDs.                                                                                                                         |
+| Candidate collision intent | Online and walk-in submissions share one intake service and attempt organization-scoped email/phone matching.                                                                                             |
+| Audit integration points   | Intake, status changes and document downloads call the Phase 0 audit service.                                                                                                                             |
+| Search/pagination shape    | Query supports text, status, source, date, page, page size and direction, with tenant-scoped repository queries.                                                                                          |
+| Responsive baseline        | CSS includes mobile breakpoints and the forms use responsive grids.                                                                                                                                       |
+| Hardcoded/mock data        | No hardcoded candidate records, fake production responses or seeded candidate data were found.                                                                                                            |
+| Phase 2 containment        | No offer, employee, onboarding, leave, payroll, performance, asset, helpdesk or offboarding source files were found. The `INTERVIEW` status is an SRS-supported candidate stage, not an interview module. |
 
 ## Issues found
 

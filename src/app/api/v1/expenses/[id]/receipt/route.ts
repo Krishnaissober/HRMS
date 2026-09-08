@@ -10,7 +10,14 @@ export async function GET(r: NextRequest, { params }: { params: Promise<{ id: st
   try {
     const c = await getAuthenticatedContext(r);
     await requirePermission(c.session.user.id, c.organizationId, P.expensesRead);
-    return Response.redirect(await receiptDownload({ organizationId: c.organizationId, actorUserId: c.session.user.id, id: (await params).id, requestId: id }));
+    return Response.redirect(
+      await receiptDownload({
+        organizationId: c.organizationId,
+        actorUserId: c.session.user.id,
+        id: (await params).id,
+        requestId: id,
+      }),
+    );
   } catch (e) {
     return errorResponse(e, id);
   }

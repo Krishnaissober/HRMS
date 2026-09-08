@@ -10,19 +10,19 @@ Authoritative sources: `docs/SRS.md`, `docs/PHASE_11_COMPLETION_REPORT.md`, and 
 
 ## 2. Exact SRS requirements assigned to Phase 12
 
-| SRS reference | Requirement | Priority |
-|---|---|---|
-| §31.4, P250 | Exit and Compliance phase: resignation, notice, clearance, asset return, access revocation, final settlement, exit documents, and compliance/audit reporting. | Roadmap scope |
-| FR-280, P577 | Employees, managers, or HR can initiate resignation according to configured policy. | Must |
-| FR-281, P578 | HR tracks notice period and expected last working day. | Must |
-| FR-282, P579 | Configurable clearance tasks for HR, IT, Finance, Assets, and other departments. | Must |
-| FR-283, P580 | HR records structured exit feedback and optional ratings through an exit interview. | Must |
-| FR-284, P581 | Offboarding triggers tasks/events for system-access deactivation where integrated. | Must |
-| FR-285, P582 | Authorized HR users generate or attach experience, relieving, and other exit documents. | Must |
-| FR-286, P583 | Employee transitions to Exited/Inactive without destroying compliance/reporting history. | Must |
-| FR-203, P535 | Offboarding supports asset return and clearance state. | Should |
-| FR-002/FR-003/FR-006, security section | Enforce organization isolation, RBAC, and audit sensitive/admin actions. | Security baseline |
-| FR-260–FR-263, P549–P552 | Use the existing notification center, configurable email events, reminders, and task center for applicable exit workflow events. | Must |
+| SRS reference                          | Requirement                                                                                                                                                   | Priority          |
+| -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
+| §31.4, P250                            | Exit and Compliance phase: resignation, notice, clearance, asset return, access revocation, final settlement, exit documents, and compliance/audit reporting. | Roadmap scope     |
+| FR-280, P577                           | Employees, managers, or HR can initiate resignation according to configured policy.                                                                           | Must              |
+| FR-281, P578                           | HR tracks notice period and expected last working day.                                                                                                        | Must              |
+| FR-282, P579                           | Configurable clearance tasks for HR, IT, Finance, Assets, and other departments.                                                                              | Must              |
+| FR-283, P580                           | HR records structured exit feedback and optional ratings through an exit interview.                                                                           | Must              |
+| FR-284, P581                           | Offboarding triggers tasks/events for system-access deactivation where integrated.                                                                            | Must              |
+| FR-285, P582                           | Authorized HR users generate or attach experience, relieving, and other exit documents.                                                                       | Must              |
+| FR-286, P583                           | Employee transitions to Exited/Inactive without destroying compliance/reporting history.                                                                      | Must              |
+| FR-203, P535                           | Offboarding supports asset return and clearance state.                                                                                                        | Should            |
+| FR-002/FR-003/FR-006, security section | Enforce organization isolation, RBAC, and audit sensitive/admin actions.                                                                                      | Security baseline |
+| FR-260–FR-263, P549–P552               | Use the existing notification center, configurable email events, reminders, and task center for applicable exit workflow events.                              | Must              |
 
 The SRS does not prescribe additional exit states, approval levels, fields, settlement formulas, document templates, or provider-specific behavior. Those details must be resolved from existing project conventions or explicitly documented as implementation decisions before coding.
 

@@ -119,32 +119,32 @@ Result: PASS.
 
 ## 15. Tests and verification
 
-| Check | Result | Evidence |
-|---|---|---|
-| Lint | PASS | `npm run lint` |
-| Typecheck | PASS | `npm run typecheck` |
-| Unit/API tests | PASS | 17 files, 65 tests |
-| Phase 7 persisted workflow | PASS | Employee request through approval/rejection, balance, carry-forward, attendance, notifications, audit, RBAC, and tenant isolation |
-| Full Playwright suite | PASS | 9 tests using serial real PostgreSQL fixtures |
-| Production build | PASS WITH WARNING | Build completed; BullMQ emitted an optional Valkey Glide resolution warning |
-| Prisma validation | PASS | Schema valid with local `DATABASE_URL` loaded |
-| Migration status | PASS | 11 migrations; database up to date |
-| Migration diff | PASS | No difference detected |
-| Health | PASS | `/api/health` returned 200 |
-| Readiness | PASS | `/api/ready` returned 200 with database and Redis `ok` |
-| SRS integrity | PASS | SHA-256 remains `ADFCA7D01C87C33884BD0C3F2CA726DBECDCCFE83F249D48F2365415AE104E09` |
+| Check                      | Result            | Evidence                                                                                                                          |
+| -------------------------- | ----------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| Lint                       | PASS              | `npm run lint`                                                                                                                    |
+| Typecheck                  | PASS              | `npm run typecheck`                                                                                                               |
+| Unit/API tests             | PASS              | 17 files, 65 tests                                                                                                                |
+| Phase 7 persisted workflow | PASS              | Employee request through approval/rejection, balance, carry-forward, attendance, notifications, audit, RBAC, and tenant isolation |
+| Full Playwright suite      | PASS              | 9 tests using serial real PostgreSQL fixtures                                                                                     |
+| Production build           | PASS WITH WARNING | Build completed; BullMQ emitted an optional Valkey Glide resolution warning                                                       |
+| Prisma validation          | PASS              | Schema valid with local `DATABASE_URL` loaded                                                                                     |
+| Migration status           | PASS              | 11 migrations; database up to date                                                                                                |
+| Migration diff             | PASS              | No difference detected                                                                                                            |
+| Health                     | PASS              | `/api/health` returned 200                                                                                                        |
+| Readiness                  | PASS              | `/api/ready` returned 200 with database and Redis `ok`                                                                            |
+| SRS integrity              | PASS              | SHA-256 remains `ADFCA7D01C87C33884BD0C3F2CA726DBECDCCFE83F249D48F2365415AE104E09`                                                |
 
 The Playwright timeout was raised to 120 seconds because the serial suite performs real database-backed workflows and PDF generation. Assertions and persistence checks were not weakened.
 
 ## 16. Environment and integration status
 
-| Dependency | Result | Evidence/limitation |
-|---|---|---|
-| PostgreSQL | PASS | Persistence, reads, migrations, and full workflow verified |
-| Redis/BullMQ connectivity | PASS | Production readiness probe reports Redis `ok` |
-| S3-compatible storage | PASS | Real upload, metadata read, download, and deletion succeeded against the configured service |
-| Application health/readiness | PASS | Production process returned health/readiness 200 |
-| External email provider | ENVIRONMENT BLOCKED | Development console provider is configured; no live third-party delivery credentials/provider were supplied |
+| Dependency                   | Result              | Evidence/limitation                                                                                         |
+| ---------------------------- | ------------------- | ----------------------------------------------------------------------------------------------------------- |
+| PostgreSQL                   | PASS                | Persistence, reads, migrations, and full workflow verified                                                  |
+| Redis/BullMQ connectivity    | PASS                | Production readiness probe reports Redis `ok`                                                               |
+| S3-compatible storage        | PASS                | Real upload, metadata read, download, and deletion succeeded against the configured service                 |
+| Application health/readiness | PASS                | Production process returned health/readiness 200                                                            |
+| External email provider      | ENVIRONMENT BLOCKED | Development console provider is configured; no live third-party delivery credentials/provider were supplied |
 
 The leave attachment endpoint validates metadata, scopes object keys by tenant, and uses the storage abstraction. Storage connectivity was verified directly; protected attachment metadata remains covered by API/service authorization rather than a fabricated integration.
 

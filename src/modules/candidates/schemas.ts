@@ -3,20 +3,44 @@ import { validationError } from "@/lib/errors";
 import { CANDIDATE_SOURCES, CANDIDATE_STATUSES } from "@/modules/candidates/constants";
 
 const optionalText = (max: number) => z.string().trim().max(max).optional().or(z.literal(""));
+const optionalIfsc = z
+  .string()
+  .trim()
+  .regex(/^[A-Za-z]{4}0[A-Za-z0-9]{6}$/, "Enter a valid 11-character IFSC code")
+  .optional()
+  .or(z.literal(""));
 
 export const documentInputSchema = z.object({
   kind: z.enum(["RESUME", "SUPPORTING"]),
   objectKey: z.string().trim().min(1).max(500),
   fileName: z.string().trim().min(1).max(255),
-  contentType: z.enum(["application/pdf", "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "text/plain"]),
-  byteSize: z.number().int().positive().max(10 * 1024 * 1024),
+  contentType: z.enum([
+    "application/pdf",
+    "application/msword",
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    "text/plain",
+  ]),
+  byteSize: z
+    .number()
+    .int()
+    .positive()
+    .max(10 * 1024 * 1024),
 });
 
 export const uploadUrlRequestSchema = z.object({
   kind: z.enum(["RESUME", "SUPPORTING"]),
   fileName: z.string().trim().min(1).max(255),
-  contentType: z.enum(["application/pdf", "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "text/plain"]),
-  byteSize: z.number().int().positive().max(10 * 1024 * 1024),
+  contentType: z.enum([
+    "application/pdf",
+    "application/msword",
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    "text/plain",
+  ]),
+  byteSize: z
+    .number()
+    .int()
+    .positive()
+    .max(10 * 1024 * 1024),
 });
 
 export const candidateFieldsSchema = z.object({
@@ -63,6 +87,24 @@ export const candidateFieldsSchema = z.object({
   ctc: optionalText(100),
   hikePercentage: optionalText(20),
   noticePeriod: optionalText(100),
+  panNumber: z
+    .string()
+    .trim()
+    .regex(/^[A-Za-z]{5}[0-9]{4}[A-Za-z]$/, "Enter a valid 10-character PAN")
+    .optional()
+    .or(z.literal("")),
+  aadhaarNumber: z
+    .string()
+    .trim()
+    .regex(/^[0-9]{12}$/, "Enter a valid 12-digit Aadhaar number")
+    .optional()
+    .or(z.literal("")),
+  bankAccountName: optionalText(200),
+  bankName: optionalText(200),
+  bankBranchName: optionalText(200),
+  bankAccountNumber: optionalText(34),
+  bankIfscCode: optionalIfsc,
+  bankAccountType: z.enum(["SAVINGS", "CURRENT"]).optional().or(z.literal("")),
   roleOfInterest: optionalText(200),
   experience: optionalText(100),
   declarationAccepted: z.literal(true),
@@ -72,7 +114,7 @@ export const candidateFieldsSchema = z.object({
 
 export const publicCandidateSchema = candidateFieldsSchema.extend({
   organizationSlug: z.string().trim().min(2).max(120),
-  requisitionId: z.string().trim().min(1).max(100),
+  requisitionId: optionalText(100),
   source: z.literal("ONLINE").default("ONLINE"),
 });
 
@@ -92,12 +134,16 @@ export const walkInCandidateSchema = candidateFieldsSchema.extend({
 });
 
 export const candidateHrReviewSchema = z.object({
-  status: z.enum(["SHORTLISTED", "HOLD", "REJECTED"]).optional(),
+  status: z.enum(["SHORTLISTED", "HOLD", "REJECTED"]),
   interviewerName: z.string().trim().max(200).optional(),
-  communicationRating: z.string().trim().max(20).optional(),
-  technicalSkillsRating: z.string().trim().max(20).optional(),
-  overallFit: z.string().trim().max(20).optional(),
-  comments: z.string().trim().max(5000).optional(),
+  communicationRating: z.enum(["1", "2", "3", "4", "5"]),
+  technicalSkillsRating: z.enum(["1", "2", "3", "4", "5"]),
+  overallFit: z.enum(["1", "2", "3", "4", "5"]).optional(),
+  comments: z.string().trim().min(1, "Add a summary of the interview").max(5000),
+});
+
+export const candidateDecisionEmailSchema = z.object({
+  status: z.enum(["SHORTLISTED", "REJECTED"]),
 });
 
 export const authenticatedCandidateSchema = candidateFieldsSchema.extend({
@@ -106,6 +152,20 @@ export const authenticatedCandidateSchema = candidateFieldsSchema.extend({
   visitDate: optionalText(100),
   visitPurpose: optionalText(500),
 });
+
+const candidateBankFieldsSchema = z.object({
+  bankAccountName: optionalText(200),
+  bankName: optionalText(200),
+  bankBranchName: optionalText(200),
+  bankAccountNumber: optionalText(34),
+  bankIfscCode: optionalIfsc,
+  bankAccountType: z.enum(["SAVINGS", "CURRENT"]).optional().or(z.literal("")),
+});
+
+export const candidateUpdateSchema = candidateFieldsSchema
+  .omit({ documents: true, declarationAccepted: true, consentAccepted: true })
+  .partial()
+  .merge(candidateBankFieldsSchema);
 
 export const statusUpdateSchema = z.object({
   status: z.enum(CANDIDATE_STATUSES),
@@ -124,6 +184,7 @@ export const visitCheckOutSchema = z.object({
 });
 
 export const candidateListSchema = z.object({
+  view: z.enum(["archive"]).optional(),
   q: optionalText(200),
   status: z.enum(CANDIDATE_STATUSES).optional(),
   source: z.enum(CANDIDATE_SOURCES).optional(),
@@ -138,8 +199,17 @@ export const publicUploadUrlSchema = z.object({
   organizationSlug: z.string().trim().min(2).max(120),
   kind: z.enum(["RESUME", "SUPPORTING"]),
   fileName: z.string().trim().min(1).max(255),
-  contentType: z.enum(["application/pdf", "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "text/plain"]),
-  byteSize: z.number().int().positive().max(10 * 1024 * 1024),
+  contentType: z.enum([
+    "application/pdf",
+    "application/msword",
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    "text/plain",
+  ]),
+  byteSize: z
+    .number()
+    .int()
+    .positive()
+    .max(10 * 1024 * 1024),
 });
 
 const extensionByContentType: Record<string, string[]> = {
@@ -152,7 +222,10 @@ const extensionByContentType: Record<string, string[]> = {
 export function validateDocumentMetadata(input: { fileName: string; contentType: string }) {
   const lowerName = input.fileName.toLowerCase();
   const validExtensions = extensionByContentType[input.contentType] || [];
-  if (!validExtensions.some((extension) => lowerName.endsWith(extension))) throw validationError({ fileName: ["File extension does not match the declared content type"] });
+  if (!validExtensions.some((extension) => lowerName.endsWith(extension)))
+    throw validationError({
+      fileName: ["File extension does not match the declared content type"],
+    });
 }
 
 export type CandidateFields = z.infer<typeof candidateFieldsSchema>;

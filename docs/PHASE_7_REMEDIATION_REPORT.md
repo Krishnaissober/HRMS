@@ -87,21 +87,21 @@ The application is configured with the development console provider. Notificatio
 
 ## Verification
 
-| Check | Result |
-|---|---|
-| Unit/API tests | PASS — 17 files, 65 tests |
-| Focused persisted Phase 7 workflow | PASS |
-| Full Playwright run 1 | PASS — 9/9 |
-| Full Playwright run 2 | PASS — 9/9 |
-| Final enhanced persisted workflow | PASS |
-| Lint | PASS |
-| Typecheck | PASS |
-| Production build | PASS WITH EXISTING WARNING |
-| Prisma validation | PASS |
-| Migration status | PASS — 11 migrations, database current |
-| Migration diff | PASS — no difference |
-| PostgreSQL persistence | PASS |
-| Frozen SRS integrity | PASS — SHA-256 `ADFCA7D01C87C33884BD0C3F2CA726DBECDCCFE83F249D48F2365415AE104E09` |
+| Check                              | Result                                                                            |
+| ---------------------------------- | --------------------------------------------------------------------------------- |
+| Unit/API tests                     | PASS — 17 files, 65 tests                                                         |
+| Focused persisted Phase 7 workflow | PASS                                                                              |
+| Full Playwright run 1              | PASS — 9/9                                                                        |
+| Full Playwright run 2              | PASS — 9/9                                                                        |
+| Final enhanced persisted workflow  | PASS                                                                              |
+| Lint                               | PASS                                                                              |
+| Typecheck                          | PASS                                                                              |
+| Production build                   | PASS WITH EXISTING WARNING                                                        |
+| Prisma validation                  | PASS                                                                              |
+| Migration status                   | PASS — 11 migrations, database current                                            |
+| Migration diff                     | PASS — no difference                                                              |
+| PostgreSQL persistence             | PASS                                                                              |
+| Frozen SRS integrity               | PASS — SHA-256 `ADFCA7D01C87C33884BD0C3F2CA726DBECDCCFE83F249D48F2365415AE104E09` |
 
 The production build still reports BullMQ's optional `@valkey/valkey-glide` resolution warning. The configured ioredis path builds and operates; this is not a Phase 7 application blocker.
 

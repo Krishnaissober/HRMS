@@ -1,5 +1,54 @@
 import { NextRequest } from "next/server";
-import { errorResponse } from "@/lib/errors"; import { requestId, successResponse } from "@/lib/request"; import { parseBody } from "@/lib/validate"; import { getAuthenticatedContext } from "@/lib/tenant"; import { requirePermission } from "@/lib/rbac";
-import { LEAVE_PERMISSIONS } from "@/modules/leave/constants"; import { leaveTypeSchema } from "@/modules/leave/schemas"; import { listLeaveTypes } from "@/modules/leave/repository"; import { createLeaveType } from "@/modules/leave/service";
-export async function GET(request: NextRequest) { const id=requestId(request); try { const context=await getAuthenticatedContext(request); await requirePermission(context.session.user.id,context.organizationId,LEAVE_PERMISSIONS.read); return successResponse(await listLeaveTypes(context.organizationId,request.nextUrl.searchParams.get("all")!=="true"),id); } catch(error){ return errorResponse(error,id); } }
-export async function POST(request: NextRequest) { const id=requestId(request); try { const context=await getAuthenticatedContext(request); await requirePermission(context.session.user.id,context.organizationId,LEAVE_PERMISSIONS.typesManage); const body=parseBody(leaveTypeSchema,await request.json()); return successResponse(await createLeaveType({organizationId:context.organizationId,actorUserId:context.session.user.id,...body,requestId:id}),id,{status:201}); } catch(error){ return errorResponse(error,id); } }
+import { errorResponse } from "@/lib/errors";
+import { requestId, successResponse } from "@/lib/request";
+import { parseBody } from "@/lib/validate";
+import { getAuthenticatedContext } from "@/lib/tenant";
+import { requirePermission } from "@/lib/rbac";
+import { LEAVE_PERMISSIONS } from "@/modules/leave/constants";
+import { leaveTypeSchema } from "@/modules/leave/schemas";
+import { listLeaveTypes } from "@/modules/leave/repository";
+import { createLeaveType } from "@/modules/leave/service";
+export async function GET(request: NextRequest) {
+  const id = requestId(request);
+  try {
+    const context = await getAuthenticatedContext(request);
+    await requirePermission(
+      context.session.user.id,
+      context.organizationId,
+      LEAVE_PERMISSIONS.read,
+    );
+    return successResponse(
+      await listLeaveTypes(
+        context.organizationId,
+        request.nextUrl.searchParams.get("all") !== "true",
+      ),
+      id,
+    );
+  } catch (error) {
+    return errorResponse(error, id);
+  }
+}
+export async function POST(request: NextRequest) {
+  const id = requestId(request);
+  try {
+    const context = await getAuthenticatedContext(request);
+    await requirePermission(
+      context.session.user.id,
+      context.organizationId,
+      LEAVE_PERMISSIONS.typesManage,
+    );
+    const body = parseBody(leaveTypeSchema, await request.json());
+    return successResponse(
+      await createLeaveType({
+        organizationId: context.organizationId,
+        actorUserId: context.session.user.id,
+        ...body,
+        requestId: id,
+      }),
+      id,
+      { status: 201 },
+    );
+  } catch (error) {
+    return errorResponse(error, id);
+  }
+}

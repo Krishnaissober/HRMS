@@ -91,7 +91,11 @@ export default function MyPayroll() {
         <h2>Payslips</h2>
         <div className="candidate-list">
           {payslips.map((p) => (
-            <a className="candidate-row" key={p.id} href={`/api/v1/me/payslips/${p.id}/download?organizationId=${encodeURIComponent(organizationId)}`}>
+            <a
+              className="candidate-row"
+              key={p.id}
+              href={`/api/v1/me/payslips/${p.id}/download?organizationId=${encodeURIComponent(organizationId)}`}
+            >
               <span>
                 {p.payrollRun.periodStart.slice(0, 10)}–{p.payrollRun.periodEnd.slice(0, 10)}
               </span>
@@ -137,7 +141,11 @@ export default function MyPayroll() {
         <h2>Expense history</h2>
         <div className="candidate-list">
           {expenses.map((e) => (
-            <a className="candidate-row" key={e.id} href={`/api/v1/me/expenses/${e.id}/receipt?organizationId=${encodeURIComponent(organizationId)}`}>
+            <a
+              className="candidate-row"
+              key={e.id}
+              href={`/api/v1/me/expenses/${e.id}/receipt?organizationId=${encodeURIComponent(organizationId)}`}
+            >
               <span>{e.category}</span>
               <span>
                 {e.currency} {e.amount}

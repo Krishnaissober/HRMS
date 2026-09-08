@@ -67,25 +67,25 @@ Verified behavior includes unauthenticated/unauthorized route protection, organi
 
 ## Tests and verification
 
-| Check | Result |
-|---|---|
-| Unit tests | PASS — 43 tests |
-| API contract tests | PASS — includes Phase 4 authorization and validation |
-| Playwright | PASS — 7 tests, including persisted Phase 4 workflow |
-| Phase 4 persisted PostgreSQL workflow | PASS |
-| Candidate/application decision persistence | PASS |
-| Approval-step persistence | PASS |
-| Offer PDF generation/download | PASS |
-| Candidate acceptance and decline token contract | PASS — acceptance and replay rejection verified |
-| Audit persistence | PASS |
-| Tenant isolation | PASS |
-| RBAC | PASS |
-| Lint | PASS |
-| Typecheck | PASS |
-| Production build | PASS, with existing optional BullMQ Valkey module warning |
-| Prisma validation | PASS with configured environment |
-| Prisma migration status | PASS — database up to date |
-| Prisma migration diff | PASS — no difference detected |
+| Check                                           | Result                                                    |
+| ----------------------------------------------- | --------------------------------------------------------- |
+| Unit tests                                      | PASS — 43 tests                                           |
+| API contract tests                              | PASS — includes Phase 4 authorization and validation      |
+| Playwright                                      | PASS — 7 tests, including persisted Phase 4 workflow      |
+| Phase 4 persisted PostgreSQL workflow           | PASS                                                      |
+| Candidate/application decision persistence      | PASS                                                      |
+| Approval-step persistence                       | PASS                                                      |
+| Offer PDF generation/download                   | PASS                                                      |
+| Candidate acceptance and decline token contract | PASS — acceptance and replay rejection verified           |
+| Audit persistence                               | PASS                                                      |
+| Tenant isolation                                | PASS                                                      |
+| RBAC                                            | PASS                                                      |
+| Lint                                            | PASS                                                      |
+| Typecheck                                       | PASS                                                      |
+| Production build                                | PASS, with existing optional BullMQ Valkey module warning |
+| Prisma validation                               | PASS with configured environment                          |
+| Prisma migration status                         | PASS — database up to date                                |
+| Prisma migration diff                           | PASS — no difference detected                             |
 
 The persisted Playwright test covers missing Hold reason, Hire decision, cross-tenant decision read isolation, template creation, offer creation, approval, configured send adapter, private PDF download, cross-tenant PDF rejection, acceptance, response-token replay rejection, and persisted audit records.
 

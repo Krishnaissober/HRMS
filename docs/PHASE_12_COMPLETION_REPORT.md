@@ -8,16 +8,16 @@ The confirmed Phase 12 application scope is implemented with additive persistenc
 
 ## Requirements implemented
 
-| Requirement | SRS reference | Implementation |
-|---|---|---|
-| Resignation initiation | FR-280 / P577 | `POST /api/v1/employees/{id}/exit`, mandatory reason, duplicate prevention, employee history and audit event |
-| Notice tracking | FR-281 / P578 | Exit case stores notice days and expected last working day |
-| Clearance | FR-282 / P579 | Tenant-scoped exit clearance tasks with department, assignment, due date, status and completion actor |
-| Exit interview | FR-283 / P580 | Structured JSON feedback and optional rating API |
-| Access revocation | FR-284 / P581 | Completion revokes existing employee access-provisioning records transactionally and records the exit audit event |
-| Exit documents | FR-285 / P582 | Existing employee document/storage APIs remain the authorized attachment/download foundation; no duplicate document system was introduced |
-| Exit status/history | FR-286 / P583 | Completion changes the employee to `EXITED` and preserves employee history and audit records; `INACTIVE` is supported as the terminal follow-on status |
-| Asset return | FR-203 / P535 | Tenant-scoped asset return endpoint and audit event; exit completion rejects outstanding assigned assets |
+| Requirement               | SRS reference   | Implementation                                                                                                                                                     |
+| ------------------------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Resignation initiation    | FR-280 / P577   | `POST /api/v1/employees/{id}/exit`, mandatory reason, duplicate prevention, employee history and audit event                                                       |
+| Notice tracking           | FR-281 / P578   | Exit case stores notice days and expected last working day                                                                                                         |
+| Clearance                 | FR-282 / P579   | Tenant-scoped exit clearance tasks with department, assignment, due date, status and completion actor                                                              |
+| Exit interview            | FR-283 / P580   | Structured JSON feedback and optional rating API                                                                                                                   |
+| Access revocation         | FR-284 / P581   | Completion revokes existing employee access-provisioning records transactionally and records the exit audit event                                                  |
+| Exit documents            | FR-285 / P582   | Existing employee document/storage APIs remain the authorized attachment/download foundation; no duplicate document system was introduced                          |
+| Exit status/history       | FR-286 / P583   | Completion changes the employee to `EXITED` and preserves employee history and audit records; `INACTIVE` is supported as the terminal follow-on status             |
+| Asset return              | FR-203 / P535   | Tenant-scoped asset return endpoint and audit event; exit completion rejects outstanding assigned assets                                                           |
 | Compliance/audit evidence | §23 / P584–P594 | Exit mutations write transactional audit events with actor, resource, organization, request ID where available, and outcome through the existing audit abstraction |
 
 ## Database changes and migration
@@ -63,21 +63,21 @@ Audited events include exit creation, clearance task creation/update, exit inter
 
 ## Tests and validation
 
-| Check | Result |
-|---|---|
-| Focused Phase 12 API tests | PASS — 3 tests |
-| Full unit/API suite | PASS — 26 files, 97 tests |
-| Typecheck | PASS |
-| Lint | PASS |
-| Production build | PASS with existing optional Valkey warning |
-| Prisma validation | PASS |
-| Prisma migration deploy | PASS |
-| Prisma migration status | PASS — database up to date |
-| Health endpoint | PASS — HTTP 200 |
-| Readiness endpoint | PASS — HTTP 200 |
-| Persisted Phase 12 Playwright workflow | ENVIRONMENT BLOCKED / not run in this validation pass |
-| Redis/BullMQ live verification | ENVIRONMENT BLOCKED if Redis is unavailable |
-| S3 live object-storage verification | ENVIRONMENT BLOCKED if configured provider is unavailable |
+| Check                                  | Result                                                    |
+| -------------------------------------- | --------------------------------------------------------- |
+| Focused Phase 12 API tests             | PASS — 3 tests                                            |
+| Full unit/API suite                    | PASS — 26 files, 97 tests                                 |
+| Typecheck                              | PASS                                                      |
+| Lint                                   | PASS                                                      |
+| Production build                       | PASS with existing optional Valkey warning                |
+| Prisma validation                      | PASS                                                      |
+| Prisma migration deploy                | PASS                                                      |
+| Prisma migration status                | PASS — database up to date                                |
+| Health endpoint                        | PASS — HTTP 200                                           |
+| Readiness endpoint                     | PASS — HTTP 200                                           |
+| Persisted Phase 12 Playwright workflow | ENVIRONMENT BLOCKED / not run in this validation pass     |
+| Redis/BullMQ live verification         | ENVIRONMENT BLOCKED if Redis is unavailable               |
+| S3 live object-storage verification    | ENVIRONMENT BLOCKED if configured provider is unavailable |
 
 The build warning is the existing optional `@valkey/valkey-glide` resolution warning from BullMQ; it does not prevent compilation or build completion.
 

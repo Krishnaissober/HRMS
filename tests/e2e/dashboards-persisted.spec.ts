@@ -42,11 +42,16 @@ test("loads persisted HR and recruitment dashboards with RBAC and tenant isolati
 
   await page.goto("/");
   await expect(page).toHaveURL(/\/hr\/dashboard$/);
-  await expect(page.getByRole("heading", { name: /HR overview/ })).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: /Good (morning|afternoon|evening)/ }),
+  ).toBeVisible();
   await expect(page.getByText("Persisted dashboard alert")).toBeVisible();
   await expect(page.getByText("Persisted dashboard task")).toBeVisible();
   await expect(page.getByRole("link", { name: /1 Applications/ })).toBeVisible();
-  await expect(page.getByRole("link", { name: /1 Open positions/ })).toHaveAttribute("href", "/hr/recruitment/dashboard");
+  await expect(page.getByRole("link", { name: /1 Open positions/ })).toHaveAttribute(
+    "href",
+    "/hr/recruitment/dashboard",
+  );
 
   const dashboardResponse = await page.request.get("/api/v1/dashboards/recruitment", {
     headers,
@@ -57,9 +62,7 @@ test("loads persisted HR and recruitment dashboards with RBAC and tenant isolati
   expect(dashboard.pipelineCounts.INTERVIEW).toBe(1);
   expect(dashboard.openPositions).toBe(1);
   expect(dashboard.sourceEffectiveness).toEqual(
-    expect.arrayContaining([
-      expect.objectContaining({ source: "WALK_IN", applications: 1 }),
-    ]),
+    expect.arrayContaining([expect.objectContaining({ source: "WALK_IN", applications: 1 })]),
   );
 
   await page.getByRole("link", { name: "Open recruitment" }).click();
@@ -89,7 +92,7 @@ test("loads persisted HR and recruitment dashboards with RBAC and tenant isolati
   }
 
   const restricted = await playwrightRequest.newContext({
-    baseURL: process.env.E2E_BASE_URL || "http://127.0.0.1:3000",
+    baseURL: process.env.E2E_BASE_URL || "http://localhost:3002",
   });
   try {
     expect(

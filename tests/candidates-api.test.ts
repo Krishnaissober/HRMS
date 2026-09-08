@@ -11,7 +11,10 @@ const mocks = vi.hoisted(() => ({
 
 vi.mock("@/lib/tenant", () => ({ getAuthenticatedContext: mocks.getAuthenticatedContext }));
 vi.mock("@/lib/rbac", () => ({ requirePermission: mocks.requirePermission }));
-vi.mock("@/modules/candidates/repository", () => ({ listCandidates: mocks.listCandidates, findCandidateMatch: mocks.findCandidateMatch }));
+vi.mock("@/modules/candidates/repository", () => ({
+  listCandidates: mocks.listCandidates,
+  findCandidateMatch: mocks.findCandidateMatch,
+}));
 
 import { GET } from "@/app/api/v1/candidates/route";
 import { GET as matchGET } from "@/app/api/v1/candidates/match/route";
@@ -39,7 +42,11 @@ describe("candidate list RBAC contract", () => {
   it("allows an active administrator with candidates.read", async () => {
     const response = await GET(request());
     expect(response.status).toBe(200);
-    expect(mocks.requirePermission).toHaveBeenCalledWith("admin-user", "org-active", "candidates.read");
+    expect(mocks.requirePermission).toHaveBeenCalledWith(
+      "admin-user",
+      "org-active",
+      "candidates.read",
+    );
   });
 
   it("returns 403 when the active role lacks candidates.read", async () => {
@@ -56,20 +63,41 @@ describe("candidate list RBAC contract", () => {
 
   it("uses the active organization for permission and repository scope", async () => {
     await GET(request());
-    expect(mocks.requirePermission).toHaveBeenCalledWith("admin-user", "org-active", "candidates.read");
-    expect(mocks.listCandidates).toHaveBeenCalledWith("org-active", expect.objectContaining({ page: 1, pageSize: 20 }));
+    expect(mocks.requirePermission).toHaveBeenCalledWith(
+      "admin-user",
+      "org-active",
+      "candidates.read",
+    );
+    expect(mocks.listCandidates).toHaveBeenCalledWith(
+      "org-active",
+      expect.objectContaining({ page: 1, pageSize: 20 }),
+    );
   });
 
   it("matches a walk-in candidate only within the active organization", async () => {
-    mocks.findCandidateMatch.mockResolvedValue({ id: "candidate-1", referenceNo: "TM-CAN-001", firstName: "Asha" });
-    const response = await matchGET(new NextRequest("http://localhost/api/v1/candidates/match?identifier=%2B91%209999999999"));
+    mocks.findCandidateMatch.mockResolvedValue({
+      id: "candidate-1",
+      referenceNo: "TM-CAN-001",
+      firstName: "Asha",
+    });
+    const response = await matchGET(
+      new NextRequest("http://localhost/api/v1/candidates/match?identifier=%2B91%209999999999"),
+    );
     expect(response.status).toBe(200);
     expect(mocks.findCandidateMatch).toHaveBeenCalledWith("org-active", "+91 9999999999");
   });
 
   it("rejects candidate matching when the authenticated tenant is forbidden", async () => {
     mocks.getAuthenticatedContext.mockRejectedValue(forbiddenError());
-    expect((await matchGET(new NextRequest("http://localhost/api/v1/candidates/match?identifier=asha%40example.test"))).status).toBe(403);
+    expect(
+      (
+        await matchGET(
+          new NextRequest(
+            "http://localhost/api/v1/candidates/match?identifier=asha%40example.test",
+          ),
+        )
+      ).status,
+    ).toBe(403);
     expect(mocks.findCandidateMatch).not.toHaveBeenCalled();
   });
 });

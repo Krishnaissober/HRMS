@@ -33,10 +33,17 @@ export function calendarRange(view: CalendarView, selectedDate: string) {
 
 export function parseWeeklyOffs(value: string | null | undefined) {
   if (!value) return [];
-  return value.split(",").map(Number).filter((day) => Number.isInteger(day) && day >= 0 && day <= 6);
+  return value
+    .split(",")
+    .map(Number)
+    .filter((day) => Number.isInteger(day) && day >= 0 && day <= 6);
 }
 
-export function isWeeklyOff(workDate: Date, assignmentOffs?: string | null, shiftOffs?: string | null) {
+export function isWeeklyOff(
+  workDate: Date,
+  assignmentOffs?: string | null,
+  shiftOffs?: string | null,
+) {
   const configured = parseWeeklyOffs(assignmentOffs);
   const days = configured.length ? configured : parseWeeklyOffs(shiftOffs);
   return days.includes(workDate.getUTCDay());
@@ -56,7 +63,9 @@ export function validateAttendanceStatusChange(input: {
     throw new AppError("CONFLICT", "Attendance is already in the requested status", 409);
   }
   if (["ABSENT", "LEAVE"].includes(input.target) && (input.checkInAt || input.checkOutAt)) {
-    throw validationError({ status: ["This status cannot be applied to a record with check-in or check-out timestamps"] });
+    throw validationError({
+      status: ["This status cannot be applied to a record with check-in or check-out timestamps"],
+    });
   }
   if (input.target === "LATE" && !input.lateArrivalMinutes) {
     throw validationError({ status: ["Late status requires a calculated late arrival"] });

@@ -1,2 +1,33 @@
-import { NextRequest } from "next/server"; import { errorResponse } from "@/lib/errors"; import { requestId, successResponse } from "@/lib/request"; import { parseBody } from "@/lib/validate"; import { getAuthenticatedContext } from "@/lib/tenant"; import { requirePermission } from "@/lib/rbac"; import { LEAVE_PERMISSIONS } from "@/modules/leave/constants"; import { carryForwardSchema } from "@/modules/leave/schemas"; import { carryForwardLeave } from "@/modules/leave/service";
-export async function POST(request:NextRequest){const id=requestId(request);try{const context=await getAuthenticatedContext(request);await requirePermission(context.session.user.id,context.organizationId,LEAVE_PERMISSIONS.carryForward);const body=parseBody(carryForwardSchema,await request.json());return successResponse(await carryForwardLeave({organizationId:context.organizationId,actorUserId:context.session.user.id,...body,requestId:id}),id,{status:201});}catch(error){return errorResponse(error,id);}}
+import { NextRequest } from "next/server";
+import { errorResponse } from "@/lib/errors";
+import { requestId, successResponse } from "@/lib/request";
+import { parseBody } from "@/lib/validate";
+import { getAuthenticatedContext } from "@/lib/tenant";
+import { requirePermission } from "@/lib/rbac";
+import { LEAVE_PERMISSIONS } from "@/modules/leave/constants";
+import { carryForwardSchema } from "@/modules/leave/schemas";
+import { carryForwardLeave } from "@/modules/leave/service";
+export async function POST(request: NextRequest) {
+  const id = requestId(request);
+  try {
+    const context = await getAuthenticatedContext(request);
+    await requirePermission(
+      context.session.user.id,
+      context.organizationId,
+      LEAVE_PERMISSIONS.carryForward,
+    );
+    const body = parseBody(carryForwardSchema, await request.json());
+    return successResponse(
+      await carryForwardLeave({
+        organizationId: context.organizationId,
+        actorUserId: context.session.user.id,
+        ...body,
+        requestId: id,
+      }),
+      id,
+      { status: 201 },
+    );
+  } catch (error) {
+    return errorResponse(error, id);
+  }
+}

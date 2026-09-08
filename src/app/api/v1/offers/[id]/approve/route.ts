@@ -10,5 +10,25 @@ import { approveOffer } from "@/modules/hiring/service";
 
 export async function POST(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const id = requestId(request);
-  try { const context = await getAuthenticatedContext(request); await requirePermission(context.session.user.id, context.organizationId, HIRING_PERMISSIONS.offersApprove); const parsed = parseBody(offerApprovalSchema, await request.json()); return successResponse(await approveOffer({ organizationId: context.organizationId, actorUserId: context.session.user.id, id: (await params).id, ...parsed, requestId: id }), id); } catch (error) { return errorResponse(error, id); }
+  try {
+    const context = await getAuthenticatedContext(request);
+    await requirePermission(
+      context.session.user.id,
+      context.organizationId,
+      HIRING_PERMISSIONS.offersApprove,
+    );
+    const parsed = parseBody(offerApprovalSchema, await request.json());
+    return successResponse(
+      await approveOffer({
+        organizationId: context.organizationId,
+        actorUserId: context.session.user.id,
+        id: (await params).id,
+        ...parsed,
+        requestId: id,
+      }),
+      id,
+    );
+  } catch (error) {
+    return errorResponse(error, id);
+  }
 }

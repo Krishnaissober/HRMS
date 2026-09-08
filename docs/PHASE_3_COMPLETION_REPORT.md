@@ -81,25 +81,25 @@ The permissions are enforced at route level and all repository queries/mutations
 
 ## Test results
 
-| Check | Status | Evidence |
-|---|---|---|
-| Unit tests | PASS | 39 total tests passed across 10 test files |
-| Attendance validation tests | PASS | Check-in context, checkout identifier, visitor host and exception-note validation |
-| Attendance API tests | PASS | Authentication, RBAC rejection and organization context propagation |
-| Attendance repository tests | PASS | Duplicate check-in, invalid checkout, late/early/duration persistence |
-| Existing Phase 0–2 tests | PASS | Included in the 39-test suite |
-| Playwright smoke/UI tests | PASS | 4 existing browser tests passed |
-| Persisted attendance Playwright test | PASS | Authenticated generated local fixture; real PostgreSQL interview/attendance check-in/out, timing, exception, audit, history and cross-tenant checks passed |
-| Persisted interview Playwright test | PASS | Authenticated generated local fixture; real PostgreSQL interview creation, linkage, check-in/out, evaluation, scorecard persistence and history checks passed |
-| Complete Playwright suite | PASS | 6 tests passed |
-| Lint | PASS | `npm run lint` |
-| Typecheck | PASS | `npm run typecheck` |
-| Production build | PASS | Build completed; existing optional BullMQ `@valkey/valkey-glide` warning remains |
-| Prisma validation | PASS | Schema valid |
-| Prisma migration application | PASS | Phase 3 migration applied to local PostgreSQL |
-| Prisma migration status | PASS | Six migrations found; database schema up to date |
-| Prisma schema diff | PASS | No difference detected |
-| SRS integrity | PASS | Frozen SRS hash remains `ADFCA7D01C87C33884BD0C3F2CA726DBECDCCFE83F249D48F2365415AE104E09` |
+| Check                                | Status | Evidence                                                                                                                                                      |
+| ------------------------------------ | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Unit tests                           | PASS   | 39 total tests passed across 10 test files                                                                                                                    |
+| Attendance validation tests          | PASS   | Check-in context, checkout identifier, visitor host and exception-note validation                                                                             |
+| Attendance API tests                 | PASS   | Authentication, RBAC rejection and organization context propagation                                                                                           |
+| Attendance repository tests          | PASS   | Duplicate check-in, invalid checkout, late/early/duration persistence                                                                                         |
+| Existing Phase 0–2 tests             | PASS   | Included in the 39-test suite                                                                                                                                 |
+| Playwright smoke/UI tests            | PASS   | 4 existing browser tests passed                                                                                                                               |
+| Persisted attendance Playwright test | PASS   | Authenticated generated local fixture; real PostgreSQL interview/attendance check-in/out, timing, exception, audit, history and cross-tenant checks passed    |
+| Persisted interview Playwright test  | PASS   | Authenticated generated local fixture; real PostgreSQL interview creation, linkage, check-in/out, evaluation, scorecard persistence and history checks passed |
+| Complete Playwright suite            | PASS   | 6 tests passed                                                                                                                                                |
+| Lint                                 | PASS   | `npm run lint`                                                                                                                                                |
+| Typecheck                            | PASS   | `npm run typecheck`                                                                                                                                           |
+| Production build                     | PASS   | Build completed; existing optional BullMQ `@valkey/valkey-glide` warning remains                                                                              |
+| Prisma validation                    | PASS   | Schema valid                                                                                                                                                  |
+| Prisma migration application         | PASS   | Phase 3 migration applied to local PostgreSQL                                                                                                                 |
+| Prisma migration status              | PASS   | Six migrations found; database schema up to date                                                                                                              |
+| Prisma schema diff                   | PASS   | No difference detected                                                                                                                                        |
+| SRS integrity                        | PASS   | Frozen SRS hash remains `ADFCA7D01C87C33884BD0C3F2CA726DBECDCCFE83F249D48F2365415AE104E09`                                                                    |
 
 ## Environment blockers
 
@@ -116,28 +116,28 @@ The permissions are enforced at route level and all repository queries/mutations
 
 ## Definition of Done
 
-| Requirement | Status |
-|---|---|
-| Candidate check-in | PASS — authenticated persisted E2E verified |
-| Candidate check-out | PASS — authenticated persisted E2E verified |
-| Visitor management | PASS |
-| Host assignment | PASS |
-| Late tracking | PASS |
-| Early-departure tracking | PASS |
-| Exception handling | PASS |
-| Attendance history | PASS |
-| RBAC | PASS |
-| Tenant isolation | PASS — organization-scoped routes/repositories and API tests |
-| Audit logging | PASS — transactional candidate activity and audit events |
-| APIs | PASS |
-| Validation | PASS |
-| Unit/API tests | PASS |
-| Playwright | PASS — 6 tests passed, including authenticated persisted workflows |
-| Lint | PASS |
-| Typecheck | PASS |
-| Build | PASS |
-| Prisma validation/migration | PASS |
-| SRS unchanged | PASS |
+| Requirement                 | Status                                                             |
+| --------------------------- | ------------------------------------------------------------------ |
+| Candidate check-in          | PASS — authenticated persisted E2E verified                        |
+| Candidate check-out         | PASS — authenticated persisted E2E verified                        |
+| Visitor management          | PASS                                                               |
+| Host assignment             | PASS                                                               |
+| Late tracking               | PASS                                                               |
+| Early-departure tracking    | PASS                                                               |
+| Exception handling          | PASS                                                               |
+| Attendance history          | PASS                                                               |
+| RBAC                        | PASS                                                               |
+| Tenant isolation            | PASS — organization-scoped routes/repositories and API tests       |
+| Audit logging               | PASS — transactional candidate activity and audit events           |
+| APIs                        | PASS                                                               |
+| Validation                  | PASS                                                               |
+| Unit/API tests              | PASS                                                               |
+| Playwright                  | PASS — 6 tests passed, including authenticated persisted workflows |
+| Lint                        | PASS                                                               |
+| Typecheck                   | PASS                                                               |
+| Build                       | PASS                                                               |
+| Prisma validation/migration | PASS                                                               |
+| SRS unchanged               | PASS                                                               |
 
 ## Phase 4 prerequisites
 

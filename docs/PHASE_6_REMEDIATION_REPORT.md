@@ -13,17 +13,17 @@ All HIGH and MEDIUM application findings from `docs/PHASE_6_REVIEW_REPORT.md` ar
 
 ## Finding status
 
-| Finding | Status | Verification |
-|---|---|---|
-| FR-126 calendar views | RESOLVED | Persisted day/week/month API and UI views; RBAC, tenant, filter, navigation, API, and Playwright coverage |
-| Report aggregation | RESOLVED | Summary is calculated from the complete persisted filtered set, independently of pagination |
-| Roster rules | RESOLVED | Tenant-safe entity checks, active employee/shift validation, overlap rejection, rotation-code validation, and weekly-off enforcement |
-| Status transitions | RESOLVED | Service-level consistency rules reject invalid/no-op transitions and persist history/audit for accepted changes |
-| Overtime/correction recalculation | RESOLVED | Shared calculations recompute duration, late, early, overtime, status, and approved-overtime bounds |
-| Negative/security tests | RESOLVED | Unit/API and PostgreSQL-backed tests cover unauthorized, cross-tenant, invalid range, roster conflict, correction, and status cases |
-| Redis | ENVIRONMENT BLOCKED | No reachable Redis service; no fake queue implementation used |
-| S3 | ENVIRONMENT BLOCKED | No reachable configured S3-compatible service; no fake object-storage success claimed |
-| Health/readiness | ENVIRONMENT BLOCKED | Application starts during Playwright, but no standalone app process was listening during the final direct probe |
+| Finding                           | Status              | Verification                                                                                                                         |
+| --------------------------------- | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| FR-126 calendar views             | RESOLVED            | Persisted day/week/month API and UI views; RBAC, tenant, filter, navigation, API, and Playwright coverage                            |
+| Report aggregation                | RESOLVED            | Summary is calculated from the complete persisted filtered set, independently of pagination                                          |
+| Roster rules                      | RESOLVED            | Tenant-safe entity checks, active employee/shift validation, overlap rejection, rotation-code validation, and weekly-off enforcement |
+| Status transitions                | RESOLVED            | Service-level consistency rules reject invalid/no-op transitions and persist history/audit for accepted changes                      |
+| Overtime/correction recalculation | RESOLVED            | Shared calculations recompute duration, late, early, overtime, status, and approved-overtime bounds                                  |
+| Negative/security tests           | RESOLVED            | Unit/API and PostgreSQL-backed tests cover unauthorized, cross-tenant, invalid range, roster conflict, correction, and status cases  |
+| Redis                             | ENVIRONMENT BLOCKED | No reachable Redis service; no fake queue implementation used                                                                        |
+| S3                                | ENVIRONMENT BLOCKED | No reachable configured S3-compatible service; no fake object-storage success claimed                                                |
+| Health/readiness                  | ENVIRONMENT BLOCKED | Application starts during Playwright, but no standalone app process was listening during the final direct probe                      |
 
 ## FR-126 attendance calendar views
 
@@ -126,20 +126,20 @@ Added or extended tests for:
 
 ## Verification results
 
-| Check | Result |
-|---|---|
-| Unit/API tests | PASS — 61 tests across 16 files |
-| Targeted persisted Playwright | PASS — 1 test |
-| Full Playwright run 1 | PASS — 9 tests |
-| Full Playwright run 2 | PASS — 9 tests |
-| Lint | PASS |
-| Typecheck | PASS |
-| Production build | PASS WITH WARNING |
-| Prisma validation | PASS |
-| Prisma migration status | PASS — 10 migrations, database up to date |
-| Prisma migration diff | PASS — no difference detected |
-| PostgreSQL persisted workflow | PASS |
-| SRS integrity | PASS — hash unchanged |
+| Check                         | Result                                    |
+| ----------------------------- | ----------------------------------------- |
+| Unit/API tests                | PASS — 61 tests across 16 files           |
+| Targeted persisted Playwright | PASS — 1 test                             |
+| Full Playwright run 1         | PASS — 9 tests                            |
+| Full Playwright run 2         | PASS — 9 tests                            |
+| Lint                          | PASS                                      |
+| Typecheck                     | PASS                                      |
+| Production build              | PASS WITH WARNING                         |
+| Prisma validation             | PASS                                      |
+| Prisma migration status       | PASS — 10 migrations, database up to date |
+| Prisma migration diff         | PASS — no difference detected             |
+| PostgreSQL persisted workflow | PASS                                      |
+| SRS integrity                 | PASS — hash unchanged                     |
 
 The production build retains the existing BullMQ optional `@valkey/valkey-glide` warning. The warning does not fail compilation, but live queue readiness remains blocked until Redis is available.
 

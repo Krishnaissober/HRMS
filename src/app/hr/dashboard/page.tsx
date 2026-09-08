@@ -21,11 +21,16 @@ import {
   WalletCards,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { backendFetch } from "@/lib/backend";
+import { DashboardWavyBackground } from "@/components/layout/dashboard-wavy-background";
 
 type DashboardData = {
+  user: User;
   overview: { applications: number; openPositions: number; pipelineCounts: Record<string, number> };
-  kpis: { interviewNoShowRate: number; offerAcceptanceRate: number; averageTimeToHireDays: number | null };
+  kpis: {
+    interviewNoShowRate: number;
+    offerAcceptanceRate: number;
+    averageTimeToHireDays: number | null;
+  };
   alerts: Array<{ id: string; title: string; body: string; actionableUrl: string | null }>;
   tasks: Array<{ id: string; title: string; sourceType: string; priority: string }>;
 };
@@ -33,11 +38,41 @@ type DashboardData = {
 type User = { name?: string | null };
 
 const quickActions = [
-  ["Add candidate", "Create a new candidate record", "/hr/candidates/new", UserPlus, "bg-gradient-to-br from-indigo-500 to-indigo-700"],
-  ["Schedule interview", "Schedule a candidate interview", "/hr/interviews/new", CalendarDays, "bg-gradient-to-br from-purple-500 to-purple-700"],
-  ["Employees", "Manage converted employees and hires", "/hr/employees", Users, "bg-gradient-to-br from-blue-500 to-blue-700"],
-  ["Start onboarding", "Begin employee onboarding", "/hr/onboarding", BriefcaseBusiness, "bg-gradient-to-br from-emerald-500 to-emerald-700"],
-  ["Run payroll", "Open the payroll workflow", "/hr/payroll", WalletCards, "bg-gradient-to-br from-amber-500 to-amber-700"],
+  [
+    "Add candidate",
+    "Create a new candidate record",
+    "/hr/candidates/new",
+    UserPlus,
+    "bg-gradient-to-br from-indigo-500 to-indigo-700",
+  ],
+  [
+    "Schedule interview",
+    "Schedule a candidate interview",
+    "/hr/interviews/new",
+    CalendarDays,
+    "bg-gradient-to-br from-purple-500 to-purple-700",
+  ],
+  [
+    "Employees",
+    "Manage converted employees and hires",
+    "/hr/employees",
+    Users,
+    "bg-gradient-to-br from-blue-500 to-blue-700",
+  ],
+  [
+    "Start onboarding",
+    "Begin employee onboarding",
+    "/hr/onboarding",
+    BriefcaseBusiness,
+    "bg-gradient-to-br from-emerald-500 to-emerald-700",
+  ],
+  [
+    "Run payroll",
+    "Open the payroll workflow",
+    "/hr/payroll",
+    WalletCards,
+    "bg-gradient-to-br from-amber-500 to-amber-700",
+  ],
 ] as const;
 
 const pipelineStages = [
@@ -61,7 +96,7 @@ export default function HrDashboardPage() {
   const [greeting, setGreeting] = useState("Good morning");
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [formattedDate, setFormattedDate] = useState("");
-  const [backendStatus, setBackendStatus] = useState<"checking" | "online" | "offline">("checking");
+  const [appStatus, setAppStatus] = useState<"checking" | "online" | "offline">("checking");
 
   useEffect(() => {
     const hour = new Date().getHours();
@@ -75,31 +110,28 @@ export default function HrDashboardPage() {
         weekday: "short",
         month: "short",
         day: "numeric",
-      })
+      }),
     );
-  }, []);
-
-  useEffect(() => {
-    void backendFetch("/health", { cache: "no-store" })
-      .then((response) => setBackendStatus(response.ok ? "online" : "offline"))
-      .catch(() => setBackendStatus("offline"));
   }, []);
 
   const load = useCallback(async () => {
     setIsRefreshing(true);
     setMessage("Loading your command center…");
     try {
-      const [dashboardResponse, sessionResponse] = await Promise.all([
-        fetch("/api/v1/dashboards/hr"),
-        fetch("/api/v1/auth/session"),
-      ]);
+      const dashboardResponse = await fetch("/api/v1/dashboards/hr", { cache: "no-store" });
+      if (dashboardResponse.status === 401) {
+        window.location.replace("/");
+        return;
+      }
       const dashboardResult = await dashboardResponse.json();
-      const sessionResult = await sessionResponse.json();
-      if (!dashboardResponse.ok) throw new Error(dashboardResult.error?.message || "Could not load the HR dashboard");
+      if (!dashboardResponse.ok)
+        throw new Error(dashboardResult.error?.message || "Could not load the HR dashboard");
       setData(dashboardResult.data);
-      if (sessionResponse.ok) setUser(sessionResult.data.user);
+      setUser(dashboardResult.data.user);
+      setAppStatus("online");
       setMessage("");
     } catch (error) {
+      setAppStatus("offline");
       setMessage(error instanceof Error ? error.message : "Could not load the HR dashboard");
     } finally {
       setIsRefreshing(false);
@@ -131,7 +163,8 @@ export default function HrDashboardPage() {
   return (
     <main className="page-shell dashboard-command-center space-y-6 pb-12">
       {/* 1. Hero Header Banner */}
-      <section className="relative overflow-hidden rounded-3xl border border-indigo-500/20 bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 p-6 md:p-8 text-white shadow-2xl">
+      <section className="prism-light relative overflow-hidden rounded-3xl border border-indigo-500/20 bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 p-6 md:p-8 text-white shadow-2xl">
+        <DashboardWavyBackground />
         {/* Glowing backdrop Orbs */}
         <div className="absolute -right-16 -top-16 h-64 w-64 rounded-full bg-indigo-500/20 blur-3xl pointer-events-none" />
         <div className="absolute right-1/3 -bottom-16 h-48 w-48 rounded-full bg-purple-500/20 blur-3xl pointer-events-none" />
@@ -141,7 +174,22 @@ export default function HrDashboardPage() {
             <div className="inline-flex items-center gap-2 rounded-full border border-indigo-400/30 bg-indigo-500/10 px-3.5 py-1 text-xs font-semibold text-indigo-200 backdrop-blur-md">
               <Sparkles className="h-3.5 w-3.5 text-indigo-300 animate-pulse" />
               <span>Triple Minds HR</span>
-              <span className={cn("rounded-full px-2 py-0.5 text-[10px]", backendStatus === "online" ? "bg-emerald-400/20 text-emerald-200" : backendStatus === "offline" ? "bg-rose-400/20 text-rose-200" : "bg-white/10 text-indigo-200")}>{backendStatus === "online" ? "Backend connected" : backendStatus === "offline" ? "Backend offline" : "Connecting backend…"}</span>
+              <span
+                className={cn(
+                  "rounded-full px-2 py-0.5 text-[10px]",
+                  appStatus === "online"
+                    ? "bg-emerald-400/20 text-emerald-200"
+                    : appStatus === "offline"
+                      ? "bg-rose-400/20 text-rose-200"
+                      : "bg-white/10 text-indigo-200",
+                )}
+              >
+                {appStatus === "online"
+                  ? "System connected"
+                  : appStatus === "offline"
+                    ? "System offline"
+                    : "Connecting system…"}
+              </span>
               {formattedDate && (
                 <>
                   <span className="h-1 w-1 rounded-full bg-indigo-400" />
@@ -150,10 +198,12 @@ export default function HrDashboardPage() {
               )}
             </div>
             <h1 className="text-2xl md:text-3xl font-black tracking-tight text-white">
-              {greeting}{user?.name ? `, ${user.name}` : ""} 👋
+              {greeting}
+              {user?.name ? `, ${user.name}` : ""} 👋
             </h1>
             <p className="text-sm md:text-base text-indigo-100/75 max-w-xl font-medium">
-              Here is your live real-time HR command dashboard for recruitment, operations, and team tasks.
+              Here is your live real-time HR command dashboard for recruitment, operations, and team
+              tasks.
             </p>
           </div>
 
@@ -173,21 +223,85 @@ export default function HrDashboardPage() {
       <section className="rounded-3xl border border-border/60 bg-card p-6 shadow-sm">
         <div className="mb-5 flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className="text-xs font-extrabold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">People workflow</p>
-            <h2 className="text-xl font-extrabold text-foreground">Move each hire through the lifecycle</h2>
+            <p className="text-xs font-extrabold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">
+              People workflow
+            </p>
+            <h2 className="text-xl font-extrabold text-foreground">
+              Move each hire through the lifecycle
+            </h2>
           </div>
-          <Link href="/hr/reports" className="text-sm font-bold text-indigo-600 hover:text-indigo-500">View reports <ArrowRight className="ml-1 inline h-3.5 w-3.5" /></Link>
+          <Link
+            href="/hr/reports"
+            className="text-sm font-bold text-indigo-600 hover:text-indigo-500"
+          >
+            View reports <ArrowRight className="ml-1 inline h-3.5 w-3.5" />
+          </Link>
         </div>
         <div className="grid gap-3 md:grid-cols-3">
           {[
-            ["Phase 1", "Hire", "Candidates, interviews, and offers", "/hr/recruitment/dashboard", Users, "indigo"],
-            ["Phase 2", "Onboard", "Employees, documents, and onboarding", "/hr/onboarding", UserPlus, "emerald"],
-            ["Phase 3", "Operate", "Attendance, leave, payroll, and reports", "/hr/attendance", UserCheck, "amber"],
-          ].map(([number, title, description, href, Icon, color]) => { const stepNumber = number as string; const stepTitle = title as string; const stepDescription = description as string; const stepHref = href as string; const stepColor = color as string; const StepIcon = Icon as typeof Users; return <Link href={stepHref} key={stepNumber} className="group flex items-center gap-3 rounded-2xl border border-border/50 bg-background/60 p-4 transition-colors hover:border-indigo-500/40 hover:bg-indigo-50/50 dark:hover:bg-indigo-950/20">
-            <span className={cn("flex min-h-9 min-w-9 shrink-0 items-center justify-center rounded-xl px-2 text-xs font-black", stepColor === "emerald" ? "bg-emerald-100 text-emerald-700" : stepColor === "blue" ? "bg-blue-100 text-blue-700" : stepColor === "amber" ? "bg-amber-100 text-amber-700" : "bg-indigo-100 text-indigo-700")}>{stepNumber}</span>
-            <span className="min-w-0"><strong className="block text-sm font-extrabold text-foreground">{stepTitle}</strong><small className="block truncate text-xs text-muted-foreground">{stepDescription}</small></span>
-            <StepIcon className="ml-auto h-4 w-4 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
-          </Link>; })}
+            [
+              "Phase 1",
+              "Hire",
+              "Candidates, interviews, and offers",
+              "/hr/recruitment/dashboard",
+              Users,
+              "indigo",
+            ],
+            [
+              "Phase 2",
+              "Onboard",
+              "Employees, documents, and onboarding",
+              "/hr/operations/dashboard",
+              UserPlus,
+              "emerald",
+            ],
+            [
+              "Phase 3",
+              "Operate",
+              "Attendance, leave, payroll, and reports",
+              "/hr/workplace/dashboard",
+              UserCheck,
+              "amber",
+            ],
+          ].map(([number, title, description, href, Icon, color]) => {
+            const stepNumber = number as string;
+            const stepTitle = title as string;
+            const stepDescription = description as string;
+            const stepHref = href as string;
+            const stepColor = color as string;
+            const StepIcon = Icon as typeof Users;
+            return (
+              <Link
+                href={stepHref}
+                key={stepNumber}
+                className="group flex items-center gap-3 rounded-2xl border border-border/50 bg-background/60 p-4 transition-colors hover:border-indigo-500/40 hover:bg-indigo-50/50 dark:hover:bg-indigo-950/20"
+              >
+                <span
+                  className={cn(
+                    "flex min-h-9 min-w-9 shrink-0 items-center justify-center rounded-xl px-2 text-xs font-black",
+                    stepColor === "emerald"
+                      ? "bg-emerald-100 text-emerald-700"
+                      : stepColor === "blue"
+                        ? "bg-blue-100 text-blue-700"
+                        : stepColor === "amber"
+                          ? "bg-amber-100 text-amber-700"
+                          : "bg-indigo-100 text-indigo-700",
+                  )}
+                >
+                  {stepNumber}
+                </span>
+                <span className="min-w-0">
+                  <strong className="block text-sm font-extrabold text-foreground">
+                    {stepTitle}
+                  </strong>
+                  <small className="block truncate text-xs text-muted-foreground">
+                    {stepDescription}
+                  </small>
+                </span>
+                <StepIcon className="ml-auto h-4 w-4 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
+              </Link>
+            );
+          })}
         </div>
       </section>
 
@@ -196,16 +310,21 @@ export default function HrDashboardPage() {
         {/* Metric 1: Applications */}
         <Link
           href="/hr/candidates"
+          aria-label={`${data?.overview.applications ?? 0} Applications`}
           className="group relative overflow-hidden rounded-2xl border border-border/60 bg-card p-5 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-indigo-500/40 hover:shadow-md"
         >
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-extrabold text-muted-foreground uppercase tracking-wider">Applications</span>
+            <span className="text-[11px] font-extrabold text-muted-foreground uppercase tracking-wider">
+              Applications
+            </span>
             <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 group-hover:scale-110 transition-transform">
               <Users className="h-4.5 w-4.5" />
             </div>
           </div>
           <div className="mt-3 flex items-baseline justify-between">
-            <span className="text-2xl font-black tracking-tight text-foreground">{data?.overview.applications ?? 0}</span>
+            <span className="text-2xl font-black tracking-tight text-foreground">
+              {data?.overview.applications ?? 0}
+            </span>
             <span className="inline-flex items-center text-[10px] font-bold text-indigo-600 bg-indigo-50 dark:bg-indigo-950/50 px-2 py-0.5 rounded-full">
               Total Candidates
             </span>
@@ -215,16 +334,21 @@ export default function HrDashboardPage() {
         {/* Metric 2: Open Positions */}
         <Link
           href="/hr/recruitment/dashboard"
+          aria-label={`${data?.overview.openPositions ?? 0} Open positions`}
           className="group relative overflow-hidden rounded-2xl border border-border/60 bg-card p-5 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-blue-500/40 hover:shadow-md"
         >
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-extrabold text-muted-foreground uppercase tracking-wider">Open Positions</span>
+            <span className="text-[11px] font-extrabold text-muted-foreground uppercase tracking-wider">
+              Open Positions
+            </span>
             <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 group-hover:scale-110 transition-transform">
               <BriefcaseBusiness className="h-4.5 w-4.5" />
             </div>
           </div>
           <div className="mt-3 flex items-baseline justify-between">
-            <span className="text-2xl font-black tracking-tight text-foreground">{data?.overview.openPositions ?? 0}</span>
+            <span className="text-2xl font-black tracking-tight text-foreground">
+              {data?.overview.openPositions ?? 0}
+            </span>
             <span className="inline-flex items-center text-[10px] font-bold text-blue-600 bg-blue-50 dark:bg-blue-950/50 px-2 py-0.5 rounded-full">
               Active Jobs
             </span>
@@ -237,13 +361,17 @@ export default function HrDashboardPage() {
           className="group relative overflow-hidden rounded-2xl border border-border/60 bg-card p-5 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-rose-500/40 hover:shadow-md"
         >
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-extrabold text-muted-foreground uppercase tracking-wider">No-Show Rate</span>
+            <span className="text-[11px] font-extrabold text-muted-foreground uppercase tracking-wider">
+              No-Show Rate
+            </span>
             <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 group-hover:scale-110 transition-transform">
               <CalendarDays className="h-4.5 w-4.5" />
             </div>
           </div>
           <div className="mt-3 flex items-baseline justify-between">
-            <span className="text-2xl font-black tracking-tight text-foreground">{data?.kpis.interviewNoShowRate ?? 0}%</span>
+            <span className="text-2xl font-black tracking-tight text-foreground">
+              {data?.kpis.interviewNoShowRate ?? 0}%
+            </span>
             <span className="inline-flex items-center text-[10px] font-bold text-rose-600 bg-rose-50 dark:bg-rose-950/50 px-2 py-0.5 rounded-full">
               Target &lt;5%
             </span>
@@ -256,13 +384,17 @@ export default function HrDashboardPage() {
           className="group relative overflow-hidden rounded-2xl border border-border/60 bg-card p-5 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-emerald-500/40 hover:shadow-md"
         >
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-extrabold text-muted-foreground uppercase tracking-wider">Offer Acceptance</span>
+            <span className="text-[11px] font-extrabold text-muted-foreground uppercase tracking-wider">
+              Offer Acceptance
+            </span>
             <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 group-hover:scale-110 transition-transform">
               <Award className="h-4.5 w-4.5" />
             </div>
           </div>
           <div className="mt-3 flex items-baseline justify-between">
-            <span className="text-2xl font-black tracking-tight text-foreground">{data?.kpis.offerAcceptanceRate ?? 0}%</span>
+            <span className="text-2xl font-black tracking-tight text-foreground">
+              {data?.kpis.offerAcceptanceRate ?? 0}%
+            </span>
             <span className="inline-flex items-center text-[10px] font-bold text-emerald-600 bg-emerald-50 dark:bg-emerald-950/50 px-2 py-0.5 rounded-full">
               Conversion
             </span>
@@ -275,14 +407,18 @@ export default function HrDashboardPage() {
           className="group relative overflow-hidden rounded-2xl border border-border/60 bg-card p-5 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-amber-500/40 hover:shadow-md"
         >
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-extrabold text-muted-foreground uppercase tracking-wider">Avg. Time to Hire</span>
+            <span className="text-[11px] font-extrabold text-muted-foreground uppercase tracking-wider">
+              Avg. Time to Hire
+            </span>
             <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-amber-50 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 group-hover:scale-110 transition-transform">
               <Clock className="h-4.5 w-4.5" />
             </div>
           </div>
           <div className="mt-3 flex items-baseline justify-between">
             <span className="text-2xl font-black tracking-tight text-foreground">
-              {data?.kpis.averageTimeToHireDays == null ? "—" : `${data.kpis.averageTimeToHireDays}d`}
+              {data?.kpis.averageTimeToHireDays == null
+                ? "—"
+                : `${data.kpis.averageTimeToHireDays}d`}
             </span>
             <span className="inline-flex items-center text-[10px] font-bold text-amber-600 bg-amber-50 dark:bg-amber-950/50 px-2 py-0.5 rounded-full">
               Speed Metric
@@ -302,10 +438,13 @@ export default function HrDashboardPage() {
                 <p className="text-xs font-extrabold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">
                   Recruitment Workflow
                 </p>
-                <h2 className="text-lg font-extrabold text-foreground">Recruitment Pipeline Funnel</h2>
+                <h2 className="text-lg font-extrabold text-foreground">
+                  Recruitment Pipeline Funnel
+                </h2>
               </div>
               <Link
                 href="/hr/recruitment/dashboard"
+                aria-label="Open recruitment"
                 className="inline-flex items-center gap-1.5 text-xs font-bold text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 transition-colors"
               >
                 <span>Open Pipeline</span>
@@ -328,7 +467,9 @@ export default function HrDashboardPage() {
                   >
                     <div>
                       <div className="flex items-center justify-between mb-2">
-                        <span className="text-[11px] font-extrabold tracking-wider text-muted-foreground uppercase">{label}</span>
+                        <span className="text-[11px] font-extrabold tracking-wider text-muted-foreground uppercase">
+                          {label}
+                        </span>
                         <StageIcon className="h-4 w-4 text-muted-foreground group-hover:text-indigo-600 transition-colors" />
                       </div>
                       <span className="text-2xl font-black text-foreground block">{count}</span>
@@ -338,7 +479,10 @@ export default function HrDashboardPage() {
                     <div className="mt-4 space-y-1.5">
                       <div className="h-2 w-full rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden">
                         <div
-                          className={cn("h-full rounded-full transition-all duration-500", badgeColor)}
+                          className={cn(
+                            "h-full rounded-full transition-all duration-500",
+                            badgeColor,
+                          )}
                           style={{ width: `${percentage}%` }}
                         />
                       </div>
@@ -371,7 +515,7 @@ export default function HrDashboardPage() {
                   <div
                     className={cn(
                       "flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-white shadow-md group-hover:scale-110 transition-transform",
-                      gradient
+                      gradient,
                     )}
                   >
                     <Icon className="h-5 w-5" />
@@ -380,7 +524,9 @@ export default function HrDashboardPage() {
                     <span className="font-extrabold text-sm text-foreground block truncate group-hover:text-indigo-600 transition-colors">
                       {title}
                     </span>
-                    <span className="text-xs text-muted-foreground line-clamp-1 block mt-0.5 font-medium">{description}</span>
+                    <span className="text-xs text-muted-foreground line-clamp-1 block mt-0.5 font-medium">
+                      {description}
+                    </span>
                   </div>
                   <ArrowRight className="h-4 w-4 text-muted-foreground/50 group-hover:text-indigo-600 group-hover:translate-x-0.5 transition-all shrink-0 mt-1" />
                 </Link>
@@ -410,7 +556,9 @@ export default function HrDashboardPage() {
                     <span className="font-extrabold text-base text-foreground block group-hover:text-indigo-600 transition-colors">
                       Attendance Today
                     </span>
-                    <span className="text-xs text-muted-foreground font-medium">Review present, late, absent & leave</span>
+                    <span className="text-xs text-muted-foreground font-medium">
+                      Review present, late, absent & leave
+                    </span>
                   </div>
                 </div>
                 <ArrowRight className="h-5 w-5 text-indigo-600 shrink-0 group-hover:translate-x-1 transition-transform" />
@@ -428,7 +576,9 @@ export default function HrDashboardPage() {
                     <span className="font-extrabold text-base text-foreground block group-hover:text-purple-600 transition-colors">
                       Interviews Today
                     </span>
-                    <span className="text-xs text-muted-foreground font-medium">Review scheduled interviews & candidates</span>
+                    <span className="text-xs text-muted-foreground font-medium">
+                      Review scheduled interviews & candidates
+                    </span>
                   </div>
                 </div>
                 <ArrowRight className="h-5 w-5 text-purple-600 shrink-0 group-hover:translate-x-1 transition-transform" />
@@ -443,10 +593,15 @@ export default function HrDashboardPage() {
           <section className="rounded-3xl border border-border/60 bg-card p-6 shadow-sm space-y-4">
             <div className="flex items-center justify-between border-b border-border/50 pb-3">
               <div>
-                <p className="text-xs font-extrabold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">Action Center</p>
+                <p className="text-xs font-extrabold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">
+                  Action Center
+                </p>
                 <h2 className="text-lg font-extrabold text-foreground">Needs Attention</h2>
               </div>
-              <Link href="/hr/notifications" className="text-xs font-bold text-indigo-600 hover:underline">
+              <Link
+                href="/hr/notifications"
+                className="text-xs font-bold text-indigo-600 hover:underline"
+              >
                 View All
               </Link>
             </div>
@@ -466,7 +621,9 @@ export default function HrDashboardPage() {
                   <CheckCircle2 className="h-5 w-5" />
                 </div>
                 <p className="font-extrabold text-sm text-foreground">You’re all caught up!</p>
-                <p className="text-xs text-muted-foreground font-medium">There are no pending alerts or assigned tasks right now.</p>
+                <p className="text-xs text-muted-foreground font-medium">
+                  There are no pending alerts or assigned tasks right now.
+                </p>
               </div>
             )}
 
@@ -482,7 +639,7 @@ export default function HrDashboardPage() {
                     <span
                       className={cn(
                         "mt-1.5 h-2 w-2 rounded-full shrink-0",
-                        item.status === "Alert" ? "bg-rose-500 animate-pulse" : "bg-indigo-500"
+                        item.status === "Alert" ? "bg-rose-500 animate-pulse" : "bg-indigo-500",
                       )}
                     />
                     <div className="flex-1 min-w-0">
@@ -495,13 +652,15 @@ export default function HrDashboardPage() {
                             "text-[9px] font-black uppercase px-2 py-0.5 rounded-full shrink-0",
                             item.status === "Alert"
                               ? "bg-rose-100 dark:bg-rose-950/60 text-rose-700 dark:text-rose-300"
-                              : "bg-indigo-100 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300"
+                              : "bg-indigo-100 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300",
                           )}
                         >
                           {item.status}
                         </span>
                       </div>
-                      <p className="text-xs text-muted-foreground line-clamp-2 mt-1 font-medium">{item.description}</p>
+                      <p className="text-xs text-muted-foreground line-clamp-2 mt-1 font-medium">
+                        {item.description}
+                      </p>
                     </div>
                   </Link>
                 ))}
@@ -512,7 +671,9 @@ export default function HrDashboardPage() {
           {/* Quick Management Shortcuts */}
           <section className="rounded-3xl border border-indigo-500/20 bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 p-6 text-white shadow-xl space-y-4">
             <div className="space-y-1">
-              <span className="text-[10px] font-extrabold uppercase tracking-wider text-indigo-300">Quick Shortcuts</span>
+              <span className="text-[10px] font-extrabold uppercase tracking-wider text-indigo-300">
+                Quick Shortcuts
+              </span>
               <h3 className="text-base font-extrabold text-white">Management Center</h3>
             </div>
 

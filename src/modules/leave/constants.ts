@@ -9,4 +9,3 @@ export const LEAVE_PERMISSIONS = {
 
 export const LEAVE_APPROVAL_POLICIES = ["MANAGER", "HR", "MANAGER_THEN_HR"] as const;
 export const LEAVE_REQUEST_STATUSES = ["PENDING", "APPROVED", "REJECTED"] as const;
-

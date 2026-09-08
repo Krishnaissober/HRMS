@@ -7,4 +7,23 @@ import { requirePermission } from "@/lib/rbac";
 import { EMPLOYEE_PERMISSIONS } from "@/modules/employees/constants";
 import { exitInterviewSchema } from "@/modules/employees/schemas";
 import { saveExitInterview } from "@/modules/employees/service";
-export async function POST(request:NextRequest,{params}:{params:Promise<{id:string}>}){const rid=requestId(request);try{const c=await getAuthenticatedContext(request);await requirePermission(c.session.user.id,c.organizationId,EMPLOYEE_PERMISSIONS.exitManage);const b=parseBody(exitInterviewSchema,await request.json());return successResponse(await saveExitInterview({organizationId:c.organizationId,actorUserId:c.session.user.id,exitCaseId:(await params).id,...b,requestId:rid}),rid);}catch(e){return errorResponse(e,rid);}}
+export async function POST(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const rid = requestId(request);
+  try {
+    const c = await getAuthenticatedContext(request);
+    await requirePermission(c.session.user.id, c.organizationId, EMPLOYEE_PERMISSIONS.exitManage);
+    const b = parseBody(exitInterviewSchema, await request.json());
+    return successResponse(
+      await saveExitInterview({
+        organizationId: c.organizationId,
+        actorUserId: c.session.user.id,
+        exitCaseId: (await params).id,
+        ...b,
+        requestId: rid,
+      }),
+      rid,
+    );
+  } catch (e) {
+    return errorResponse(e, rid);
+  }
+}

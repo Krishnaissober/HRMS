@@ -71,33 +71,33 @@ The existing Phase 0-4 persisted suites also remained green. Current full E2E re
 
 ## Requirements coverage
 
-| Requirement area | Status | Evidence / limitation |
-|---|---|---|
-| FR-085 candidate conversion | PASSED | Accepted-offer gate, traceable candidate/application, transaction and idempotency. |
-| FR-100 employee master | PASSED | Employee model, directory/profile API and UI. |
-| FR-101 employment history | PASSED | EmployeeHistory model, history API and actor details. |
-| FR-102 onboarding templates | PASSED | Organization-scoped reusable templates and definitions. |
-| FR-103 onboarding checklist | PASSED | Tasks include assignee, due date, status, notes and completion timestamp. |
-| FR-104 documents | PARTIALLY IMPLEMENTED | Metadata, verification and authorized download APIs exist; live upload/download remains blocked until S3 is available, and a separate pre-upload document-request UI is not yet provided. |
-| FR-105 probation reminders | ENVIRONMENT BLOCKED / PARTIAL | Probation duration and end date are stored. Reminder delivery requires the unavailable Redis/BullMQ worker foundation. |
-| FR-106 self-service profile | NOT IMPLEMENTED | Phase 5 currently provides HR-authorized employee APIs; no employee-user identity/self-service route has been added. |
-| Tenant isolation and RBAC | PASSED | Route-level permission checks and cross-tenant persisted test coverage. |
-| Auditability | PASSED | Mutation audit events are written in the same transaction where required. |
+| Requirement area            | Status                        | Evidence / limitation                                                                                                                                                                     |
+| --------------------------- | ----------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| FR-085 candidate conversion | PASSED                        | Accepted-offer gate, traceable candidate/application, transaction and idempotency.                                                                                                        |
+| FR-100 employee master      | PASSED                        | Employee model, directory/profile API and UI.                                                                                                                                             |
+| FR-101 employment history   | PASSED                        | EmployeeHistory model, history API and actor details.                                                                                                                                     |
+| FR-102 onboarding templates | PASSED                        | Organization-scoped reusable templates and definitions.                                                                                                                                   |
+| FR-103 onboarding checklist | PASSED                        | Tasks include assignee, due date, status, notes and completion timestamp.                                                                                                                 |
+| FR-104 documents            | PARTIALLY IMPLEMENTED         | Metadata, verification and authorized download APIs exist; live upload/download remains blocked until S3 is available, and a separate pre-upload document-request UI is not yet provided. |
+| FR-105 probation reminders  | ENVIRONMENT BLOCKED / PARTIAL | Probation duration and end date are stored. Reminder delivery requires the unavailable Redis/BullMQ worker foundation.                                                                    |
+| FR-106 self-service profile | NOT IMPLEMENTED               | Phase 5 currently provides HR-authorized employee APIs; no employee-user identity/self-service route has been added.                                                                      |
+| Tenant isolation and RBAC   | PASSED                        | Route-level permission checks and cross-tenant persisted test coverage.                                                                                                                   |
+| Auditability                | PASSED                        | Mutation audit events are written in the same transaction where required.                                                                                                                 |
 
 ## Test and build results
 
-| Check | Status | Result |
-|---|---|---|
-| ESLint | PASSED | No lint errors. |
-| TypeScript | PASSED | `tsc --noEmit` passed. |
-| Unit/API tests | PASSED | 47 tests passed. |
-| Playwright | PASSED | 9 persisted E2E tests passed with one worker. |
-| Production build | PASSED WITH WARNING | Build completed; BullMQ reports an optional unresolved `@valkey/valkey-glide` warning. |
-| Prisma validation | PASSED | Schema valid. |
-| Prisma migration status | PASSED | Database up to date. |
-| Prisma migration diff | PASSED | No difference detected. |
-| `/api/health` | ENVIRONMENT BLOCKED | No application process was listening on localhost:3000 during the final probe. |
-| `/api/ready` | ENVIRONMENT BLOCKED | Same local process availability issue; Redis remains unavailable. |
+| Check                   | Status              | Result                                                                                 |
+| ----------------------- | ------------------- | -------------------------------------------------------------------------------------- |
+| ESLint                  | PASSED              | No lint errors.                                                                        |
+| TypeScript              | PASSED              | `tsc --noEmit` passed.                                                                 |
+| Unit/API tests          | PASSED              | 47 tests passed.                                                                       |
+| Playwright              | PASSED              | 9 persisted E2E tests passed with one worker.                                          |
+| Production build        | PASSED WITH WARNING | Build completed; BullMQ reports an optional unresolved `@valkey/valkey-glide` warning. |
+| Prisma validation       | PASSED              | Schema valid.                                                                          |
+| Prisma migration status | PASSED              | Database up to date.                                                                   |
+| Prisma migration diff   | PASSED              | No difference detected.                                                                |
+| `/api/health`           | ENVIRONMENT BLOCKED | No application process was listening on localhost:3000 during the final probe.         |
+| `/api/ready`            | ENVIRONMENT BLOCKED | Same local process availability issue; Redis remains unavailable.                      |
 
 ## Environment blockers
 

@@ -16,7 +16,10 @@ describe("tenant isolation", () => {
 });
 
 describe("RBAC", () => {
-  const membership = { status: "ACTIVE", roles: [{ role: { permissions: [{ permission: { name: "roles.manage" } }] } }] };
+  const membership = {
+    status: "ACTIVE",
+    roles: [{ role: { permissions: [{ permission: { name: "roles.manage" } }] } }],
+  };
 
   beforeEach(() => vi.clearAllMocks());
 
@@ -26,6 +29,8 @@ describe("RBAC", () => {
 
   it("denies undeclared permissions and inactive memberships", () => {
     expect(membershipHasPermission(membership, "members.manage")).toBe(false);
-    expect(membershipHasPermission({ ...membership, status: "INACTIVE" }, "roles.manage")).toBe(false);
+    expect(membershipHasPermission({ ...membership, status: "INACTIVE" }, "roles.manage")).toBe(
+      false,
+    );
   });
 });

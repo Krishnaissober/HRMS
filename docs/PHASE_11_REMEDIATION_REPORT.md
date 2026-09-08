@@ -175,16 +175,16 @@ Added only regression coverage tied to corrected HIGH findings:
 
 ### Verification
 
-| Check | Result |
-|---|---|
-| Focused Phase 11 unit/API | PASS — 13/13 |
-| Focused Phase 11 Playwright | PASS — 1/1 |
-| Full unit/API regression | PASS — 25 files, 93/93 tests |
-| Full Playwright regression | PASS — 12/12 workflows |
-| Lint | PASS |
-| Typecheck | PASS |
-| Production build | PASS WITH INFORMATIONAL WARNING |
-| Prisma migration deploy | PASS — 16 migrations applied |
+| Check                       | Result                          |
+| --------------------------- | ------------------------------- |
+| Focused Phase 11 unit/API   | PASS — 13/13                    |
+| Focused Phase 11 Playwright | PASS — 1/1                      |
+| Full unit/API regression    | PASS — 25 files, 93/93 tests    |
+| Full Playwright regression  | PASS — 12/12 workflows          |
+| Lint                        | PASS                            |
+| Typecheck                   | PASS                            |
+| Production build            | PASS WITH INFORMATIONAL WARNING |
+| Prisma migration deploy     | PASS — 16 migrations applied    |
 
 ## Build warning
 

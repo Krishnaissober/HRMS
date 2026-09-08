@@ -9,14 +9,20 @@ export async function GET(request: NextRequest) {
   try {
     const organizationSlug = request.nextUrl.searchParams.get("organizationSlug")?.trim();
     const identifier = request.nextUrl.searchParams.get("identifier")?.trim();
-    if (!organizationSlug || !identifier) throw validationError("Organization and email/mobile are required.");
+    if (!organizationSlug || !identifier)
+      throw validationError("Organization and email/mobile are required.");
     const organization = await findOrganizationBySlug(organizationSlug);
     if (!organization) throw notFoundError();
     const candidate = await findCandidateMatch(organization.id, identifier);
     if (!candidate) throw notFoundError();
     const requisitionId = request.nextUrl.searchParams.get("requisitionId")?.trim();
     const source = request.nextUrl.searchParams.get("source") === "WALK_IN" ? "WALK_IN" : "ONLINE";
-    const previousSubmission = requisitionId ? await db.candidateSubmission.findFirst({ where: { candidateId: candidate.id, source, application: { is: { requisitionId } } }, select: { id: true } }) : null;
+    const previousSubmission = requisitionId
+      ? await db.candidateSubmission.findFirst({
+          where: { candidateId: candidate.id, source, application: { is: { requisitionId } } },
+          select: { id: true },
+        })
+      : null;
     return successResponse({ ...candidate, duplicateSubmission: Boolean(previousSubmission) }, id);
   } catch (error) {
     return errorResponse(error, id);

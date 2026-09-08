@@ -15,30 +15,30 @@ The core HR employee-conversion and onboarding foundation is implemented and has
 
 ## Classification summary
 
-| Area | Classification | Review result |
-|---|---|---|
-| Candidate-to-employee conversion | PASS | Accepted-offer gate, candidate/application traceability and organization scope are implemented. |
-| Employee profile creation | PASS | Employee record is created transactionally with copied personal/contact/employment data. |
-| Employee status | PASS | Status vocabulary and transition matrix are enforced in the service layer. |
-| Onboarding template | PASS | Reusable organization-scoped templates and task definitions exist. |
-| Onboarding instance | PASS | Employee/template assignment is persisted and duplicate assignment conflicts are handled. |
-| Onboarding tasks | PASS | Tasks include assignee, due date, status, notes and completion fields. |
-| Onboarding progress | PASS | Progress, completion percentage and derived overdue visibility are available. |
-| Document collection/verification | HIGH | Upload metadata, verification and acknowledgement exist, but explicit pre-upload document requests are missing. Live storage verification is also blocked by S3. |
-| Asset assignment foundation | PASS | Organization-scoped assignment, uniqueness protection and audit are implemented. |
-| Access-provisioning foundation | PASS WITH ISSUES | Request/status persistence and audit exist; actual external provisioning is not implemented or live-verified. |
-| Mentor/buddy assignment | PASS | Same-tenant mentor assignment, self-assignment rejection and replacement history exist. |
-| Transactional conversion | PASS | Employee, employee history, candidate activity, audit and optional onboarding creation share the transaction. |
-| Duplicate/concurrent conversion prevention | MEDIUM | Sequential idempotency and unique-race fallback exist; no explicit concurrent conversion test was found. |
-| RBAC | PASS | Phase 5 permissions are declared and checked at route boundaries. |
-| Tenant isolation | PASS | Repository/service queries scope employee-related records by organization; persisted cross-tenant employee rejection is tested. |
-| Audit logging | PASS | Core mutations write audit records transactionally. |
-| API validation/error handling | MEDIUM | Zod and standard error envelopes are used, but several invalid-transition and negative endpoint cases lack automated coverage. |
-| PostgreSQL persistence | PASS | Migration, schema status and persisted Playwright workflow passed. |
-| Unit/API tests | MEDIUM | 47 tests pass, but Phase 5 negative/security coverage is incomplete. |
-| Persisted Playwright workflow | PASS WITH ISSUES | Real PostgreSQL conversion/onboarding workflow passes; document workflow is not included because S3 is unavailable. |
-| Self-service employee profile | HIGH | Required by frozen SRS FR-106 and not implemented. |
-| Environment services | ENVIRONMENT BLOCKED | Redis, S3 and local app health/readiness process were unavailable during the final report evidence pass. |
+| Area                                       | Classification      | Review result                                                                                                                                                    |
+| ------------------------------------------ | ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Candidate-to-employee conversion           | PASS                | Accepted-offer gate, candidate/application traceability and organization scope are implemented.                                                                  |
+| Employee profile creation                  | PASS                | Employee record is created transactionally with copied personal/contact/employment data.                                                                         |
+| Employee status                            | PASS                | Status vocabulary and transition matrix are enforced in the service layer.                                                                                       |
+| Onboarding template                        | PASS                | Reusable organization-scoped templates and task definitions exist.                                                                                               |
+| Onboarding instance                        | PASS                | Employee/template assignment is persisted and duplicate assignment conflicts are handled.                                                                        |
+| Onboarding tasks                           | PASS                | Tasks include assignee, due date, status, notes and completion fields.                                                                                           |
+| Onboarding progress                        | PASS                | Progress, completion percentage and derived overdue visibility are available.                                                                                    |
+| Document collection/verification           | HIGH                | Upload metadata, verification and acknowledgement exist, but explicit pre-upload document requests are missing. Live storage verification is also blocked by S3. |
+| Asset assignment foundation                | PASS                | Organization-scoped assignment, uniqueness protection and audit are implemented.                                                                                 |
+| Access-provisioning foundation             | PASS WITH ISSUES    | Request/status persistence and audit exist; actual external provisioning is not implemented or live-verified.                                                    |
+| Mentor/buddy assignment                    | PASS                | Same-tenant mentor assignment, self-assignment rejection and replacement history exist.                                                                          |
+| Transactional conversion                   | PASS                | Employee, employee history, candidate activity, audit and optional onboarding creation share the transaction.                                                    |
+| Duplicate/concurrent conversion prevention | MEDIUM              | Sequential idempotency and unique-race fallback exist; no explicit concurrent conversion test was found.                                                         |
+| RBAC                                       | PASS                | Phase 5 permissions are declared and checked at route boundaries.                                                                                                |
+| Tenant isolation                           | PASS                | Repository/service queries scope employee-related records by organization; persisted cross-tenant employee rejection is tested.                                  |
+| Audit logging                              | PASS                | Core mutations write audit records transactionally.                                                                                                              |
+| API validation/error handling              | MEDIUM              | Zod and standard error envelopes are used, but several invalid-transition and negative endpoint cases lack automated coverage.                                   |
+| PostgreSQL persistence                     | PASS                | Migration, schema status and persisted Playwright workflow passed.                                                                                               |
+| Unit/API tests                             | MEDIUM              | 47 tests pass, but Phase 5 negative/security coverage is incomplete.                                                                                             |
+| Persisted Playwright workflow              | PASS WITH ISSUES    | Real PostgreSQL conversion/onboarding workflow passes; document workflow is not included because S3 is unavailable.                                              |
+| Self-service employee profile              | HIGH                | Required by frozen SRS FR-106 and not implemented.                                                                                                               |
+| Environment services                       | ENVIRONMENT BLOCKED | Redis, S3 and local app health/readiness process were unavailable during the final report evidence pass.                                                         |
 
 ## Detailed requirements review
 
@@ -110,17 +110,17 @@ Finding: **PASS** for the reviewed mutations. Document download audit is written
 
 ## Negative-test review
 
-| Negative case | Evidence | Classification |
-|---|---|---|
-| Duplicate conversion | Persisted E2E covers sequential repeat and `created: false`. | PASS |
-| Concurrent conversion | Unique constraint/race fallback exists in service; no dedicated concurrent test found. | MEDIUM — test gap |
-| Invalid conversion state | Service rejects conversion without an accepted offer; no focused automated negative test found. | MEDIUM — test gap |
-| Unauthorized employee access | Route authorization is unit-tested with mocked auth/RBAC. | PASS for contract; persisted negative coverage recommended. |
-| Cross-tenant employee access | Persisted E2E expects 404. | PASS |
-| Unauthorized document access | No Phase 5 persisted test found for unauthorized or cross-tenant document download/status. | HIGH — security regression-test gap, compounded by S3 environment block. |
-| Unauthorized onboarding changes | No focused negative test found for forbidden template/instance/task mutation. | MEDIUM — test gap |
-| Invalid task transitions | Completion is idempotent, but there is no explicit task transition matrix or negative test for invalid transitions. | MEDIUM |
-| Unauthorized employee updates | No focused negative test found for `PATCH /employees/[id]`. | MEDIUM — test gap |
+| Negative case                   | Evidence                                                                                                            | Classification                                                           |
+| ------------------------------- | ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| Duplicate conversion            | Persisted E2E covers sequential repeat and `created: false`.                                                        | PASS                                                                     |
+| Concurrent conversion           | Unique constraint/race fallback exists in service; no dedicated concurrent test found.                              | MEDIUM — test gap                                                        |
+| Invalid conversion state        | Service rejects conversion without an accepted offer; no focused automated negative test found.                     | MEDIUM — test gap                                                        |
+| Unauthorized employee access    | Route authorization is unit-tested with mocked auth/RBAC.                                                           | PASS for contract; persisted negative coverage recommended.              |
+| Cross-tenant employee access    | Persisted E2E expects 404.                                                                                          | PASS                                                                     |
+| Unauthorized document access    | No Phase 5 persisted test found for unauthorized or cross-tenant document download/status.                          | HIGH — security regression-test gap, compounded by S3 environment block. |
+| Unauthorized onboarding changes | No focused negative test found for forbidden template/instance/task mutation.                                       | MEDIUM — test gap                                                        |
+| Invalid task transitions        | Completion is idempotent, but there is no explicit task transition matrix or negative test for invalid transitions. | MEDIUM                                                                   |
+| Unauthorized employee updates   | No focused negative test found for `PATCH /employees/[id]`.                                                         | MEDIUM — test gap                                                        |
 
 The existing Playwright test is genuinely persisted: it signs in, creates records through PostgreSQL, calls real APIs, checks candidate/application linkage, performs onboarding/task/status/asset/access/mentor operations and queries audit rows. It is not rendering-only. It does not cover the S3-backed document path.
 

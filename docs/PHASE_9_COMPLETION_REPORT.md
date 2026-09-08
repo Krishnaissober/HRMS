@@ -24,15 +24,15 @@ FR-160–164 are implemented through organization-scoped salary structures, peri
 
 ## Verification evidence
 
-| Check | Result |
-|---|---|
-| Typecheck | PASS after final remediation |
-| Lint | PASS after final remediation |
-| Unit/API tests | PASS before final audit-only remediation: 20 files, 75 tests |
-| Persisted Phase 9 Playwright | PASS: real PostgreSQL and S3 salary → payroll → approval → payslip → expense → approval → payment workflow |
-| Prisma validation/status/diff | PASS before final audit-only remediation: 13 migrations applied, zero drift |
-| Production build | PASS before final audit-only remediation through compilation, type validation, static generation, and build artifacts |
-| Frozen SRS | PASS; unchanged hash |
+| Check                         | Result                                                                                                                |
+| ----------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| Typecheck                     | PASS after final remediation                                                                                          |
+| Lint                          | PASS after final remediation                                                                                          |
+| Unit/API tests                | PASS before final audit-only remediation: 20 files, 75 tests                                                          |
+| Persisted Phase 9 Playwright  | PASS: real PostgreSQL and S3 salary → payroll → approval → payslip → expense → approval → payment workflow            |
+| Prisma validation/status/diff | PASS before final audit-only remediation: 13 migrations applied, zero drift                                           |
+| Production build              | PASS before final audit-only remediation through compilation, type validation, static generation, and build artifacts |
+| Frozen SRS                    | PASS; unchanged hash                                                                                                  |
 
 ## Current environment limitation
 

@@ -18,10 +18,12 @@ const organizationSlug = process.env.LOCAL_ADMIN_ORGANIZATION_SLUG?.trim() || "l
 const resetPassword = process.argv.includes("--reset-password");
 
 if (!email || !password) {
-  throw new Error("Set LOCAL_ADMIN_EMAIL and LOCAL_ADMIN_PASSWORD in .env.local before running this command.");
+  throw new Error(
+    "Set LOCAL_ADMIN_EMAIL and LOCAL_ADMIN_PASSWORD in .env.local before running this command.",
+  );
 }
-if (password.length < 12) {
-  throw new Error("LOCAL_ADMIN_PASSWORD must contain at least 12 characters.");
+if (password.length < 8) {
+  throw new Error("LOCAL_ADMIN_PASSWORD must contain at least 8 characters.");
 }
 
 const db = new PrismaClient();
@@ -35,7 +37,9 @@ async function createUser() {
     body: JSON.stringify({ name, email, password }),
   });
   if (!response.ok) {
-    throw new Error(`Better Auth sign-up failed with HTTP ${response.status}. Ensure the local app is running.`);
+    throw new Error(
+      `Better Auth sign-up failed with HTTP ${response.status}. Ensure the local app is running.`,
+    );
   }
 }
 
@@ -46,10 +50,18 @@ async function main() {
     user = await db.user.findUniqueOrThrow({ where: { email }, include: { accounts: true } });
   } else if (resetPassword) {
     const credential = user.accounts.find((account) => account.providerId === "credential");
-    if (!credential) throw new Error("The existing user has no Better Auth credential account to reset.");
-    await db.account.update({ where: { id: credential.id }, data: { password: await hashPassword(password) } });
-  } else if (!user.accounts.some((account) => account.providerId === "credential" && account.password)) {
-    throw new Error("The existing user has no valid Better Auth password record. Re-run with --reset-password after reviewing the account.");
+    if (!credential)
+      throw new Error("The existing user has no Better Auth credential account to reset.");
+    await db.account.update({
+      where: { id: credential.id },
+      data: { password: await hashPassword(password) },
+    });
+  } else if (
+    !user.accounts.some((account) => account.providerId === "credential" && account.password)
+  ) {
+    throw new Error(
+      "The existing user has no valid Better Auth password record. Re-run with --reset-password after reviewing the account.",
+    );
   }
 
   const result = await db.$transaction(async (tx) => {
@@ -63,16 +75,25 @@ async function main() {
       update: { name: "Local Administrator" },
       create: { organizationId: organization.id, name: "Local Administrator", slug: "local-admin" },
     });
-    const permissions = await Promise.all(permissionCatalog.map((permissionName) => tx.permission.upsert({
-      where: { name: permissionName },
-      update: {},
-      create: { name: permissionName, description: "Declared HR Portal permission" },
-      select: { id: true },
-    })));
-    await tx.rolePermission.createMany({
-      data: permissions.map((permission) => ({ roleId: role.id, permissionId: permission.id })),
-      skipDuplicates: true,
-    });
+    const permissions = await Promise.all(
+      permissionCatalog.map((permissionName) =>
+        tx.permission.upsert({
+          where: { name: permissionName },
+          update: {},
+          create: { name: permissionName, description: "Declared HR Portal permission" },
+          select: { id: true },
+        }),
+      ),
+    );
+    await Promise.all(
+      permissions.map((permission) =>
+        tx.rolePermission.upsert({
+          where: { roleId_permissionId: { roleId: role.id, permissionId: permission.id } },
+          update: {},
+          create: { roleId: role.id, permissionId: permission.id },
+        }),
+      ),
+    );
     const membership = await tx.membership.upsert({
       where: { organizationId_userId: { organizationId: organization.id, userId: user.id } },
       update: { status: "ACTIVE" },
@@ -89,7 +110,9 @@ async function main() {
   console.log(`Local administrator is ready for organization ${result.organizationId}.`);
 }
 
-main().catch((error) => {
-  console.error(error instanceof Error ? error.message : "Local admin bootstrap failed.");
-  process.exitCode = 1;
-}).finally(() => db.$disconnect());
+main()
+  .catch((error) => {
+    console.error(error instanceof Error ? error.message : "Local admin bootstrap failed.");
+    process.exitCode = 1;
+  })
+  .finally(() => db.$disconnect());

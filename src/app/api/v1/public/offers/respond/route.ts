@@ -7,5 +7,10 @@ import { respondToOffer } from "@/modules/hiring/service";
 
 export async function POST(request: NextRequest) {
   const id = requestId(request);
-  try { const parsed = parseBody(offerResponseSchema, await request.json()); return successResponse(await respondToOffer({ ...parsed, requestId: id }), id); } catch (error) { return errorResponse(error, id); }
+  try {
+    const parsed = parseBody(offerResponseSchema, await request.json());
+    return successResponse(await respondToOffer({ ...parsed, requestId: id }), id);
+  } catch (error) {
+    return errorResponse(error, id);
+  }
 }

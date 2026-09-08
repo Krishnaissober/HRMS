@@ -17,7 +17,13 @@ function safeName(name: string) {
 export async function POST(request: NextRequest) {
   const id = requestId(request);
   const rate = await limiter.check(request.headers.get("x-real-ip") || "shared-public");
-  if (!rate.allowed) return errorResponse(new AppError("CONFLICT", "Too many upload requests. Try again later.", 429, { retryAfterSeconds: rate.retryAfterSeconds }), id);
+  if (!rate.allowed)
+    return errorResponse(
+      new AppError("CONFLICT", "Too many upload requests. Try again later.", 429, {
+        retryAfterSeconds: rate.retryAfterSeconds,
+      }),
+      id,
+    );
   try {
     const parsed = parseBody(publicUploadUrlSchema, await request.json());
     validateDocumentMetadata(parsed);
@@ -27,6 +33,11 @@ export async function POST(request: NextRequest) {
     const uploadUrl = await createUploadUrl(objectKey, parsed.contentType);
     return successResponse({ objectKey, uploadUrl, expiresIn: 900 }, id);
   } catch (error) {
-    return errorResponse(error instanceof Error && error.message.includes("storage") ? new AppError("INTERNAL_ERROR", "Document storage is not configured", 503) : error, id);
+    return errorResponse(
+      error instanceof Error && error.message.includes("storage")
+        ? new AppError("INTERNAL_ERROR", "Document storage is not configured", 503)
+        : error,
+      id,
+    );
   }
 }

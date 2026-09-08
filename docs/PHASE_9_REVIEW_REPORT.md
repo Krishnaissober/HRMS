@@ -4,18 +4,18 @@ Date: 2026-08-19
 
 ## Requirements review
 
-| Requirement | Classification | Finding |
-|---|---|---|
-| FR-160 salary components | IMPLEMENTED | Configurable basic, allowance, deduction, incentive, and other components; salary history and audit are transactional. |
-| FR-161 payroll runs | IMPLEMENTED | Periodic runs persist results and enforce prepare/review/approve transitions with distinct RBAC. |
-| FR-162 payslips | IMPLEMENTED | Approved-result PDF generation/download, employee ownership, administrative access, and audit. |
-| FR-163 expenses | IMPLEMENTED | Employee submission includes category, amount, date, receipt, and notes with real storage verification. |
-| FR-164 approval/payment | IMPLEMENTED | Validated decision and payment transitions, actor history, audit, tenant scope, and duplicate-decision rejection. |
-| Reporting | IMPLEMENTED | Payroll/component/overtime/expense/approval-cycle aggregates. |
-| RBAC/tenant isolation | IMPLEMENTED | Server-side membership, action-specific permission, repository scope, employee ownership, and tenant-prefixed objects. |
-| Migration | IMPLEMENTED | Non-destructive Phase 9 migration applied after safe Phase 0–8 ledger reconciliation; no data reset. |
-| UI/API | IMPLEMENTED | Protected API-backed administrator and employee surfaces. |
-| Tests | PARTIALLY ENVIRONMENT BLOCKED | Phase 9 persisted workflow passed; fresh complete rerun is blocked by host `spawn EPERM`. |
+| Requirement              | Classification                | Finding                                                                                                                |
+| ------------------------ | ----------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| FR-160 salary components | IMPLEMENTED                   | Configurable basic, allowance, deduction, incentive, and other components; salary history and audit are transactional. |
+| FR-161 payroll runs      | IMPLEMENTED                   | Periodic runs persist results and enforce prepare/review/approve transitions with distinct RBAC.                       |
+| FR-162 payslips          | IMPLEMENTED                   | Approved-result PDF generation/download, employee ownership, administrative access, and audit.                         |
+| FR-163 expenses          | IMPLEMENTED                   | Employee submission includes category, amount, date, receipt, and notes with real storage verification.                |
+| FR-164 approval/payment  | IMPLEMENTED                   | Validated decision and payment transitions, actor history, audit, tenant scope, and duplicate-decision rejection.      |
+| Reporting                | IMPLEMENTED                   | Payroll/component/overtime/expense/approval-cycle aggregates.                                                          |
+| RBAC/tenant isolation    | IMPLEMENTED                   | Server-side membership, action-specific permission, repository scope, employee ownership, and tenant-prefixed objects. |
+| Migration                | IMPLEMENTED                   | Non-destructive Phase 9 migration applied after safe Phase 0–8 ledger reconciliation; no data reset.                   |
+| UI/API                   | IMPLEMENTED                   | Protected API-backed administrator and employee surfaces.                                                              |
+| Tests                    | PARTIALLY ENVIRONMENT BLOCKED | Phase 9 persisted workflow passed; fresh complete rerun is blocked by host `spawn EPERM`.                              |
 
 ## Review findings
 

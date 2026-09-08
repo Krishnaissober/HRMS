@@ -17,16 +17,16 @@ Phase 11's confirmed application scope is implemented and verified. All required
 
 ## Requirements implemented and SRS traceability
 
-| SRS reference | Implementation |
-|---|---|
-| §31.4, line 746 | Cross-domain recruitment, workforce, attendance, leave, payroll, and HR operational analytics with drill-down |
-| §21, lines 1661–1721 | Enabled-domain metric catalogue implemented from persisted records |
-| §28, line 2300 | Metric groups expose tenant-preserving links to source record pages |
+| SRS reference               | Implementation                                                                                                |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| §31.4, line 746             | Cross-domain recruitment, workforce, attendance, leave, payroll, and HR operational analytics with drill-down |
+| §21, lines 1661–1721        | Enabled-domain metric catalogue implemented from persisted records                                            |
+| §28, line 2300              | Metric groups expose tenant-preserving links to source record pages                                           |
 | §28, lines 2303, 2318, 2324 | Server-side filters, responsive result tables, labeled restricted CSV exports, and loading/error/empty states |
-| §28.1, lines 2396–2399 | Recruitment, Workforce, Attendance, Leave, and HR KPIs navigation |
-| §29, lines 2423–2468 | Required reporting KPIs and documented formula definitions |
-| AC-12, lines 2582–2588 | Persisted recruitment and attendance results reconcile to PostgreSQL source records |
-| FR-002 / FR-003 / FR-006 | Server-side tenant scope, RBAC, and audited exports |
+| §28.1, lines 2396–2399      | Recruitment, Workforce, Attendance, Leave, and HR KPIs navigation                                             |
+| §29, lines 2423–2468        | Required reporting KPIs and documented formula definitions                                                    |
+| AC-12, lines 2582–2588      | Persisted recruitment and attendance results reconcile to PostgreSQL source records                           |
+| FR-002 / FR-003 / FR-006    | Server-side tenant scope, RBAC, and audited exports                                                           |
 
 ## Metrics and KPIs
 
@@ -145,16 +145,16 @@ Domains are restricted to `recruitment`, `workforce`, `attendance`, `leave`, `hr
 
 Domain access reuses existing resource permissions:
 
-| Domain | Required permissions |
-|---|---|
-| Recruitment | `dashboard.recruitment.read`, `candidates.read`, `interviews.read`, `offers.read` |
-| Workforce | `employees.read` |
-| Attendance | `attendance.read`, `candidate-attendance.read` |
-| Leave | `leave.read` |
-| HR operations | `dashboard.hr.read`, `onboarding.read`, `employees.documents.read`, `tasks.read` |
-| Payroll/expenses | `payroll.reports` |
-| Audit | `audit.read` |
-| Any export | Domain permissions plus `reports.export` |
+| Domain           | Required permissions                                                              |
+| ---------------- | --------------------------------------------------------------------------------- |
+| Recruitment      | `dashboard.recruitment.read`, `candidates.read`, `interviews.read`, `offers.read` |
+| Workforce        | `employees.read`                                                                  |
+| Attendance       | `attendance.read`, `candidate-attendance.read`                                    |
+| Leave            | `leave.read`                                                                      |
+| HR operations    | `dashboard.hr.read`, `onboarding.read`, `employees.documents.read`, `tasks.read`  |
+| Payroll/expenses | `payroll.reports`                                                                 |
+| Audit            | `audit.read`                                                                      |
+| Any export       | Domain permissions plus `reports.export`                                          |
 
 No broad administrative bypass was added. A restricted leave approver was verified unable to access workforce analytics or export leave analytics without export permission.
 
@@ -201,24 +201,24 @@ Migration state after deployment:
 
 ## Validation and regression results
 
-| Check | Result |
-|---|---|
-| Lint | PASS |
-| Typecheck | PASS |
-| Unit/API tests | PASS — 88/88 |
-| Full Playwright | PASS — 12/12 |
-| Production build | PASS WITH WARNING |
-| Prisma validation | PASS |
-| Prisma migration deploy/status | PASS — 15/15 |
-| Prisma migration diff | PASS — no difference |
-| PostgreSQL readiness | PASS |
-| Redis readiness | PASS |
-| `/api/health` | PASS — HTTP 200 |
-| `/api/ready` | PASS — HTTP 200, database and Redis OK |
-| `/` | PASS — HTTP 200 |
-| `/hr/reports` | PASS — HTTP 200 |
-| S3 | NOT USED — no retained Phase 11 export objects |
-| Frozen SRS integrity | PASS — SHA-256 unchanged |
+| Check                          | Result                                         |
+| ------------------------------ | ---------------------------------------------- |
+| Lint                           | PASS                                           |
+| Typecheck                      | PASS                                           |
+| Unit/API tests                 | PASS — 88/88                                   |
+| Full Playwright                | PASS — 12/12                                   |
+| Production build               | PASS WITH WARNING                              |
+| Prisma validation              | PASS                                           |
+| Prisma migration deploy/status | PASS — 15/15                                   |
+| Prisma migration diff          | PASS — no difference                           |
+| PostgreSQL readiness           | PASS                                           |
+| Redis readiness                | PASS                                           |
+| `/api/health`                  | PASS — HTTP 200                                |
+| `/api/ready`                   | PASS — HTTP 200, database and Redis OK         |
+| `/`                            | PASS — HTTP 200                                |
+| `/hr/reports`                  | PASS — HTTP 200                                |
+| S3                             | NOT USED — no retained Phase 11 export objects |
+| Frozen SRS integrity           | PASS — SHA-256 unchanged                       |
 
 ## Environment blockers
 

@@ -12,7 +12,11 @@ export async function GET(request: NextRequest) {
   const id = requestId(request);
   try {
     const context = await getAuthenticatedContext(request);
-    await requirePermission(context.session.user.id, context.organizationId, EMPLOYEE_ATTENDANCE_PERMISSIONS.read);
+    await requirePermission(
+      context.session.user.id,
+      context.organizationId,
+      EMPLOYEE_ATTENDANCE_PERMISSIONS.read,
+    );
     const query = parseQuery(attendanceCalendarSchema, request.nextUrl.searchParams);
     return successResponse(await attendanceCalendar(context.organizationId, query), id);
   } catch (error) {

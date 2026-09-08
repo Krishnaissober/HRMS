@@ -12,9 +12,21 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
   const id = requestId(request);
   try {
     const context = await getAuthenticatedContext(request);
-    await requirePermission(context.session.user.id, context.organizationId, CANDIDATE_PERMISSIONS.update);
+    await requirePermission(
+      context.session.user.id,
+      context.organizationId,
+      CANDIDATE_PERMISSIONS.update,
+    );
     const parsed = parseBody(visitCheckInSchema, await request.json());
-    const visit = await checkInCandidateVisit({ organizationId: context.organizationId, actorUserId: context.session.user.id, candidateId: (await params).id, ...parsed, requestId: id });
+    const visit = await checkInCandidateVisit({
+      organizationId: context.organizationId,
+      actorUserId: context.session.user.id,
+      candidateId: (await params).id,
+      ...parsed,
+      requestId: id,
+    });
     return successResponse(visit, id, { status: 201 });
-  } catch (error) { return errorResponse(error, id); }
+  } catch (error) {
+    return errorResponse(error, id);
+  }
 }

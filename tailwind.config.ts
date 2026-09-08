@@ -3,10 +3,7 @@ import tailwindcssAnimate from "tailwindcss-animate";
 
 const config: Config = {
   darkMode: ["class"],
-  content: [
-    "./src/**/*.{ts,tsx}",
-    "./components/**/*.{ts,tsx}",
-  ],
+  content: ["./src/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}"],
   theme: {
     container: {
       center: true,
@@ -185,7 +182,7 @@ const config: Config = {
           from: { opacity: "0", transform: "scale(0.95)" },
           to: { opacity: "1", transform: "scale(1)" },
         },
-        "shimmer": {
+        shimmer: {
           "0%": { backgroundPosition: "-200% 0" },
           "100%": { backgroundPosition: "200% 0" },
         },
@@ -204,7 +201,7 @@ const config: Config = {
         "slide-up-fade": "slide-up-fade 0.3s ease-out",
         "slide-down-fade": "slide-down-fade 0.3s ease-out",
         "scale-in": "scale-in 0.2s ease-out",
-        "shimmer": "shimmer 2s infinite linear",
+        shimmer: "shimmer 2s infinite linear",
       },
     },
   },

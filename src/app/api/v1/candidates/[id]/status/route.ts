@@ -12,11 +12,25 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
   const id = requestId(request);
   try {
     const context = await getAuthenticatedContext(request);
-    const canUpdateStatus = await hasPermission(context.session.user.id, context.organizationId, CANDIDATE_PERMISSIONS.statusUpdate);
-    const canUpdateCandidate = await hasPermission(context.session.user.id, context.organizationId, CANDIDATE_PERMISSIONS.update);
+    const canUpdateStatus = await hasPermission(
+      context.session.user.id,
+      context.organizationId,
+      CANDIDATE_PERMISSIONS.statusUpdate,
+    );
+    const canUpdateCandidate = await hasPermission(
+      context.session.user.id,
+      context.organizationId,
+      CANDIDATE_PERMISSIONS.update,
+    );
     if (!canUpdateStatus && !canUpdateCandidate) throw forbiddenError();
     const parsed = parseBody(statusUpdateSchema, await request.json());
-    const candidate = await changeCandidateStatus({ organizationId: context.organizationId, actorUserId: context.session.user.id, id: (await params).id, ...parsed, requestId: id });
+    const candidate = await changeCandidateStatus({
+      organizationId: context.organizationId,
+      actorUserId: context.session.user.id,
+      id: (await params).id,
+      ...parsed,
+      requestId: id,
+    });
     return successResponse(candidate, id);
   } catch (error) {
     return errorResponse(error, id);

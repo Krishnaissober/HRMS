@@ -11,17 +11,17 @@ The main controllable hiring defects found in this audit were remediated. The ap
 
 ## Findings and fixes
 
-| Area | Result | Evidence |
-|---|---|---|
-| Public hiring form | Resolved | Existing public form retained; Triple Minds branding and real intake API verified by Playwright. |
-| Walk-in intake | Resolved | Real published-position selector; no user-facing organization ID or raw requisition entry. |
-| Duplicate candidate matching | Resolved | Organization-scoped `/api/v1/candidates/match`; normalized email/phone lookup and prefill; API regression tests. |
-| Candidate search | Resolved | Search includes reference number and role of interest in addition to identity and skills. |
-| Candidate notifications | Resolved | In-app HR notifications are persisted inside the intake transaction for active members with candidate-read permission. |
-| Offers list route | Resolved | Removed organization-ID control; authenticated tenant context is used for list/create/action/download flows. |
-| Interviews list/create routes | Resolved | Removed organization-ID controls and query propagation; routes use authenticated tenant context. |
-| Shared dead code | Resolved | Removed unused table/form imports and dead selection props; lint is clean. |
-| Tenant/RBAC boundaries | Preserved | Existing server-side context and permission checks remain in API/service paths; dashboard persisted test verifies cross-tenant denial. |
+| Area                          | Result    | Evidence                                                                                                                               |
+| ----------------------------- | --------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| Public hiring form            | Resolved  | Existing public form retained; Triple Minds branding and real intake API verified by Playwright.                                       |
+| Walk-in intake                | Resolved  | Real published-position selector; no user-facing organization ID or raw requisition entry.                                             |
+| Duplicate candidate matching  | Resolved  | Organization-scoped `/api/v1/candidates/match`; normalized email/phone lookup and prefill; API regression tests.                       |
+| Candidate search              | Resolved  | Search includes reference number and role of interest in addition to identity and skills.                                              |
+| Candidate notifications       | Resolved  | In-app HR notifications are persisted inside the intake transaction for active members with candidate-read permission.                 |
+| Offers list route             | Resolved  | Removed organization-ID control; authenticated tenant context is used for list/create/action/download flows.                           |
+| Interviews list/create routes | Resolved  | Removed organization-ID controls and query propagation; routes use authenticated tenant context.                                       |
+| Shared dead code              | Resolved  | Removed unused table/form imports and dead selection props; lint is clean.                                                             |
+| Tenant/RBAC boundaries        | Preserved | Existing server-side context and permission checks remain in API/service paths; dashboard persisted test verifies cross-tenant denial. |
 
 ## Validation evidence
 

@@ -166,20 +166,20 @@ Added:
 
 Fresh results:
 
-| Check | Result |
-|---|---|
-| Lint | PASS |
-| Typecheck | PASS |
-| Unit/API tests | PASS — 22 files, 81 tests |
-| Focused persisted dashboard Playwright | PASS — 1 test |
-| Full Phase 0-10 Playwright regression | PASS — 11 tests in 6.2 minutes |
-| Production build | PASS — 83 static pages generated |
-| Prisma validation | PASS |
-| Prisma migration status | PASS — 14 migrations, database up to date |
-| Prisma migration diff | PASS — no schema drift |
-| Health endpoint | PASS — HTTP 200 |
-| Readiness endpoint | PASS — HTTP 200; database and Redis OK |
-| SRS integrity | PASS — frozen hash unchanged |
+| Check                                  | Result                                    |
+| -------------------------------------- | ----------------------------------------- |
+| Lint                                   | PASS                                      |
+| Typecheck                              | PASS                                      |
+| Unit/API tests                         | PASS — 22 files, 81 tests                 |
+| Focused persisted dashboard Playwright | PASS — 1 test                             |
+| Full Phase 0-10 Playwright regression  | PASS — 11 tests in 6.2 minutes            |
+| Production build                       | PASS — 83 static pages generated          |
+| Prisma validation                      | PASS                                      |
+| Prisma migration status                | PASS — 14 migrations, database up to date |
+| Prisma migration diff                  | PASS — no schema drift                    |
+| Health endpoint                        | PASS — HTTP 200                           |
+| Readiness endpoint                     | PASS — HTTP 200; database and Redis OK    |
+| SRS integrity                          | PASS — frozen hash unchanged              |
 
 ## Regression results
 

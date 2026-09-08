@@ -9,5 +9,17 @@ import { notFoundError } from "@/lib/errors";
 
 export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const id = requestId(request);
-  try { const context = await getAuthenticatedContext(request); await requirePermission(context.session.user.id, context.organizationId, ATTENDANCE_PERMISSIONS.read); const visit = await getVisit(context.organizationId, (await params).id); if (!visit) throw notFoundError(); return successResponse(visit, id); } catch (error) { return errorResponse(error, id); }
+  try {
+    const context = await getAuthenticatedContext(request);
+    await requirePermission(
+      context.session.user.id,
+      context.organizationId,
+      ATTENDANCE_PERMISSIONS.read,
+    );
+    const visit = await getVisit(context.organizationId, (await params).id);
+    if (!visit) throw notFoundError();
+    return successResponse(visit, id);
+  } catch (error) {
+    return errorResponse(error, id);
+  }
 }

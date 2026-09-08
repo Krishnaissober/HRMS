@@ -19,6 +19,9 @@ const envSchema = z.object({
   SENTRY_DSN: z.string().url().optional(),
   OTEL_EXPORTER_OTLP_ENDPOINT: z.string().url().optional(),
   LOG_LEVEL: z.enum(["debug", "info", "warn", "error"]).default("info"),
+  ADMIN_EMAIL: z.string().email().default("admin@tripleminds.co"),
+  ADMIN_ROLE_SLUG: z.string().trim().min(1).default("admin"),
+  LOCAL_ADMIN_EMAIL: z.string().email().optional(),
   LOCAL_ADMIN_ORGANIZATION_SLUG: z.string().default("triple-minds"),
 });
 
@@ -28,7 +31,11 @@ if (!parsed.success) {
   throw new Error(`Invalid environment configuration: ${parsed.error.message}`);
 }
 
-if (parsed.data.NODE_ENV === "production" && process.env.NEXT_PHASE !== "phase-production-build" && parsed.data.BETTER_AUTH_SECRET.includes("development-only")) {
+if (
+  parsed.data.NODE_ENV === "production" &&
+  process.env.NEXT_PHASE !== "phase-production-build" &&
+  parsed.data.BETTER_AUTH_SECRET.includes("development-only")
+) {
   throw new Error("BETTER_AUTH_SECRET must be replaced in production");
 }
 

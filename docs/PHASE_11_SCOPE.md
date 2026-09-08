@@ -18,31 +18,31 @@ The capability must consolidate the explicitly required metrics from SRS §21 an
 
 ### Direct Phase 11 requirements
 
-| SRS reference | Requirement | Phase 11 interpretation |
-|---|---|---|
-| §31.4, line 746 | Analytics for recruitment, workforce, attendance, leave, payroll, and HR operational dashboards with drill-down | Primary Phase 11 deliverable |
-| §21, lines 1661–1721 | Reports and Analytics metric catalogue | Implement the enabled-domain metrics listed in section 3 |
-| §28, line 2300 | Dashboard widgets drill down to underlying records | Every summary widget/metric must link to a permission-filtered source-record view |
-| §28, line 2303 | Data-heavy pages support search, filters, sorting, pagination, and saved views where useful | Apply appropriate controls to report detail/result pages; saved views are required only where useful, not universally |
-| §28, line 2318 | Export actions identify format and access level | Clearly label supported report exports and their access level |
-| §28, line 2324 | Useful empty states | Reports and dashboards must not render blank screens |
-| §28.1, lines 2396–2399 | Reports & Analytics navigation: Recruitment, Workforce, Attendance, Leave, HR KPIs | Required navigation taxonomy |
-| §29, lines 2423–2468 | Reporting KPI definitions | Implement only the listed KPI set and definitions |
-| AC-12, lines 2582–2588 | Authorized HR users obtain recruitment and attendance reports matching source records | Required acceptance gate using persisted source data |
+| SRS reference          | Requirement                                                                                                     | Phase 11 interpretation                                                                                               |
+| ---------------------- | --------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| §31.4, line 746        | Analytics for recruitment, workforce, attendance, leave, payroll, and HR operational dashboards with drill-down | Primary Phase 11 deliverable                                                                                          |
+| §21, lines 1661–1721   | Reports and Analytics metric catalogue                                                                          | Implement the enabled-domain metrics listed in section 3                                                              |
+| §28, line 2300         | Dashboard widgets drill down to underlying records                                                              | Every summary widget/metric must link to a permission-filtered source-record view                                     |
+| §28, line 2303         | Data-heavy pages support search, filters, sorting, pagination, and saved views where useful                     | Apply appropriate controls to report detail/result pages; saved views are required only where useful, not universally |
+| §28, line 2318         | Export actions identify format and access level                                                                 | Clearly label supported report exports and their access level                                                         |
+| §28, line 2324         | Useful empty states                                                                                             | Reports and dashboards must not render blank screens                                                                  |
+| §28.1, lines 2396–2399 | Reports & Analytics navigation: Recruitment, Workforce, Attendance, Leave, HR KPIs                              | Required navigation taxonomy                                                                                          |
+| §29, lines 2423–2468   | Reporting KPI definitions                                                                                       | Implement only the listed KPI set and definitions                                                                     |
+| AC-12, lines 2582–2588 | Authorized HR users obtain recruitment and attendance reports matching source records                           | Required acceptance gate using persisted source data                                                                  |
 
 ### Cross-cutting requirements applicable to Phase 11
 
-| SRS reference | Requirement |
-|---|---|
-| FR-002, line 1256 | Every business record and protected API is organization-scoped server-side |
-| FR-003, line 1259 | Role-based permissions and custom/inherited roles |
-| FR-006, line 1268 | Sensitive export/download actions generate audit events |
-| §4 and §4.1, lines 1037–1145 | Role scopes, deny-by-default access, field-level protection, independent export/download permission |
-| §23, lines 1754–1787 | Server-side auth/authz, session-derived tenant context, audit contents, export control, safe logs, consistent security controls |
-| §25.2, lines 2063–2066 | Consistent date/time storage/rendering and preserved history |
-| §26, lines 2072–2075 and 2144–2153 | Versioned APIs with validation, scoping, consistent errors, applicable audit; `/reports/*`, `/analytics/*`, and `/audit-events` capabilities |
-| §27, lines 2219–2288 | Availability, performance, scalability, reliability, security, accessibility, responsiveness, observability, maintainability, backup/recovery, localization, browser support |
-| §31.5, lines 755–782 | Common phase Definition of Done |
+| SRS reference                      | Requirement                                                                                                                                                                  |
+| ---------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| FR-002, line 1256                  | Every business record and protected API is organization-scoped server-side                                                                                                   |
+| FR-003, line 1259                  | Role-based permissions and custom/inherited roles                                                                                                                            |
+| FR-006, line 1268                  | Sensitive export/download actions generate audit events                                                                                                                      |
+| §4 and §4.1, lines 1037–1145       | Role scopes, deny-by-default access, field-level protection, independent export/download permission                                                                          |
+| §23, lines 1754–1787               | Server-side auth/authz, session-derived tenant context, audit contents, export control, safe logs, consistent security controls                                              |
+| §25.2, lines 2063–2066             | Consistent date/time storage/rendering and preserved history                                                                                                                 |
+| §26, lines 2072–2075 and 2144–2153 | Versioned APIs with validation, scoping, consistent errors, applicable audit; `/reports/*`, `/analytics/*`, and `/audit-events` capabilities                                 |
+| §27, lines 2219–2288               | Availability, performance, scalability, reliability, security, accessibility, responsiveness, observability, maintainability, backup/recovery, localization, browser support |
+| §31.5, lines 755–782               | Common phase Definition of Done                                                                                                                                              |
 
 ## 3. Analytics and reports required
 
@@ -135,17 +135,17 @@ Audit analytics is read-only reporting over persisted audit events. Phase 12's b
 
 Only the following dimensions are explicitly established by the SRS metric names:
 
-| Metric family | Explicit dimensions/groupings |
-|---|---|
-| Recruitment | Pipeline stage; recruitment source; open-position state |
-| Candidate attendance | Attendance/no-show outcome; check-in volume; visit history |
-| Workforce | Department; location; employment type; tenure; joiner/leaver state |
-| Employee attendance | Present/absent/late/WFH/overtime state; department; correction volume; time trend |
-| Leave | Utilization; balance; time trend; approval duration |
-| Onboarding | Task completion/overdue state; document completion; readiness duration |
-| Payroll/expenses | Payroll total; salary component; overtime; expense total; approval duration |
-| Performance, when enabled | Review completion; goal status; rating trend |
-| Audit | Event category: login, permission change, export, download, sensitive-field change, administrative event |
+| Metric family             | Explicit dimensions/groupings                                                                            |
+| ------------------------- | -------------------------------------------------------------------------------------------------------- |
+| Recruitment               | Pipeline stage; recruitment source; open-position state                                                  |
+| Candidate attendance      | Attendance/no-show outcome; check-in volume; visit history                                               |
+| Workforce                 | Department; location; employment type; tenure; joiner/leaver state                                       |
+| Employee attendance       | Present/absent/late/WFH/overtime state; department; correction volume; time trend                        |
+| Leave                     | Utilization; balance; time trend; approval duration                                                      |
+| Onboarding                | Task completion/overdue state; document completion; readiness duration                                   |
+| Payroll/expenses          | Payroll total; salary component; overtime; expense total; approval duration                              |
+| Performance, when enabled | Review completion; goal status; rating trend                                                             |
+| Audit                     | Event category: login, permission change, export, download, sensitive-field change, administrative event |
 
 The SRS does not define additional segmentation such as age, gender, ethnicity, cost center, recruiter ranking, predictive risk, industry benchmarks, or custom formulas. These must not be added as Phase 11 requirements.
 

@@ -29,23 +29,23 @@ This is a target architecture only. None of these runtime layers can be verified
 
 ## 2. Current tech stack
 
-| Concern | Observed implementation | SRS/architecture target | Status |
-|---|---|---|---|
-| Frontend | None | Next.js, React, TypeScript | Not present |
-| UI | None | Tailwind, shadcn/ui, Radix, Lucide | Not present |
-| Client state | None | TanStack Query, Zustand | Not present |
-| Forms/validation | None | React Hook Form, Zod | Not present |
-| Backend/API | None | Next.js Route Handlers and domain services | Not present |
-| Database | None | PostgreSQL | Not present |
-| ORM | None | Prisma | Not present |
-| Authentication | None | Better Auth or Auth.js | Not present |
-| Cache/jobs | None | Redis and BullMQ | Not present |
-| Storage | None | S3-compatible private object storage | Not present |
-| Email/calendar | None | Resend/SES; Google/Microsoft integrations | Not present |
-| Testing | None | Vitest and Playwright | Not present |
-| Observability | None | Sentry and OpenTelemetry | Not present |
-| Delivery | None | GitHub Actions, Docker, managed hosting/AWS | Not present |
-| AI | None | Isolated, human-in-the-loop AI module | Not present |
+| Concern          | Observed implementation | SRS/architecture target                     | Status      |
+| ---------------- | ----------------------- | ------------------------------------------- | ----------- |
+| Frontend         | None                    | Next.js, React, TypeScript                  | Not present |
+| UI               | None                    | Tailwind, shadcn/ui, Radix, Lucide          | Not present |
+| Client state     | None                    | TanStack Query, Zustand                     | Not present |
+| Forms/validation | None                    | React Hook Form, Zod                        | Not present |
+| Backend/API      | None                    | Next.js Route Handlers and domain services  | Not present |
+| Database         | None                    | PostgreSQL                                  | Not present |
+| ORM              | None                    | Prisma                                      | Not present |
+| Authentication   | None                    | Better Auth or Auth.js                      | Not present |
+| Cache/jobs       | None                    | Redis and BullMQ                            | Not present |
+| Storage          | None                    | S3-compatible private object storage        | Not present |
+| Email/calendar   | None                    | Resend/SES; Google/Microsoft integrations   | Not present |
+| Testing          | None                    | Vitest and Playwright                       | Not present |
+| Observability    | None                    | Sentry and OpenTelemetry                    | Not present |
+| Delivery         | None                    | GitHub Actions, Docker, managed hosting/AWS | Not present |
+| AI               | None                    | Isolated, human-in-the-loop AI module       | Not present |
 
 ## 3. Existing modules
 
@@ -112,35 +112,35 @@ None. There are no configured providers, adapters, webhooks, credentials, enviro
 
 Status meanings: `IMPLEMENTED`, `PARTIALLY IMPLEMENTED`, `NOT IMPLEMENTED`, `CONFLICTING WITH SRS`, and `UNKNOWN`. A planned description in documentation does not count as implementation.
 
-| SRS area | Status | Evidence/assessment |
-|---|---|---|
-| Forms / candidate intake | NOT IMPLEMENTED | No form UI, schemas, upload flow, public route, form builder, or submission persistence. |
-| Recruitment / ATS | NOT IMPLEMENTED | No jobs, requisitions, candidates, applications, pipeline, search, notes, tags, or status history. |
-| Interviews | NOT IMPLEMENTED | No scheduling, rounds, interviewers, scorecards, recommendations, reminders, or rescheduling. |
-| Candidate attendance | NOT IMPLEMENTED | No visitor/check-in/out or candidate no-show records. |
-| Offer / hiring | NOT IMPLEMENTED | No offer templates, approvals, delivery, statuses, or conversion flow. |
-| Employee lifecycle | NOT IMPLEMENTED | No employee master, employment history, departments, managers, or status lifecycle. |
-| Onboarding | NOT IMPLEMENTED | No templates, instances, tasks, due dates, document requests, or acknowledgements. |
-| Employee attendance | NOT IMPLEMENTED | No check-in/out, shifts, holidays, overtime, corrections, timesheets, or reports. |
-| Leave | NOT IMPLEMENTED | No leave types, policies, balances, requests, approvals, calendars, or attendance linkage. |
-| Payroll / expenses | NOT IMPLEMENTED | No payroll implementation; no compensation, runs, payslips, expenses, reimbursements, or approvals. |
-| Performance / learning | NOT IMPLEMENTED | No goals, reviews, ratings, training, completion, or certifications. |
-| Assets | NOT IMPLEMENTED | No inventory, assignments, returns, maintenance, or retirement tracking. |
-| Documents | NOT IMPLEMENTED | No repository, metadata, versions, access control, previews, downloads, or expiry alerts. |
-| Helpdesk | NOT IMPLEMENTED | No ticket/request intake, assignment, comments, statuses, SLA, or history. |
-| Notifications | NOT IMPLEMENTED | No in-app notification model, templates, delivery, reminders, or task center. |
-| Analytics | NOT IMPLEMENTED | No dashboards, KPIs, exports, drill-downs, or reporting queries. |
-| Offboarding | NOT IMPLEMENTED | No resignation, notice, clearance, asset return, access revocation, settlement, or exit documents. |
-| Compliance / audit | NOT IMPLEMENTED | No audit event model, actor context, retention, export, tamper evidence, or compliance reports. |
-| Multi-tenancy | NOT IMPLEMENTED | No organization model, tenant context, membership, scoping middleware, or isolation tests. |
-| RBAC | NOT IMPLEMENTED | No roles, permissions, inheritance, custom roles, guards, or permission matrix implementation. |
-| APIs | NOT IMPLEMENTED | No API routes, schemas, versioning, pagination, error envelope, or API documentation. |
-| Integrations | NOT IMPLEMENTED | No provider adapters, credentials, webhooks, queues, or integration contracts. |
-| AI | NOT IMPLEMENTED | No isolated AI module, privacy controls, human review workflow, or model adapter. |
+| SRS area                    | Status          | Evidence/assessment                                                                                                        |
+| --------------------------- | --------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| Forms / candidate intake    | NOT IMPLEMENTED | No form UI, schemas, upload flow, public route, form builder, or submission persistence.                                   |
+| Recruitment / ATS           | NOT IMPLEMENTED | No jobs, requisitions, candidates, applications, pipeline, search, notes, tags, or status history.                         |
+| Interviews                  | NOT IMPLEMENTED | No scheduling, rounds, interviewers, scorecards, recommendations, reminders, or rescheduling.                              |
+| Candidate attendance        | NOT IMPLEMENTED | No visitor/check-in/out or candidate no-show records.                                                                      |
+| Offer / hiring              | NOT IMPLEMENTED | No offer templates, approvals, delivery, statuses, or conversion flow.                                                     |
+| Employee lifecycle          | NOT IMPLEMENTED | No employee master, employment history, departments, managers, or status lifecycle.                                        |
+| Onboarding                  | NOT IMPLEMENTED | No templates, instances, tasks, due dates, document requests, or acknowledgements.                                         |
+| Employee attendance         | NOT IMPLEMENTED | No check-in/out, shifts, holidays, overtime, corrections, timesheets, or reports.                                          |
+| Leave                       | NOT IMPLEMENTED | No leave types, policies, balances, requests, approvals, calendars, or attendance linkage.                                 |
+| Payroll / expenses          | NOT IMPLEMENTED | No payroll implementation; no compensation, runs, payslips, expenses, reimbursements, or approvals.                        |
+| Performance / learning      | NOT IMPLEMENTED | No goals, reviews, ratings, training, completion, or certifications.                                                       |
+| Assets                      | NOT IMPLEMENTED | No inventory, assignments, returns, maintenance, or retirement tracking.                                                   |
+| Documents                   | NOT IMPLEMENTED | No repository, metadata, versions, access control, previews, downloads, or expiry alerts.                                  |
+| Helpdesk                    | NOT IMPLEMENTED | No ticket/request intake, assignment, comments, statuses, SLA, or history.                                                 |
+| Notifications               | NOT IMPLEMENTED | No in-app notification model, templates, delivery, reminders, or task center.                                              |
+| Analytics                   | NOT IMPLEMENTED | No dashboards, KPIs, exports, drill-downs, or reporting queries.                                                           |
+| Offboarding                 | NOT IMPLEMENTED | No resignation, notice, clearance, asset return, access revocation, settlement, or exit documents.                         |
+| Compliance / audit          | NOT IMPLEMENTED | No audit event model, actor context, retention, export, tamper evidence, or compliance reports.                            |
+| Multi-tenancy               | NOT IMPLEMENTED | No organization model, tenant context, membership, scoping middleware, or isolation tests.                                 |
+| RBAC                        | NOT IMPLEMENTED | No roles, permissions, inheritance, custom roles, guards, or permission matrix implementation.                             |
+| APIs                        | NOT IMPLEMENTED | No API routes, schemas, versioning, pagination, error envelope, or API documentation.                                      |
+| Integrations                | NOT IMPLEMENTED | No provider adapters, credentials, webhooks, queues, or integration contracts.                                             |
+| AI                          | NOT IMPLEMENTED | No isolated AI module, privacy controls, human review workflow, or model adapter.                                          |
 | Non-functional requirements | NOT IMPLEMENTED | No runtime exists to verify security, performance, accessibility, availability, logging, backup, or recovery requirements. |
-| UX/UI | NOT IMPLEMENTED | No frontend, design system, responsive layouts, loading/error/empty states, or accessibility implementation. |
-| Testing | NOT IMPLEMENTED | No test infrastructure or automated workflow coverage. |
-| Deployment | NOT IMPLEMENTED | No Dockerfile, CI workflow, deployment config, environment template, health checks, or release process. |
+| UX/UI                       | NOT IMPLEMENTED | No frontend, design system, responsive layouts, loading/error/empty states, or accessibility implementation.               |
+| Testing                     | NOT IMPLEMENTED | No test infrastructure or automated workflow coverage.                                                                     |
+| Deployment                  | NOT IMPLEMENTED | No Dockerfile, CI workflow, deployment config, environment template, health checks, or release process.                    |
 
 No area is currently `IMPLEMENTED` or `PARTIALLY IMPLEMENTED`. `CONFLICTING WITH SRS` is not assigned to a runtime feature because no runtime exists; any future implementation must avoid introducing conflicts such as SQLite production storage, unscoped APIs, fake workflows, hardcoded business data, or unaudited sensitive downloads.
 
@@ -454,4 +454,3 @@ The exact paths should be finalized during the project scaffold, but Phase 0 sho
 ## Recommended first implementation task
 
 Create and commit the Phase 0 project foundation: initialize the Next.js/TypeScript modular-monolith skeleton, add reproducible package scripts and lockfile, add strict environment validation, and establish the initial CI quality gate (install, lint, typecheck, test placeholder and production build). Do not add business workflows or migrations until this baseline is reviewed and the authentication/organization/RBAC/database design is approved.
-

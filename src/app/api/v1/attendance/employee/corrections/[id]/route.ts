@@ -8,4 +8,27 @@ import { EMPLOYEE_ATTENDANCE_PERMISSIONS } from "@/modules/employee-attendance/c
 import { correctionReviewSchema } from "@/modules/employee-attendance/schemas";
 import { reviewCorrection } from "@/modules/employee-attendance/service";
 
-export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) { const id = requestId(request); try { const context = await getAuthenticatedContext(request); await requirePermission(context.session.user.id, context.organizationId, EMPLOYEE_ATTENDANCE_PERMISSIONS.correctionsApprove); const parsed = parseBody(correctionReviewSchema, await request.json()); return successResponse(await reviewCorrection({ organizationId: context.organizationId, actorUserId: context.session.user.id, id: (await params).id, ...parsed, requestId: id }), id); } catch (error) { return errorResponse(error, id); } }
+export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const id = requestId(request);
+  try {
+    const context = await getAuthenticatedContext(request);
+    await requirePermission(
+      context.session.user.id,
+      context.organizationId,
+      EMPLOYEE_ATTENDANCE_PERMISSIONS.correctionsApprove,
+    );
+    const parsed = parseBody(correctionReviewSchema, await request.json());
+    return successResponse(
+      await reviewCorrection({
+        organizationId: context.organizationId,
+        actorUserId: context.session.user.id,
+        id: (await params).id,
+        ...parsed,
+        requestId: id,
+      }),
+      id,
+    );
+  } catch (error) {
+    return errorResponse(error, id);
+  }
+}

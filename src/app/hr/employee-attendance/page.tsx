@@ -1,4 +1,73 @@
 "use client";
 import { useEffect, useState } from "react";
-type RecordItem={id:string;workDate:string;status:string;checkInAt?:string|null;checkOutAt?:string|null;durationMinutes?:number|null;lateArrivalMinutes?:number|null;overtimeMinutes?:number|null};
-export default function EmployeeAttendancePage(){const[items,setItems]=useState<RecordItem[]>([]);const[message,setMessage]=useState("Loading attendance…");async function load(){const response=await fetch("/api/v1/me/attendance?page=1&pageSize=50");const result=await response.json();if(!response.ok)return setMessage(result.error?.message||"Could not load attendance");setItems(result.data.items);setMessage("")}async function action(path:string){const response=await fetch(path,{method:"POST"});const result=await response.json();setMessage(response.ok?"Attendance updated":result.error?.message||"Attendance update failed");if(response.ok)await load()}useEffect(()=>{void load()},[]);return <main className="page-shell"><section className="panel"><p className="eyebrow">Employee attendance</p><h1>My attendance</h1><div className="toolbar"><button type="button" onClick={()=>void load()}>Load history</button><button type="button" onClick={()=>void action("/api/v1/attendance/employee/check-in")}>Check in</button><button type="button" onClick={()=>void action("/api/v1/attendance/employee/check-out")}>Check out</button></div>{message&&<p role="status">{message}</p>}<div className="candidate-list">{items.map(item=><div className="candidate-row" key={item.id}><span>{item.workDate.slice(0,10)}</span><span>{item.status}</span><span>{item.checkInAt?new Date(item.checkInAt).toLocaleTimeString():"—"} → {item.checkOutAt?new Date(item.checkOutAt).toLocaleTimeString():"—"}</span><span>{item.durationMinutes??0} min · late {item.lateArrivalMinutes??0} · overtime {item.overtimeMinutes??0}</span></div>)}</div></section></main>}
+type RecordItem = {
+  id: string;
+  workDate: string;
+  status: string;
+  checkInAt?: string | null;
+  checkOutAt?: string | null;
+  durationMinutes?: number | null;
+  lateArrivalMinutes?: number | null;
+  overtimeMinutes?: number | null;
+};
+export default function EmployeeAttendancePage() {
+  const [items, setItems] = useState<RecordItem[]>([]);
+  const [message, setMessage] = useState("Loading attendance…");
+  async function load() {
+    const response = await fetch("/api/v1/me/attendance?page=1&pageSize=50");
+    const result = await response.json();
+    if (!response.ok) return setMessage(result.error?.message || "Could not load attendance");
+    setItems(result.data.items);
+    setMessage("");
+  }
+  async function action(path: string) {
+    const response = await fetch(path, { method: "POST" });
+    const result = await response.json();
+    setMessage(
+      response.ok ? "Attendance updated" : result.error?.message || "Attendance update failed",
+    );
+    if (response.ok) await load();
+  }
+  useEffect(() => {
+    void load();
+  }, []);
+  return (
+    <main className="page-shell">
+      <section className="panel">
+        <p className="eyebrow">Employee attendance</p>
+        <h1>My attendance</h1>
+        <div className="toolbar">
+          <button type="button" onClick={() => void load()}>
+            Load history
+          </button>
+          <button type="button" onClick={() => void action("/api/v1/attendance/employee/check-in")}>
+            Check in
+          </button>
+          <button
+            type="button"
+            onClick={() => void action("/api/v1/attendance/employee/check-out")}
+          >
+            Check out
+          </button>
+        </div>
+        {message && <p role="status">{message}</p>}
+        <div className="candidate-list">
+          {items.map((item) => (
+            <div className="candidate-row" key={item.id}>
+              <span>{item.workDate.slice(0, 10)}</span>
+              <span>{item.status}</span>
+              <span>
+                {item.checkInAt ? new Date(item.checkInAt).toLocaleTimeString() : "—"} →{" "}
+                {item.checkOutAt ? new Date(item.checkOutAt).toLocaleTimeString() : "—"}
+              </span>
+              <span>
+                {item.durationMinutes ?? 0} min · late {item.lateArrivalMinutes ?? 0} · overtime{" "}
+                {item.overtimeMinutes ?? 0}
+              </span>
+            </div>
+          ))}
+        </div>
+      </section>
+    </main>
+  );
+}

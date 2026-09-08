@@ -15,6 +15,7 @@ type Candidate = {
   source: string;
   status: string;
   createdAt: string;
+  applications: Array<{ id: string; status: string }>;
 };
 
 const STATUS_COLORS: Record<string, string> = {
@@ -60,15 +61,19 @@ export default function CandidateListPage() {
   return (
     <main className="page-shell space-y-6 pb-12">
       {/* Hero Banner */}
-      <section className="relative overflow-hidden rounded-3xl border border-indigo-500/20 bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 p-6 md:p-8 text-white shadow-2xl">
+      <section className="prism-light relative overflow-hidden rounded-3xl border border-indigo-500/20 bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 p-6 md:p-8 text-white shadow-2xl">
         <div className="absolute -right-16 -top-16 h-64 w-64 rounded-full bg-indigo-500/20 blur-3xl pointer-events-none" />
         <div className="absolute right-1/3 -bottom-16 h-48 w-48 rounded-full bg-purple-500/20 blur-3xl pointer-events-none" />
 
         <div className="relative z-10 flex flex-col gap-6">
           <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
             <div className="space-y-2">
-              <p className="text-xs font-extrabold uppercase tracking-widest text-indigo-300">Recruitment Intake</p>
-              <h1 className="text-2xl md:text-3xl font-black tracking-tight text-white">Candidates</h1>
+              <p className="text-xs font-extrabold uppercase tracking-widest text-indigo-300">
+                Recruitment Intake
+              </p>
+              <h1 className="text-2xl md:text-3xl font-black tracking-tight text-white">
+                Candidates
+              </h1>
               <p className="text-sm text-indigo-100/75 font-medium max-w-lg">
                 Search, filter and manage all candidate applications from one workspace.
               </p>
@@ -100,7 +105,9 @@ export default function CandidateListPage() {
                 placeholder="Search name, email, phone or skills…"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                onKeyDown={(e) => { if (e.key === "Enter") void load(query, status, source); }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") void load(query, status, source);
+                }}
                 className="w-full rounded-xl border border-white/20 bg-white/10 pl-10 pr-4 py-2.5 text-sm font-medium text-white placeholder:text-white/40 focus:border-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-400/20 backdrop-blur-md transition-colors"
               />
             </div>
@@ -110,9 +117,21 @@ export default function CandidateListPage() {
               onChange={(e) => setStatus(e.target.value)}
               className="rounded-xl border border-white/20 bg-white/10 px-4 py-2.5 text-sm font-medium text-white focus:outline-none backdrop-blur-md min-w-[140px]"
             >
-              <option value="" className="bg-slate-900">All statuses</option>
-              {["APPLIED", "SCREENING", "SHORTLISTED", "INTERVIEW", "SELECTED", "HOLD", "REJECTED"].map((v) => (
-                <option key={v} value={v} className="bg-slate-900">{v}</option>
+              <option value="" className="bg-slate-900">
+                All statuses
+              </option>
+              {[
+                "APPLIED",
+                "SCREENING",
+                "SHORTLISTED",
+                "INTERVIEW",
+                "SELECTED",
+                "HOLD",
+                "REJECTED",
+              ].map((v) => (
+                <option key={v} value={v} className="bg-slate-900">
+                  {v}
+                </option>
               ))}
             </select>
             <select
@@ -121,9 +140,15 @@ export default function CandidateListPage() {
               onChange={(e) => setSource(e.target.value)}
               className="rounded-xl border border-white/20 bg-white/10 px-4 py-2.5 text-sm font-medium text-white focus:outline-none backdrop-blur-md min-w-[130px]"
             >
-              <option value="" className="bg-slate-900">All sources</option>
-              <option value="ONLINE" className="bg-slate-900">Online</option>
-              <option value="WALK_IN" className="bg-slate-900">Walk-in</option>
+              <option value="" className="bg-slate-900">
+                All sources
+              </option>
+              <option value="ONLINE" className="bg-slate-900">
+                Online
+              </option>
+              <option value="WALK_IN" className="bg-slate-900">
+                Walk-in
+              </option>
             </select>
             <button
               type="button"
@@ -138,10 +163,12 @@ export default function CandidateListPage() {
       </section>
 
       {/* Results Section */}
-      <section className="rounded-3xl border border-border/60 bg-card shadow-sm overflow-hidden">
+      <section className="relative overflow-visible rounded-3xl border border-border/60 bg-card shadow-sm">
         <div className="flex items-center justify-between border-b border-border/50 px-6 py-4">
           <div>
-            <p className="text-xs font-extrabold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">Results</p>
+            <p className="text-xs font-extrabold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">
+              Results
+            </p>
             <h2 className="text-lg font-extrabold text-foreground">Candidate List</h2>
           </div>
           <div className="flex items-center gap-2">
@@ -169,60 +196,94 @@ export default function CandidateListPage() {
           )}
 
           {/* Empty state */}
-          {!isLoading && (message === "No candidates found." || (!message && items.length === 0)) && (
-            <div className="rounded-2xl border border-border/40 bg-muted/30 p-10 text-center space-y-3">
-              <div className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-indigo-100 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 mx-auto">
-                <CheckCircle2 className="h-6 w-6" />
+          {!isLoading &&
+            (message === "No candidates found." || (!message && items.length === 0)) && (
+              <div className="rounded-2xl border border-border/40 bg-muted/30 p-10 text-center space-y-3">
+                <div className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-indigo-100 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 mx-auto">
+                  <CheckCircle2 className="h-6 w-6" />
+                </div>
+                <p className="font-extrabold text-sm text-foreground">No candidates found</p>
+                <p className="text-xs text-muted-foreground font-medium">
+                  Try adjusting your search filters or add a new candidate.
+                </p>
               </div>
-              <p className="font-extrabold text-sm text-foreground">No candidates found</p>
-              <p className="text-xs text-muted-foreground font-medium">Try adjusting your search filters or add a new candidate.</p>
-            </div>
-          )}
+            )}
 
           {/* Candidates list */}
-          {!isLoading && items.map((candidate) => (
-            <a
-              key={candidate.id}
-              href={`/hr/candidates/${candidate.id}`}
-              className="group flex items-center gap-4 rounded-2xl border border-border/50 bg-background/60 p-4 transition-all duration-200 hover:-translate-y-0.5 hover:border-indigo-500/40 hover:bg-card hover:shadow-md"
-            >
-              {/* Avatar */}
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-indigo-100 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 font-black text-sm">
-                {candidate.firstName[0]}{candidate.lastName[0]}
-              </div>
+          {!isLoading &&
+            items.map((candidate) => (
+              <div
+                key={candidate.id}
+                className="group relative flex items-center gap-4 rounded-2xl border border-border/50 bg-background/60 p-4 transition-all duration-200 hover:-translate-y-0.5 hover:border-indigo-500/40 hover:bg-card hover:shadow-md"
+              >
+                {/* Avatar */}
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-indigo-100 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 font-black text-sm">
+                  {candidate.firstName[0]}
+                  {candidate.lastName[0]}
+                </div>
 
-              {/* Name + ref */}
-              <div className="flex-1 min-w-0">
-                <span className="block font-extrabold text-sm text-foreground group-hover:text-indigo-600 transition-colors truncate">
-                  {candidate.firstName} {candidate.lastName}
+                {/* Name + ref */}
+                <div className="flex-1 min-w-0">
+                  <span className="block font-extrabold text-sm text-foreground group-hover:text-indigo-600 transition-colors truncate">
+                    {candidate.firstName} {candidate.lastName}
+                  </span>
+                  <span className="block text-xs text-muted-foreground font-medium truncate">
+                    {candidate.referenceNo} · {candidate.email}
+                  </span>
+                </div>
+
+                {/* Role */}
+                <div className="hidden sm:block min-w-0 max-w-[180px]">
+                  <span className="block text-sm font-semibold text-foreground truncate">
+                    {candidate.roleOfInterest || "—"}
+                  </span>
+                  <span className="block text-xs text-muted-foreground font-medium">
+                    {candidate.source === "WALK_IN" ? "Walk-in" : "Online"}
+                  </span>
+                </div>
+
+                {/* Status badge */}
+                <span
+                  className={cn(
+                    "inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-black uppercase shrink-0",
+                    STATUS_COLORS[candidate.status] || "bg-muted text-muted-foreground",
+                  )}
+                >
+                  {candidate.status}
                 </span>
-                <span className="block text-xs text-muted-foreground font-medium truncate">
-                  {candidate.referenceNo} · {candidate.email}
+
+                {/* Date */}
+                <span className="hidden md:block text-xs text-muted-foreground font-medium shrink-0">
+                  {new Date(candidate.createdAt).toLocaleDateString("en-US", {
+                    month: "short",
+                    day: "numeric",
+                  })}
                 </span>
+
+                <div className="flex shrink-0 items-center gap-2">
+                  <Link
+                    href={`/hr/candidates/${candidate.id}/preview`}
+                    className="rounded-xl border border-indigo-200 bg-indigo-50 px-3 py-2 text-xs font-extrabold text-indigo-700 transition hover:bg-indigo-100 active:scale-95 dark:border-indigo-900/60 dark:bg-indigo-950/50 dark:text-indigo-300 dark:hover:bg-indigo-950"
+                  >
+                    Review
+                  </Link>
+                  <Link
+                    href={`/hr/interviews/new?candidateId=${encodeURIComponent(candidate.id)}${candidate.applications[0]?.id ? `&applicationId=${encodeURIComponent(candidate.applications[0].id)}` : ""}`}
+                    className="rounded-xl bg-indigo-600 px-3 py-2 text-xs font-extrabold text-white transition hover:bg-indigo-500 active:scale-95"
+                  >
+                    Interview
+                  </Link>
+                  <Link
+                    href={`/hr/candidates/${candidate.id}`}
+                    onClick={(event) => event.stopPropagation()}
+                    aria-label={`Open ${candidate.firstName} ${candidate.lastName} profile`}
+                    className="rounded-xl p-2 text-muted-foreground transition hover:bg-indigo-50 hover:text-indigo-600 dark:hover:bg-indigo-950/60"
+                  >
+                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                  </Link>
+                </div>
               </div>
-
-              {/* Role */}
-              <div className="hidden sm:block min-w-0 max-w-[180px]">
-                <span className="block text-sm font-semibold text-foreground truncate">{candidate.roleOfInterest || "—"}</span>
-                <span className="block text-xs text-muted-foreground font-medium">{candidate.source === "WALK_IN" ? "Walk-in" : "Online"}</span>
-              </div>
-
-              {/* Status badge */}
-              <span className={cn(
-                "inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-black uppercase shrink-0",
-                STATUS_COLORS[candidate.status] || "bg-muted text-muted-foreground"
-              )}>
-                {candidate.status}
-              </span>
-
-              {/* Date */}
-              <span className="hidden md:block text-xs text-muted-foreground font-medium shrink-0">
-                {new Date(candidate.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
-              </span>
-
-              <ArrowRight className="h-4 w-4 text-muted-foreground/40 group-hover:text-indigo-600 group-hover:translate-x-0.5 transition-all shrink-0" />
-            </a>
-          ))}
+            ))}
         </div>
       </section>
     </main>

@@ -10,20 +10,20 @@ The implementation has a valid additive database foundation and protected API co
 
 ## Requirement-by-requirement review
 
-| SRS reference | Area | Status | Severity | Classification |
-|---|---|---|---|---|
-| FR-280 / P577 | Exit case/resignation | PARTIAL | HIGH | Application defect |
-| FR-281 / P578 | Notice period and expected last working day | IMPLEMENTED at API/data level | MEDIUM | Code verified; UI incomplete |
-| FR-282 / P579 | Clearance tasks | PARTIAL | HIGH | Application defect |
-| FR-283 / P580 | Exit interview | PARTIAL | MEDIUM | Application defect |
-| FR-284 / P581 | Access revocation | PARTIAL | HIGH | Application defect |
-| FR-285 / P582 | Exit documents | PARTIAL | HIGH | Application/UI gap |
-| FR-286 / P583 | Exited/Inactive status and history | PARTIAL | HIGH | Application defect |
-| FR-203 / P535 | Asset return and clearance | PARTIAL | HIGH | Application defect |
-| FR-002 / FR-003 | Tenant isolation and RBAC | PARTIAL | HIGH | Application security defect |
-| FR-006 / §23 P590 | Audit consistency | PARTIAL | MEDIUM | Missing coverage/edge handling |
-| FR-260–FR-263 | Notifications, reminders, task center | NOT IMPLEMENTED for Phase 12 events | MEDIUM | Application defect |
-| §31.4 / P250 | Compliance/audit reporting | PARTIAL | MEDIUM | Application/UI gap |
+| SRS reference     | Area                                        | Status                              | Severity | Classification                 |
+| ----------------- | ------------------------------------------- | ----------------------------------- | -------- | ------------------------------ |
+| FR-280 / P577     | Exit case/resignation                       | PARTIAL                             | HIGH     | Application defect             |
+| FR-281 / P578     | Notice period and expected last working day | IMPLEMENTED at API/data level       | MEDIUM   | Code verified; UI incomplete   |
+| FR-282 / P579     | Clearance tasks                             | PARTIAL                             | HIGH     | Application defect             |
+| FR-283 / P580     | Exit interview                              | PARTIAL                             | MEDIUM   | Application defect             |
+| FR-284 / P581     | Access revocation                           | PARTIAL                             | HIGH     | Application defect             |
+| FR-285 / P582     | Exit documents                              | PARTIAL                             | HIGH     | Application/UI gap             |
+| FR-286 / P583     | Exited/Inactive status and history          | PARTIAL                             | HIGH     | Application defect             |
+| FR-203 / P535     | Asset return and clearance                  | PARTIAL                             | HIGH     | Application defect             |
+| FR-002 / FR-003   | Tenant isolation and RBAC                   | PARTIAL                             | HIGH     | Application security defect    |
+| FR-006 / §23 P590 | Audit consistency                           | PARTIAL                             | MEDIUM   | Missing coverage/edge handling |
+| FR-260–FR-263     | Notifications, reminders, task center       | NOT IMPLEMENTED for Phase 12 events | MEDIUM   | Application defect             |
+| §31.4 / P250      | Compliance/audit reporting                  | PARTIAL                             | MEDIUM   | Application/UI gap             |
 
 ## Findings
 
@@ -119,22 +119,22 @@ Remaining issues:
 
 ## Fresh validation
 
-| Check | Result | Evidence |
-|---|---|---|
-| Unit/API tests | PASS | 26 files, 97 tests |
-| Focused Phase 12 API tests | PASS | 3 contract tests; not persisted DB tests |
-| Playwright | FAILED / NOT COMPLETE | Fresh run progressed through existing workflows but stalled during persisted employee/onboarding workflow; no completed Phase 12 workflow was produced |
-| Lint | PASS | Fresh command completed without errors |
-| Typecheck | PASS | Fresh command completed without errors |
-| Production build | NOT COMPLETED IN THIS REVIEW RUN | Prior completion report recorded PASS with the existing optional Valkey warning; a fresh chained run did not reach build after Playwright stall |
-| Prisma validation | PASS | Schema valid |
-| Prisma migration status | PASS | Database up to date; 17 migrations found |
-| Prisma migration diff | PASS | Empty migration against configured PostgreSQL |
-| Health | PASS | HTTP 200 |
-| Readiness | PASS | HTTP 200 |
-| PostgreSQL | CODE VERIFIED / status verified | Configured database reachable and migrations current; complete Phase 12 workflow not persisted |
-| Redis/BullMQ | ENVIRONMENT BLOCKED | Live availability not established |
-| S3 | ENVIRONMENT BLOCKED | Live object storage not established |
+| Check                      | Result                           | Evidence                                                                                                                                               |
+| -------------------------- | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Unit/API tests             | PASS                             | 26 files, 97 tests                                                                                                                                     |
+| Focused Phase 12 API tests | PASS                             | 3 contract tests; not persisted DB tests                                                                                                               |
+| Playwright                 | FAILED / NOT COMPLETE            | Fresh run progressed through existing workflows but stalled during persisted employee/onboarding workflow; no completed Phase 12 workflow was produced |
+| Lint                       | PASS                             | Fresh command completed without errors                                                                                                                 |
+| Typecheck                  | PASS                             | Fresh command completed without errors                                                                                                                 |
+| Production build           | NOT COMPLETED IN THIS REVIEW RUN | Prior completion report recorded PASS with the existing optional Valkey warning; a fresh chained run did not reach build after Playwright stall        |
+| Prisma validation          | PASS                             | Schema valid                                                                                                                                           |
+| Prisma migration status    | PASS                             | Database up to date; 17 migrations found                                                                                                               |
+| Prisma migration diff      | PASS                             | Empty migration against configured PostgreSQL                                                                                                          |
+| Health                     | PASS                             | HTTP 200                                                                                                                                               |
+| Readiness                  | PASS                             | HTTP 200                                                                                                                                               |
+| PostgreSQL                 | CODE VERIFIED / status verified  | Configured database reachable and migrations current; complete Phase 12 workflow not persisted                                                         |
+| Redis/BullMQ               | ENVIRONMENT BLOCKED              | Live availability not established                                                                                                                      |
+| S3                         | ENVIRONMENT BLOCKED              | Live object storage not established                                                                                                                    |
 
 The build warning documented previously remains the optional BullMQ `@valkey/valkey-glide` resolution warning; it is informational unless the configured queue path requires that provider.
 

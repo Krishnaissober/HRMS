@@ -101,25 +101,25 @@ Candidate activity history records creation/matched intake and status changes wi
 
 ## Tests and verification
 
-| Check | Result |
-|---|---|
-| `npm run lint` | PASS |
-| `npm run typecheck` | PASS |
-| `npm test` | PASS — 12 tests |
-| Playwright | PASS — 3 tests |
-| `npm run build` | PASS — non-fatal optional BullMQ Valkey warning |
-| `npx prisma validate` | PASS |
-| Schema-to-empty migration diff | PASS |
-| Public invalid submission API | PASS — HTTP 422 consistent validation response |
-| Protected candidate list without session | PASS — HTTP 401 |
-| `/api/health` | PASS — HTTP 200 |
-| `/api/ready` | PASS behavior — HTTP 503 with explicit unavailable database/Redis dependencies |
-| Tenant isolation unit tests | PASS |
-| RBAC unit tests | PASS |
-| Candidate validation/status/API tests | PASS |
-| Live candidate persistence | BLOCKED — PostgreSQL credentials/database unavailable |
-| Live authenticated HR review workflow | BLOCKED — PostgreSQL/auth persistence unavailable |
-| Live document upload/download | BLOCKED — S3-compatible storage unavailable |
+| Check                                    | Result                                                                         |
+| ---------------------------------------- | ------------------------------------------------------------------------------ |
+| `npm run lint`                           | PASS                                                                           |
+| `npm run typecheck`                      | PASS                                                                           |
+| `npm test`                               | PASS — 12 tests                                                                |
+| Playwright                               | PASS — 3 tests                                                                 |
+| `npm run build`                          | PASS — non-fatal optional BullMQ Valkey warning                                |
+| `npx prisma validate`                    | PASS                                                                           |
+| Schema-to-empty migration diff           | PASS                                                                           |
+| Public invalid submission API            | PASS — HTTP 422 consistent validation response                                 |
+| Protected candidate list without session | PASS — HTTP 401                                                                |
+| `/api/health`                            | PASS — HTTP 200                                                                |
+| `/api/ready`                             | PASS behavior — HTTP 503 with explicit unavailable database/Redis dependencies |
+| Tenant isolation unit tests              | PASS                                                                           |
+| RBAC unit tests                          | PASS                                                                           |
+| Candidate validation/status/API tests    | PASS                                                                           |
+| Live candidate persistence               | BLOCKED — PostgreSQL credentials/database unavailable                          |
+| Live authenticated HR review workflow    | BLOCKED — PostgreSQL/auth persistence unavailable                              |
+| Live document upload/download            | BLOCKED — S3-compatible storage unavailable                                    |
 
 Playwright coverage includes public form rendering and the HR candidate review/list shell. It does not claim successful database-backed submission/review while the required services are unavailable.
 
@@ -134,27 +134,27 @@ Playwright coverage includes public form rendering and the HR candidate review/l
 
 ## Definition of Done status
 
-| Requirement | Status |
-|---|---|
-| Public hiring form | PASS — implemented and browser-rendered; live persistence blocked |
-| Walk-in form | PASS — implemented and browser-rendered; live persistence blocked |
-| Candidate record persists | BLOCKED BY ENVIRONMENT — migration/database credentials unavailable |
-| Candidate profile | PASS — route/UI/service implemented; live query blocked |
-| Candidate status | PASS — supported statuses and transitions implemented |
-| Status history | PASS — candidate activity model/service implemented |
-| Search/filter | PASS — tenant-scoped API implementation with pagination/filter schema |
-| Document upload | BLOCKED BY ENVIRONMENT — storage provider unavailable |
-| Tenant isolation | PASS — service guards and unit tests; live DB isolation pending |
-| RBAC | PASS — API/service permissions and tests |
-| Audit logs | PASS — intake/status/download events implemented; live persistence pending |
-| API tests | PASS — validation/protection coverage; live DB APIs pending |
-| Unit tests | PASS — 12 tests |
-| Playwright workflow | PASS WITH ISSUES — 3 UI/smoke tests; full persisted workflow blocked |
-| Lint | PASS |
-| Typecheck | PASS |
-| Production build | PASS |
-| No hardcoded candidate data | PASS |
-| `docs/SRS.md` unchanged | PASS |
+| Requirement                 | Status                                                                     |
+| --------------------------- | -------------------------------------------------------------------------- |
+| Public hiring form          | PASS — implemented and browser-rendered; live persistence blocked          |
+| Walk-in form                | PASS — implemented and browser-rendered; live persistence blocked          |
+| Candidate record persists   | BLOCKED BY ENVIRONMENT — migration/database credentials unavailable        |
+| Candidate profile           | PASS — route/UI/service implemented; live query blocked                    |
+| Candidate status            | PASS — supported statuses and transitions implemented                      |
+| Status history              | PASS — candidate activity model/service implemented                        |
+| Search/filter               | PASS — tenant-scoped API implementation with pagination/filter schema      |
+| Document upload             | BLOCKED BY ENVIRONMENT — storage provider unavailable                      |
+| Tenant isolation            | PASS — service guards and unit tests; live DB isolation pending            |
+| RBAC                        | PASS — API/service permissions and tests                                   |
+| Audit logs                  | PASS — intake/status/download events implemented; live persistence pending |
+| API tests                   | PASS — validation/protection coverage; live DB APIs pending                |
+| Unit tests                  | PASS — 12 tests                                                            |
+| Playwright workflow         | PASS WITH ISSUES — 3 UI/smoke tests; full persisted workflow blocked       |
+| Lint                        | PASS                                                                       |
+| Typecheck                   | PASS                                                                       |
+| Production build            | PASS                                                                       |
+| No hardcoded candidate data | PASS                                                                       |
+| `docs/SRS.md` unchanged     | PASS                                                                       |
 
 ## Phase 2 stop condition
 

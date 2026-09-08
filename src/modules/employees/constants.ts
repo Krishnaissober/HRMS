@@ -1,4 +1,12 @@
-export const EMPLOYEE_STATUSES = ["PROBATION", "ACTIVE", "CONFIRMED", "TRANSFERRED", "PROMOTED", "EXITED", "INACTIVE"] as const;
+export const EMPLOYEE_STATUSES = [
+  "PROBATION",
+  "ACTIVE",
+  "CONFIRMED",
+  "TRANSFERRED",
+  "PROMOTED",
+  "EXITED",
+  "INACTIVE",
+] as const;
 export type EmployeeStatus = (typeof EMPLOYEE_STATUSES)[number];
 export const EMPLOYEE_STATUS_TRANSITIONS: Record<EmployeeStatus, readonly EmployeeStatus[]> = {
   PROBATION: ["ACTIVE", "CONFIRMED"],
@@ -10,8 +18,18 @@ export const EMPLOYEE_STATUS_TRANSITIONS: Record<EmployeeStatus, readonly Employ
   INACTIVE: [],
 };
 export const ONBOARDING_STATUSES = ["PRE_JOINING", "IN_PROGRESS", "COMPLETED", "BLOCKED"] as const;
-export const ONBOARDING_TASK_STATUSES = ["NOT_STARTED", "IN_PROGRESS", "COMPLETED", "OVERDUE"] as const;
-export const ONBOARDING_DOCUMENT_STATUSES = ["REQUESTED", "UPLOADED", "VERIFIED", "REJECTED"] as const;
+export const ONBOARDING_TASK_STATUSES = [
+  "NOT_STARTED",
+  "IN_PROGRESS",
+  "COMPLETED",
+  "OVERDUE",
+] as const;
+export const ONBOARDING_DOCUMENT_STATUSES = [
+  "REQUESTED",
+  "UPLOADED",
+  "VERIFIED",
+  "REJECTED",
+] as const;
 export const EMPLOYEE_PERMISSIONS = {
   read: "employees.read",
   create: "employees.create",

@@ -9,7 +9,4 @@ export const RECRUITMENT_DRILLDOWN_PERMISSIONS = [
   "offers.read",
 ] as const;
 
-export const HR_ACTION_CENTER_PERMISSIONS = [
-  "notifications.read",
-  "tasks.read",
-] as const;
+export const HR_ACTION_CENTER_PERMISSIONS = ["notifications.read", "tasks.read"] as const;

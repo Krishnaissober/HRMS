@@ -8,4 +8,28 @@ import { EMPLOYEE_PERMISSIONS } from "@/modules/employees/constants";
 import { documentRequestSchema } from "@/modules/employees/schemas";
 import { createDocumentRequest } from "@/modules/employees/service";
 
-export async function POST(request: NextRequest, { params }: { params: Promise<{ id: string }> }) { const id = requestId(request); try { const context = await getAuthenticatedContext(request); await requirePermission(context.session.user.id, context.organizationId, EMPLOYEE_PERMISSIONS.documentsWrite); const parsed = parseBody(documentRequestSchema, await request.json()); return successResponse(await createDocumentRequest({ organizationId: context.organizationId, actorUserId: context.session.user.id, employeeId: (await params).id, ...parsed, requestId: id }), id, { status: 201 }); } catch (error) { return errorResponse(error, id); } }
+export async function POST(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const id = requestId(request);
+  try {
+    const context = await getAuthenticatedContext(request);
+    await requirePermission(
+      context.session.user.id,
+      context.organizationId,
+      EMPLOYEE_PERMISSIONS.documentsWrite,
+    );
+    const parsed = parseBody(documentRequestSchema, await request.json());
+    return successResponse(
+      await createDocumentRequest({
+        organizationId: context.organizationId,
+        actorUserId: context.session.user.id,
+        employeeId: (await params).id,
+        ...parsed,
+        requestId: id,
+      }),
+      id,
+      { status: 201 },
+    );
+  } catch (error) {
+    return errorResponse(error, id);
+  }
+}

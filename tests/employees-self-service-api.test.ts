@@ -2,10 +2,35 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { NextRequest } from "next/server";
 import { forbiddenError, unauthenticatedError } from "@/lib/errors";
 
-const { getAuthenticatedContext, requirePermission, getSelfServiceEmployee, updateSelfServiceEmployee, createDocumentRequest, listSelfServiceDocuments, submitDocumentRequest, changeDocumentStatus } = vi.hoisted(() => ({ getAuthenticatedContext: vi.fn(), requirePermission: vi.fn(), getSelfServiceEmployee: vi.fn(), updateSelfServiceEmployee: vi.fn(), createDocumentRequest: vi.fn(), listSelfServiceDocuments: vi.fn(), submitDocumentRequest: vi.fn(), changeDocumentStatus: vi.fn() }));
+const {
+  getAuthenticatedContext,
+  requirePermission,
+  getSelfServiceEmployee,
+  updateSelfServiceEmployee,
+  createDocumentRequest,
+  listSelfServiceDocuments,
+  submitDocumentRequest,
+  changeDocumentStatus,
+} = vi.hoisted(() => ({
+  getAuthenticatedContext: vi.fn(),
+  requirePermission: vi.fn(),
+  getSelfServiceEmployee: vi.fn(),
+  updateSelfServiceEmployee: vi.fn(),
+  createDocumentRequest: vi.fn(),
+  listSelfServiceDocuments: vi.fn(),
+  submitDocumentRequest: vi.fn(),
+  changeDocumentStatus: vi.fn(),
+}));
 vi.mock("@/lib/tenant", () => ({ getAuthenticatedContext }));
 vi.mock("@/lib/rbac", () => ({ requirePermission }));
-vi.mock("@/modules/employees/service", () => ({ getSelfServiceEmployee, updateSelfServiceEmployee, createDocumentRequest, listSelfServiceDocuments, submitDocumentRequest, changeDocumentStatus }));
+vi.mock("@/modules/employees/service", () => ({
+  getSelfServiceEmployee,
+  updateSelfServiceEmployee,
+  createDocumentRequest,
+  listSelfServiceDocuments,
+  submitDocumentRequest,
+  changeDocumentStatus,
+}));
 
 import { GET as selfGet, PATCH as selfPatch } from "@/app/api/v1/me/employee/route";
 import { GET as documentsGet } from "@/app/api/v1/me/employee/documents/route";
@@ -13,15 +38,147 @@ import { POST as requestDocument } from "@/app/api/v1/employees/[id]/documents/r
 import { POST as submitDocument } from "@/app/api/v1/me/employee/documents/[documentId]/submit/route";
 import { PATCH as verifyDocument } from "@/app/api/v1/employees/[id]/documents/[documentId]/status/route";
 
-const context = { organizationId: "org-a", session: { user: { id: "user-a", email: "employee@example.test" } } } as never;
-function request(url: string, method = "GET", body?: unknown) { return new NextRequest(`http://localhost${url}`, { method, headers: { "content-type": "application/json", "x-organization-id": "org-a" }, body: body === undefined ? undefined : JSON.stringify(body) }); }
+const context = {
+  organizationId: "org-a",
+  session: { user: { id: "user-a", email: "employee@example.test" } },
+} as never;
+function request(url: string, method = "GET", body?: unknown) {
+  return new NextRequest(`http://localhost${url}`, {
+    method,
+    headers: { "content-type": "application/json", "x-organization-id": "org-a" },
+    body: body === undefined ? undefined : JSON.stringify(body),
+  });
+}
 
 describe("Phase 5 self-service and document-request contracts", () => {
-  beforeEach(() => { vi.clearAllMocks(); getAuthenticatedContext.mockResolvedValue(context); requirePermission.mockResolvedValue(undefined); getSelfServiceEmployee.mockResolvedValue({ id: "employee-1", employeeNo: "EMP-1", firstName: "Employee", lastName: "One", email: "employee@example.test", phone: "9000000000", status: "ACTIVE" }); updateSelfServiceEmployee.mockResolvedValue({ id: "employee-1", phone: "9111111111" }); createDocumentRequest.mockResolvedValue({ id: "doc-1", status: "REQUESTED", kind: "IDENTITY" }); listSelfServiceDocuments.mockResolvedValue([{ id: "doc-1", status: "REQUESTED", kind: "IDENTITY" }]); submitDocumentRequest.mockResolvedValue({ id: "doc-1", status: "UPLOADED" }); changeDocumentStatus.mockResolvedValue({ id: "doc-1", status: "VERIFIED" }); });
+  beforeEach(() => {
+    vi.clearAllMocks();
+    getAuthenticatedContext.mockResolvedValue(context);
+    requirePermission.mockResolvedValue(undefined);
+    getSelfServiceEmployee.mockResolvedValue({
+      id: "employee-1",
+      employeeNo: "EMP-1",
+      firstName: "Employee",
+      lastName: "One",
+      email: "employee@example.test",
+      phone: "9000000000",
+      status: "ACTIVE",
+    });
+    updateSelfServiceEmployee.mockResolvedValue({ id: "employee-1", phone: "9111111111" });
+    createDocumentRequest.mockResolvedValue({ id: "doc-1", status: "REQUESTED", kind: "IDENTITY" });
+    listSelfServiceDocuments.mockResolvedValue([
+      { id: "doc-1", status: "REQUESTED", kind: "IDENTITY" },
+    ]);
+    submitDocumentRequest.mockResolvedValue({ id: "doc-1", status: "UPLOADED" });
+    changeDocumentStatus.mockResolvedValue({ id: "doc-1", status: "VERIFIED" });
+  });
 
-  it("requires authentication and self-service permission", async () => { getAuthenticatedContext.mockRejectedValueOnce(unauthenticatedError()); expect((await selfGet(request("/api/v1/me/employee"))).status).toBe(401); getAuthenticatedContext.mockResolvedValue(context); requirePermission.mockRejectedValueOnce(forbiddenError()); expect((await selfGet(request("/api/v1/me/employee"))).status).toBe(403); });
-  it("reads and updates only the authenticated employee's permitted fields", async () => { expect((await selfGet(request("/api/v1/me/employee"))).status).toBe(200); expect(getSelfServiceEmployee).toHaveBeenCalledWith({ organizationId: "org-a", userEmail: "employee@example.test" }); expect((await selfPatch(request("/api/v1/me/employee", "PATCH", { phone: "9111111111" }))).status).toBe(200); expect(updateSelfServiceEmployee).toHaveBeenCalledWith(expect.objectContaining({ organizationId: "org-a", actorUserId: "user-a", userEmail: "employee@example.test", patch: { phone: "9111111111" } })); expect((await selfPatch(request("/api/v1/me/employee", "PATCH", { department: "Payroll" }))).status).toBe(422); expect((await selfPatch(request("/api/v1/me/employee", "PATCH", { phone: "" }))).status).toBe(422); });
-  it("keeps document requests tenant- and permission-scoped", async () => { expect((await requestDocument(request("/api/v1/employees/employee-1/documents/requests", "POST", { kind: "IDENTITY" }), { params: Promise.resolve({ id: "employee-1" }) })).status).toBe(201); expect(createDocumentRequest).toHaveBeenCalledWith(expect.objectContaining({ organizationId: "org-a", employeeId: "employee-1", actorUserId: "user-a", kind: "IDENTITY" })); expect((await documentsGet(request("/api/v1/me/employee/documents"))).status).toBe(200); expect(listSelfServiceDocuments).toHaveBeenCalledWith({ organizationId: "org-a", userEmail: "employee@example.test" }); });
-  it("forwards employee submission and binds HR verification to the path employee", async () => { expect((await submitDocument(request("/api/v1/me/employee/documents/doc-1/submit", "POST", { objectKey: "employees/org-a/employee-1/documents/file.pdf", fileName: "file.pdf", contentType: "application/pdf", byteSize: 12 }), { params: Promise.resolve({ documentId: "doc-1" }) })).status).toBe(200); expect(submitDocumentRequest).toHaveBeenCalledWith(expect.objectContaining({ organizationId: "org-a", userEmail: "employee@example.test", id: "doc-1" })); expect((await verifyDocument(request("/api/v1/employees/employee-1/documents/doc-1/status", "PATCH", { status: "VERIFIED", acknowledged: true }), { params: Promise.resolve({ id: "employee-1", documentId: "doc-1" }) })).status).toBe(200); expect(changeDocumentStatus).toHaveBeenCalledWith(expect.objectContaining({ organizationId: "org-a", employeeId: "employee-1", id: "doc-1", status: "VERIFIED" })); });
-  it("rejects unauthorized document verification", async () => { requirePermission.mockRejectedValueOnce(forbiddenError()); expect((await verifyDocument(request("/api/v1/employees/employee-1/documents/doc-1/status", "PATCH", { status: "VERIFIED" }), { params: Promise.resolve({ id: "employee-1", documentId: "doc-1" }) })).status).toBe(403); });
+  it("requires authentication and self-service permission", async () => {
+    getAuthenticatedContext.mockRejectedValueOnce(unauthenticatedError());
+    expect((await selfGet(request("/api/v1/me/employee"))).status).toBe(401);
+    getAuthenticatedContext.mockResolvedValue(context);
+    requirePermission.mockRejectedValueOnce(forbiddenError());
+    expect((await selfGet(request("/api/v1/me/employee"))).status).toBe(403);
+  });
+  it("reads and updates only the authenticated employee's permitted fields", async () => {
+    expect((await selfGet(request("/api/v1/me/employee"))).status).toBe(200);
+    expect(getSelfServiceEmployee).toHaveBeenCalledWith({
+      organizationId: "org-a",
+      userEmail: "employee@example.test",
+    });
+    expect(
+      (await selfPatch(request("/api/v1/me/employee", "PATCH", { phone: "9111111111" }))).status,
+    ).toBe(200);
+    expect(updateSelfServiceEmployee).toHaveBeenCalledWith(
+      expect.objectContaining({
+        organizationId: "org-a",
+        actorUserId: "user-a",
+        userEmail: "employee@example.test",
+        patch: { phone: "9111111111" },
+      }),
+    );
+    expect(
+      (await selfPatch(request("/api/v1/me/employee", "PATCH", { department: "Payroll" }))).status,
+    ).toBe(422);
+    expect((await selfPatch(request("/api/v1/me/employee", "PATCH", { phone: "" }))).status).toBe(
+      422,
+    );
+  });
+  it("keeps document requests tenant- and permission-scoped", async () => {
+    expect(
+      (
+        await requestDocument(
+          request("/api/v1/employees/employee-1/documents/requests", "POST", { kind: "IDENTITY" }),
+          { params: Promise.resolve({ id: "employee-1" }) },
+        )
+      ).status,
+    ).toBe(201);
+    expect(createDocumentRequest).toHaveBeenCalledWith(
+      expect.objectContaining({
+        organizationId: "org-a",
+        employeeId: "employee-1",
+        actorUserId: "user-a",
+        kind: "IDENTITY",
+      }),
+    );
+    expect((await documentsGet(request("/api/v1/me/employee/documents"))).status).toBe(200);
+    expect(listSelfServiceDocuments).toHaveBeenCalledWith({
+      organizationId: "org-a",
+      userEmail: "employee@example.test",
+    });
+  });
+  it("forwards employee submission and binds HR verification to the path employee", async () => {
+    expect(
+      (
+        await submitDocument(
+          request("/api/v1/me/employee/documents/doc-1/submit", "POST", {
+            objectKey: "employees/org-a/employee-1/documents/file.pdf",
+            fileName: "file.pdf",
+            contentType: "application/pdf",
+            byteSize: 12,
+          }),
+          { params: Promise.resolve({ documentId: "doc-1" }) },
+        )
+      ).status,
+    ).toBe(200);
+    expect(submitDocumentRequest).toHaveBeenCalledWith(
+      expect.objectContaining({
+        organizationId: "org-a",
+        userEmail: "employee@example.test",
+        id: "doc-1",
+      }),
+    );
+    expect(
+      (
+        await verifyDocument(
+          request("/api/v1/employees/employee-1/documents/doc-1/status", "PATCH", {
+            status: "VERIFIED",
+            acknowledged: true,
+          }),
+          { params: Promise.resolve({ id: "employee-1", documentId: "doc-1" }) },
+        )
+      ).status,
+    ).toBe(200);
+    expect(changeDocumentStatus).toHaveBeenCalledWith(
+      expect.objectContaining({
+        organizationId: "org-a",
+        employeeId: "employee-1",
+        id: "doc-1",
+        status: "VERIFIED",
+      }),
+    );
+  });
+  it("rejects unauthorized document verification", async () => {
+    requirePermission.mockRejectedValueOnce(forbiddenError());
+    expect(
+      (
+        await verifyDocument(
+          request("/api/v1/employees/employee-1/documents/doc-1/status", "PATCH", {
+            status: "VERIFIED",
+          }),
+          { params: Promise.resolve({ id: "employee-1", documentId: "doc-1" }) },
+        )
+      ).status,
+    ).toBe(403);
+  });
 });

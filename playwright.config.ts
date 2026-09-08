@@ -7,7 +7,12 @@ export default defineConfig({
   // The authenticated fixture intentionally shares one isolated PostgreSQL tenant across the persisted workflow tests.
   // Serial execution prevents concurrent status mutations and connection/port contention; assertions remain unchanged.
   workers: 1,
-  use: { baseURL: "http://127.0.0.1:3000", trace: "retain-on-failure" },
-  webServer: { command: "npm run dev", url: "http://127.0.0.1:3000", reuseExistingServer: true, timeout: 120_000 },
+  use: { baseURL: "http://localhost:3002", trace: "retain-on-failure" },
+  webServer: {
+    command: "node scripts/start-e2e.cjs",
+    url: "http://localhost:3002/api/health",
+    reuseExistingServer: false,
+    timeout: 120_000,
+  },
   projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }],
 });

@@ -2,25 +2,58 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
+import { Copy, ExternalLink, Eye, Link2, QrCode } from "lucide-react";
 
 type FormKind = "social" | "walk-in";
 const experienceOptions = ["3-6 month", "1-5 year", "5-9 year", "10+"];
-const questionOptions = [
-  ["dateOfBirth", "Date of birth"],
-  ["gender", "Gender"],
-  ["experience", "Experience"],
-  ["education", "Education"],
-  ["currentCompany", "Current company"],
-  ["skills", "Skills"],
-  ["ctc", "Current CTC"],
-  ["hikePercentage", "Expected hike"],
-  ["noticePeriod", "Notice period"],
-  ["employmentHistory", "Employment history"],
-  ["addressLine1", "Address"],
-  ["howFound", "How did you hear about us?"],
-  ["reasonForJobChange", "Reason for job change"],
-  ["professionalReferenceName", "Professional reference"],
+type QuestionOption = readonly [string, string];
+type QuestionGroup = { heading: string; options: readonly QuestionOption[] };
+const requiredQuestionOptions: readonly QuestionOption[] = [
+  ["fullName", "Full name"],
+  ["email", "Email address"],
+  ["phone", "Mobile number"],
+];
+const questionGroups: readonly QuestionGroup[] = [
+  {
+    heading: "Personal and professional details",
+    options: [
+      ["dateOfBirth", "Date of birth"],
+      ["gender", "Gender"],
+      ["experience", "Experience"],
+      ["education", "Education"],
+      ["currentCompany", "Current company"],
+      ["skills", "Skills"],
+      ["ctc", "Current CTC"],
+      ["hikePercentage", "Expected hike"],
+      ["noticePeriod", "Notice period"],
+      ["employmentHistory", "Employment history"],
+      ["addressLine1", "Address"],
+      ["howFound", "How did you hear about us?"],
+      ["reasonForJobChange", "Reason for job change"],
+      ["professionalReferenceName", "Professional reference"],
+    ],
+  },
+  {
+    heading: "Identity verification",
+    options: [
+      ["panNumber", "PAN number"],
+      ["aadhaarNumber", "Aadhaar number"],
+    ],
+  },
+  {
+    heading: "Banking and payroll details",
+    options: [
+      ["bankAccountName", "Account holder name"],
+      ["bankName", "Bank name"],
+      ["bankBranchName", "Branch name"],
+      ["bankAccountNumber", "Account number"],
+      ["bankIfscCode", "IFSC code"],
+      ["bankAccountType", "Account type"],
+    ],
+  },
 ] as const;
+const questionOptions = questionGroups.flatMap((group) => group.options);
 
 export function CandidateFormShareLinks() {
   const [kind, setKind] = useState<FormKind>("social");
@@ -41,7 +74,12 @@ export function CandidateFormShareLinks() {
     const savedConfig = window.localStorage.getItem("triple-minds-form-editor-social");
     if (savedConfig) {
       try {
-        const value = JSON.parse(savedConfig) as { position?: string; description?: string; experience?: string; questions?: string[] };
+        const value = JSON.parse(savedConfig) as {
+          position?: string;
+          description?: string;
+          experience?: string;
+          questions?: string[];
+        };
         setManualPosition(value.position || "");
         setFormDescription(value.description || "");
         setExperienceRequired(value.experience || "");
@@ -63,14 +101,7 @@ export function CandidateFormShareLinks() {
     // "no optional questions selected" from "use the default checklist".
     value.searchParams.set("fields", selectedQuestions.join(","));
     return value.toString();
-  }, [
-    kind,
-    origin,
-    manualPosition,
-    experienceRequired,
-    formDescription,
-    selectedQuestions,
-  ]);
+  }, [kind, origin, manualPosition, experienceRequired, formDescription, selectedQuestions]);
   const qrUrl = `https://quickchart.io/qr?size=240&text=${encodeURIComponent(url)}`;
   function previewUrlFor(nextKind: FormKind) {
     const params = new URLSearchParams({ kind: nextKind, fields: selectedQuestions.join(",") });
@@ -100,7 +131,12 @@ export function CandidateFormShareLinks() {
     const stored = window.localStorage.getItem(`triple-minds-form-editor-${nextKind}`);
     if (stored) {
       try {
-        const value = JSON.parse(stored) as { position?: string; description?: string; experience?: string; questions?: string[] };
+        const value = JSON.parse(stored) as {
+          position?: string;
+          description?: string;
+          experience?: string;
+          questions?: string[];
+        };
         setManualPosition(value.position || "");
         setFormDescription(value.description || "");
         setExperienceRequired(value.experience || "");
@@ -113,14 +149,19 @@ export function CandidateFormShareLinks() {
   }
 
   function saveForm() {
-    window.localStorage.setItem(`triple-minds-form-editor-${kind}`, JSON.stringify({
-      position: manualPosition,
-      description: kind === "social" ? formDescription : "",
-      experience: experienceRequired,
-      questions: selectedQuestions,
-    }));
+    window.localStorage.setItem(
+      `triple-minds-form-editor-${kind}`,
+      JSON.stringify({
+        position: manualPosition,
+        description: kind === "social" ? formDescription : "",
+        experience: experienceRequired,
+        questions: selectedQuestions,
+      }),
+    );
     setSaved(true);
-    setMessage(`${kind === "social" ? "Social media" : "Walk-in"} form settings saved on this device.`);
+    setMessage(
+      `${kind === "social" ? "Social media" : "Walk-in"} form settings saved on this device.`,
+    );
   }
 
   function formatDescription(prefix: string, suffix = "") {
@@ -146,8 +187,13 @@ export function CandidateFormShareLinks() {
     const start = field.selectionStart;
     const end = field.selectionEnd;
     const selected = formDescription.slice(start, end) || "First point\nSecond point";
-    const bulleted = selected.split("\n").map((line) => `- ${line.replace(/^[-•]\s*/, "")}`).join("\n");
-    setFormDescription(`${formDescription.slice(0, start)}${bulleted}${formDescription.slice(end)}`);
+    const bulleted = selected
+      .split("\n")
+      .map((line) => `- ${line.replace(/^[-•]\s*/, "")}`)
+      .join("\n");
+    setFormDescription(
+      `${formDescription.slice(0, start)}${bulleted}${formDescription.slice(end)}`,
+    );
     setDeployed(false);
     setSaved(false);
     requestAnimationFrame(() => field.focus());
@@ -165,6 +211,13 @@ export function CandidateFormShareLinks() {
         </div>
       </div>
       <div className="form-editor-column">
+        <div className="form-step-heading">
+          <span>1</span>
+          <div>
+            <strong>Choose the form type</strong>
+            <small>Select how candidates will submit their application.</small>
+          </div>
+        </div>
         <div className="form-share-tabs" role="tablist" aria-label="Form type">
           <button
             id="form-editor-social"
@@ -183,7 +236,26 @@ export function CandidateFormShareLinks() {
             Walk-in form
           </button>
         </div>
-        <label className="form-editor-field"><span>Position</span><input value={manualPosition} onChange={(event) => { setManualPosition(event.target.value); setDeployed(false); setSaved(false); }} placeholder="e.g. Frontend Developer" /><small className="form-field-help">Enter the position for this hiring form.</small></label>
+        <div className="form-step-heading">
+          <span>2</span>
+          <div>
+            <strong>Add the opportunity details</strong>
+            <small>Keep the position and instructions clear for candidates.</small>
+          </div>
+        </div>
+        <label className="form-editor-field">
+          <span>Position</span>
+          <input
+            value={manualPosition}
+            onChange={(event) => {
+              setManualPosition(event.target.value);
+              setDeployed(false);
+              setSaved(false);
+            }}
+            placeholder="e.g. Frontend Developer"
+          />
+          <small className="form-field-help">Enter the position for this hiring form.</small>
+        </label>
         {kind === "social" && (
           <div className="form-grid form-share-requirements">
             <label>
@@ -213,48 +285,105 @@ export function CandidateFormShareLinks() {
               ref={descriptionRef}
               value={formDescription}
               maxLength={2000}
-              onChange={(event) => { setFormDescription(event.target.value); setDeployed(false); setSaved(false); }}
+              onChange={(event) => {
+                setFormDescription(event.target.value);
+                setDeployed(false);
+                setSaved(false);
+              }}
               placeholder="Tell candidates about the opportunity and what to expect."
               rows={4}
             />
             <div className="form-description-toolbar" aria-label="Description formatting">
-              <button type="button" onClick={() => formatDescription("**", "**")} aria-label="Bold selected text"><strong>B</strong></button>
-              <button type="button" onClick={() => formatDescription("*", "*")} aria-label="Italicize selected text"><em>I</em></button>
-              <button type="button" onClick={addBullets} aria-label="Add bullet list">• List</button>
+              <button
+                type="button"
+                onClick={() => formatDescription("**", "**")}
+                aria-label="Bold selected text"
+              >
+                <strong>B</strong>
+              </button>
+              <button
+                type="button"
+                onClick={() => formatDescription("*", "*")}
+                aria-label="Italicize selected text"
+              >
+                <em>I</em>
+              </button>
+              <button type="button" onClick={addBullets} aria-label="Add bullet list">
+                • List
+              </button>
             </div>
-            <small className="form-field-help">This description appears at the top of the social media application form.</small>
+            <small className="form-field-help">
+              This description appears at the top of the social media application form.
+            </small>
           </label>
         )}
+        <div className="form-step-heading">
+          <span>3</span>
+          <div>
+            <strong>Choose candidate questions</strong>
+            <small>Only ask for information needed at this stage.</small>
+          </div>
+        </div>
         <fieldset className="form-question-editor">
           <legend>Questions to ask candidates</legend>
           <p>
             Select which additional questions should appear on the live form. Name, email, phone,
-            and consent remain required.
+            and consent remain required. Identity and banking details should only be requested when
+            they are needed for verification or payroll setup.
           </p>
-          <div>
-            {questionOptions.map(([value, label]) => (
-              <label key={value}>
-                <input
-                  type="checkbox"
-                  checked={selectedQuestions.includes(value)}
-                  onChange={(event) => {
-                    setSelectedQuestions((current) =>
-                      event.target.checked
-                        ? [...current, value]
-                        : current.filter((item) => item !== value),
-                    );
-                    setDeployed(false);
-                    setSaved(false);
-                  }}
-                />
-                {label}
-              </label>
-            ))}
+          <div className="form-question-group form-question-required-group">
+            <h3>Required candidate details</h3>
+            <p>Name, email address, and mobile number are always collected.</p>
+            <div>
+              {requiredQuestionOptions.map(([value, label]) => (
+                <label key={value}>
+                  <input
+                    className="required-question-checkbox"
+                    type="checkbox"
+                    checked
+                    readOnly
+                    aria-disabled="true"
+                    tabIndex={-1}
+                    onClick={(event) => event.preventDefault()}
+                  />
+                  {label}
+                </label>
+              ))}
+            </div>
           </div>
+          {questionGroups.map((group) => (
+            <div key={group.heading} className="form-question-group">
+              <h3>{group.heading}</h3>
+              <div>
+                {group.options.map(([value, label]) => (
+                  <label key={value}>
+                    <input
+                      type="checkbox"
+                      checked={selectedQuestions.includes(value)}
+                      onChange={(event) => {
+                        setSelectedQuestions((current) =>
+                          event.target.checked
+                            ? [...current, value]
+                            : current.filter((item) => item !== value),
+                        );
+                        setDeployed(false);
+                        setSaved(false);
+                      }}
+                    />
+                    {label}
+                  </label>
+                ))}
+              </div>
+            </div>
+          ))}
           <button type="button" className="form-save-button" onClick={saveForm} disabled={saved}>
             Save form
           </button>
-          {saved && <small className="form-field-help">Saved checklist will be restored when you reopen this form.</small>}
+          {saved && (
+            <small className="form-field-help">
+              Saved checklist will be restored when you reopen this form.
+            </small>
+          )}
         </fieldset>
         <div className="form-deployment-actions mt-4" aria-label="Deploy form actions">
           <button
@@ -284,25 +413,53 @@ export function CandidateFormShareLinks() {
         </div>
       </div>
       <div className="form-link-column">
+        <div className="form-step-heading">
+          <span>4</span>
+          <div>
+            <strong>Share the form</strong>
+            <small>Deploy a link when the form is ready.</small>
+          </div>
+        </div>
         {deployed ? (
           <>
             <div className="form-share-url">
-              <label>
-                <span>Available link</span>
-                <input aria-label="Hiring form URL" readOnly value={url} />
-              </label>
+              <div className="form-share-url-field">
+                <div className="form-share-url-heading">
+                  <span>Available link</span>
+                  <span className="form-share-live-badge">Live now</span>
+                </div>
+                <label className="form-share-input-wrap">
+                  <Link2 aria-hidden="true" />
+                  <input aria-label="Hiring form URL" readOnly value={url} />
+                </label>
+              </div>
               <button type="button" onClick={() => void copyUrl()}>
-                Copy URL
+                <Copy aria-hidden="true" />
+                Copy link
               </button>
             </div>
             <div className="form-share-qr">
-              <img src={qrUrl} alt="QR code for the selected hiring form" />
-              <div>
-                <strong>Live {kind === "social" ? "social media" : "walk-in"} form</strong>
+              <div className="form-share-qr-frame">
+                <QrCode className="form-share-qr-mark" aria-hidden="true" />
+                <Image
+                  src={qrUrl}
+                  alt="QR code for the selected hiring form"
+                  width={220}
+                  height={220}
+                  unoptimized
+                />
+              </div>
+              <div className="form-share-qr-content">
+                <span className="form-share-kicker">Ready to share</span>
+                <strong>{kind === "social" ? "Social media form" : "Walk-in form"}</strong>
                 <p>Share this link or QR code with candidates.</p>
                 <div className="form-link-actions">
-                  <a href={previewUrl}>Preview form</a>
+                  <a href={previewUrl}>
+                    <Eye aria-hidden="true" />
+                    Preview form
+                  </a>
                   <a href={url} target="_blank" rel="noreferrer">
+                    <ExternalLink aria-hidden="true" />
                     Open form in a new tab
                   </a>
                 </div>
@@ -315,6 +472,10 @@ export function CandidateFormShareLinks() {
             <span>Deploy the selected form to generate a shareable link.</span>
           </div>
         )}
+        <div className="form-link-kind-heading">
+          <span>Preview another form</span>
+          <small>Switch directly to a candidate-facing preview.</small>
+        </div>
         <div className="form-link-kind-actions" aria-label="Preview form options">
           <Link className="form-preview-button" href={previewUrlFor("walk-in")}>
             Walked In Form

@@ -38,7 +38,15 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  // Keep development, production, and isolated E2E builds from sharing a
+  // partially-written webpack cache or server bundle.
+  distDir: process.env.NEXT_DIST_DIR || ".next",
   poweredByHeader: false,
+  allowedDevOrigins: ["127.0.0.1"],
+  experimental: {
+    // Import only the icons used by each route instead of compiling the full icon barrel.
+    optimizePackageImports: ["lucide-react"],
+  },
   async headers() {
     return [{ source: "/(.*)", headers: securityHeaders }];
   },

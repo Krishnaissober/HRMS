@@ -67,19 +67,19 @@ The local administrator role now contains the existing candidate permissions:
 
 ## Verification
 
-| Check | Result | Evidence |
-|---|---|---|
-| Admin can read candidates | PASS | Real authenticated `GET /api/v1/candidates` returned HTTP 200 and the standard response |
-| Required permission resolved | PASS | API check and persisted role both resolve `candidates.read` |
-| Unauthorized role | PASS | Focused API test returns HTTP 403 when `requirePermission` rejects |
-| Cross-tenant request | PASS | Real request using an organization without membership returned HTTP 403 `FORBIDDEN`; temporary organization was removed |
-| Active organization respected | PASS | Permission lookup and repository receive the authenticated active organization ID |
-| Unit/API regression | PASS | 19 files, 72 tests passed |
-| Playwright regression | PASS | 9/9 tests passed, including authenticated candidate loading |
-| Lint | PASS WITH WARNINGS | Exit 0; six existing incomplete Phase 9 payroll warnings |
-| Typecheck | FAIL — known Phase 9 defect | Only `src/modules/payroll/service.ts` errors remain |
-| Production build | FAIL — known Phase 9 defect | Compilation reaches type validation and fails on the same incomplete payroll service |
-| Frozen SRS | PASS | `docs/SRS.md` was not modified |
+| Check                         | Result                      | Evidence                                                                                                                |
+| ----------------------------- | --------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| Admin can read candidates     | PASS                        | Real authenticated `GET /api/v1/candidates` returned HTTP 200 and the standard response                                 |
+| Required permission resolved  | PASS                        | API check and persisted role both resolve `candidates.read`                                                             |
+| Unauthorized role             | PASS                        | Focused API test returns HTTP 403 when `requirePermission` rejects                                                      |
+| Cross-tenant request          | PASS                        | Real request using an organization without membership returned HTTP 403 `FORBIDDEN`; temporary organization was removed |
+| Active organization respected | PASS                        | Permission lookup and repository receive the authenticated active organization ID                                       |
+| Unit/API regression           | PASS                        | 19 files, 72 tests passed                                                                                               |
+| Playwright regression         | PASS                        | 9/9 tests passed, including authenticated candidate loading                                                             |
+| Lint                          | PASS WITH WARNINGS          | Exit 0; six existing incomplete Phase 9 payroll warnings                                                                |
+| Typecheck                     | FAIL — known Phase 9 defect | Only `src/modules/payroll/service.ts` errors remain                                                                     |
+| Production build              | FAIL — known Phase 9 defect | Compilation reaches type validation and fails on the same incomplete payroll service                                    |
+| Frozen SRS                    | PASS                        | `docs/SRS.md` was not modified                                                                                          |
 
 ## Files changed
 

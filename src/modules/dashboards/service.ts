@@ -44,7 +44,9 @@ export function calculateRecruitmentMetrics(input: {
     const source = application.candidate.source;
     const current = sourceMap.get(source) ?? { applications: 0, acceptedOffers: 0 };
     current.applications += 1;
-    current.acceptedOffers += application.offers.some((offer) => offer.status === "ACCEPTED") ? 1 : 0;
+    current.acceptedOffers += application.offers.some((offer) => offer.status === "ACCEPTED")
+      ? 1
+      : 0;
     sourceMap.set(source, current);
   }
 
@@ -57,8 +59,7 @@ export function calculateRecruitmentMetrics(input: {
       ? [
           Math.max(
             0,
-            (offer.respondedAt.getTime() -
-              offer.application.requisition.approvedAt.getTime()) /
+            (offer.respondedAt.getTime() - offer.application.requisition.approvedAt.getTime()) /
               millisecondsPerDay,
           ),
         ]
@@ -76,10 +77,7 @@ export function calculateRecruitmentMetrics(input: {
       input.pipelineGroups.map((group) => [group.status, group._count]),
     ),
     openPositions: input.openPositions,
-    interviewPassRate: percent(
-      input.hireRecommendationCount,
-      input.submittedEvaluationCount,
-    ),
+    interviewPassRate: percent(input.hireRecommendationCount, input.submittedEvaluationCount),
     interviewNoShowRate: percent(input.noShowCount, input.interviewCount),
     offerAcceptanceRate: percent(input.acceptedOfferCount, input.deliveredOfferCount),
     averageTimeToHireDays: averageDays(timeToHireValues),
@@ -131,7 +129,7 @@ export async function recruitmentDashboard(organizationId: string, range: Dashbo
     sourceApplications,
     acceptedOffers,
     openRequisitions,
-  ] = await db.$transaction([
+  ] = await Promise.all([
     db.application.count({ where: applicationWhere }),
     db.application.groupBy({
       where: applicationWhere,
@@ -185,10 +183,12 @@ export async function recruitmentDashboard(organizationId: string, range: Dashbo
     range: { from: range.from ?? null, to: range.to ?? null },
     ...calculateRecruitmentMetrics({
       applicationCount,
-      pipelineGroups: (pipelineGroups as Array<{ status: string; _count: { _all: number } }>).map((group) => ({
-        status: group.status,
-        _count: group._count._all,
-      })),
+      pipelineGroups: (pipelineGroups as Array<{ status: string; _count: { _all: number } }>).map(
+        (group) => ({
+          status: group.status,
+          _count: group._count._all,
+        }),
+      ),
       openPositions,
       interviewCount,
       noShowCount,
@@ -203,11 +203,7 @@ export async function recruitmentDashboard(organizationId: string, range: Dashbo
   };
 }
 
-export async function hrDashboard(
-  organizationId: string,
-  userId: string,
-  range: DashboardRange,
-) {
+export async function hrDashboard(organizationId: string, userId: string, range: DashboardRange) {
   const [recruitment, notifications, tasks] = await Promise.all([
     recruitmentDashboard(organizationId, range),
     db.appNotification.findMany({

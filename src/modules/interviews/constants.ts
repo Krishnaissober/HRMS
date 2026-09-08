@@ -1,4 +1,11 @@
-export const INTERVIEW_STATUSES = ["SCHEDULED", "CHECKED_IN", "COMPLETED", "NO_SHOW", "RESCHEDULED", "CANCELLED"] as const;
+export const INTERVIEW_STATUSES = [
+  "SCHEDULED",
+  "CHECKED_IN",
+  "COMPLETED",
+  "NO_SHOW",
+  "RESCHEDULED",
+  "CANCELLED",
+] as const;
 export type InterviewStatus = (typeof INTERVIEW_STATUSES)[number];
 
 export const INTERVIEW_PERMISSIONS = {

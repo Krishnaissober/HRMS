@@ -8,13 +8,11 @@ test("persists accepted-offer conversion, onboarding progress and employee found
   const organizationId = process.env.E2E_ORGANIZATION_ID!;
   const otherOrganizationId = process.env.E2E_OTHER_ORGANIZATION_ID!;
   const headers = { "content-type": "application/json", "x-organization-id": organizationId };
-  expect(
-    (
-      await page.request.post("/api/auth/sign-in/email", {
-        data: { email: process.env.E2E_EMAIL, password: process.env.E2E_PASSWORD },
-      })
-    ).ok(),
-  ).toBeTruthy();
+  const hrLogin = await page.request.post("/api/auth/sign-in/email", {
+    data: { email: process.env.E2E_EMAIL, password: process.env.E2E_PASSWORD },
+  });
+  expect(hrLogin.ok()).toBeTruthy();
+  const hrSessionCookies = await page.context().cookies();
   const requisition = await db.jobRequisition.findFirstOrThrow({ where: { organizationId } });
   const suffix = `${Date.now()}-${Math.random().toString(36).slice(2, 6)}`;
   const candidate = await db.candidate.create({
@@ -339,7 +337,7 @@ test("persists accepted-offer conversion, onboarding progress and employee found
       (day: { attendance: unknown[] }) => day.attendance,
     ),
   ).toHaveLength(0);
-  const anonymous = await playwrightRequest.newContext({ baseURL: "http://127.0.0.1:3000" });
+  const anonymous = await playwrightRequest.newContext({ baseURL: "http://localhost:3002" });
   expect(
     (
       await anonymous.get(`/api/v1/attendance/employee/calendar?view=day&date=${today}`, {
@@ -413,16 +411,14 @@ test("persists accepted-offer conversion, onboarding progress and employee found
     ).status(),
   ).toBe(403);
   await page.context().clearCookies();
-  expect(
-    (
-      await page.request.post("/api/auth/sign-in/email", {
-        data: {
-          email: process.env.E2E_LEAVE_APPROVER_EMAIL,
-          password: process.env.E2E_LEAVE_APPROVER_PASSWORD,
-        },
-      })
-    ).ok(),
-  ).toBeTruthy();
+  const approverRejectionLogin = await page.request.post("/api/auth/sign-in/email", {
+    data: {
+      email: process.env.E2E_LEAVE_APPROVER_EMAIL,
+      password: process.env.E2E_LEAVE_APPROVER_PASSWORD,
+    },
+  });
+  expect(approverRejectionLogin.status(), await approverRejectionLogin.text()).toBe(200);
+  const approverSessionCookies = await page.context().cookies();
   const crossTenantDecision = await page.request.patch(
     `/api/v1/leave-requests/${leaveRequest.id}/decision`,
     {
@@ -474,13 +470,7 @@ test("persists accepted-offer conversion, onboarding progress and employee found
     }),
   ).toBeNull();
   await page.context().clearCookies();
-  expect(
-    (
-      await page.request.post("/api/auth/sign-in/email", {
-        data: { email: process.env.E2E_EMAIL, password: process.env.E2E_PASSWORD },
-      })
-    ).ok(),
-  ).toBeTruthy();
+  await page.context().addCookies(hrSessionCookies);
   const leaveWeekday = new Date(`${leaveEndDate}T00:00:00.000Z`).getUTCDay();
   await db.employeeShiftAssignment.update({
     where: { id: assignmentResponse.ok() ? (await assignmentResponse.json()).data.id : "" },
@@ -648,16 +638,7 @@ test("persists accepted-offer conversion, onboarding progress and employee found
   expect(rejectionRequestResponse.status()).toBe(201);
   const rejectionRequest = (await rejectionRequestResponse.json()).data;
   await page.context().clearCookies();
-  expect(
-    (
-      await page.request.post("/api/auth/sign-in/email", {
-        data: {
-          email: process.env.E2E_LEAVE_APPROVER_EMAIL,
-          password: process.env.E2E_LEAVE_APPROVER_PASSWORD,
-        },
-      })
-    ).ok(),
-  ).toBeTruthy();
+  await page.context().addCookies(approverSessionCookies);
   expect(
     (
       await page.request.patch(`/api/v1/leave-requests/${rejectionRequest.id}/decision`, {
@@ -696,13 +677,7 @@ test("persists accepted-offer conversion, onboarding progress and employee found
     timeout: 20_000,
   });
   await page.context().clearCookies();
-  expect(
-    (
-      await page.request.post("/api/auth/sign-in/email", {
-        data: { email: process.env.E2E_EMAIL, password: process.env.E2E_PASSWORD },
-      })
-    ).ok(),
-  ).toBeTruthy();
+  await page.context().addCookies(hrSessionCookies);
 
   const concurrentCandidate = await db.candidate.create({
     data: {

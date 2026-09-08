@@ -12,46 +12,46 @@ The persisted check-in/check-out workflow is functional and regression-tested, b
 
 ## Verification performed
 
-| Verification | Result | Evidence |
-|---|---|---|
-| Unit/API tests | PASS | 56 tests passed across 14 files |
-| Playwright | PASS | 9 persisted workflows passed |
-| Persisted PostgreSQL workflow | PASS | Real authenticated attendance workflow passed |
-| Lint | PASS | No lint errors |
-| Typecheck | PASS | TypeScript check passed |
-| Production build | PASS WITH WARNING | Build passed; optional BullMQ Valkey module warning |
-| Prisma validation | PASS | Schema valid with configured local environment |
-| Prisma migration status | PASS | 10 migrations found; database up to date |
-| Prisma migration diff | PASS | No difference detected |
-| Redis/BullMQ | ENVIRONMENT BLOCKED | Redis is unavailable |
-| S3 | ENVIRONMENT BLOCKED | Existing storage provider is unavailable |
-| Live health/readiness probe | ENVIRONMENT BLOCKED | No application process was listening on port 3000 during probe |
+| Verification                  | Result              | Evidence                                                       |
+| ----------------------------- | ------------------- | -------------------------------------------------------------- |
+| Unit/API tests                | PASS                | 56 tests passed across 14 files                                |
+| Playwright                    | PASS                | 9 persisted workflows passed                                   |
+| Persisted PostgreSQL workflow | PASS                | Real authenticated attendance workflow passed                  |
+| Lint                          | PASS                | No lint errors                                                 |
+| Typecheck                     | PASS                | TypeScript check passed                                        |
+| Production build              | PASS WITH WARNING   | Build passed; optional BullMQ Valkey module warning            |
+| Prisma validation             | PASS                | Schema valid with configured local environment                 |
+| Prisma migration status       | PASS                | 10 migrations found; database up to date                       |
+| Prisma migration diff         | PASS                | No difference detected                                         |
+| Redis/BullMQ                  | ENVIRONMENT BLOCKED | Redis is unavailable                                           |
+| S3                            | ENVIRONMENT BLOCKED | Existing storage provider is unavailable                       |
+| Live health/readiness probe   | ENVIRONMENT BLOCKED | No application process was listening on port 3000 during probe |
 
 The Playwright suite verifies PostgreSQL persistence rather than rendering alone. It covers the main employee attendance workflow, duplicate check-in/check-out rejection, correction approval, holiday creation, reporting, and audit assertions. It does not cover every negative/security boundary listed below.
 
 ## Requirement review matrix
 
-| Area | SRS reference | Current implementation | Classification | Severity |
-|---|---|---|---|---|
-| Employee check-in | FR-120 | Authenticated session identity is used; duplicate daily records are rejected and records persist. | IMPLEMENTED | LOW |
-| Employee check-out | FR-120 | Active record is located for the tenant-scoped employee; checkout and duration persist; duplicate checkout is rejected. | IMPLEMENTED | LOW |
-| Attendance history | FR-123, FR-124 | `AttendanceHistory` records check-in/out, correction, exception, and status events with actor IDs. | IMPLEMENTED | LOW |
-| Attendance corrections | FR-124 | Employee requests and authorized HR review are persisted and audited. | PARTIALLY IMPLEMENTED | MEDIUM |
-| Shifts | FR-122 | Shift start/end, timezone, grace period, weekly-off metadata, and rotation metadata are stored and editable. | PARTIALLY IMPLEMENTED | MEDIUM |
-| Shift assignment | FR-122 | Tenant-safe employee/shift assignment and overlapping assignment rejection are implemented. | IMPLEMENTED | LOW |
-| Rosters/rotation | FR-122 | Assignment foundation exists, but rotation and weekly-off metadata are not used to generate or enforce a roster. | PARTIALLY IMPLEMENTED | MEDIUM |
-| Holidays | FR-122, FR-121 | Holidays persist per organization and affect check-in status. | PARTIALLY IMPLEMENTED | LOW |
-| Overtime | FR-125 | Calculated and approved overtime fields are separate and audited. | PARTIALLY IMPLEMENTED | MEDIUM |
-| Exceptions | FR-123, FR-124 | Exception types and notes persist with history and audit events. | IMPLEMENTED | LOW |
-| Attendance calculations | FR-123 | Duration, late, early-departure, and overtime values are calculated. | PARTIALLY IMPLEMENTED | MEDIUM |
-| Attendance reports | FR-123, FR-126 | Filtered, paginated report API exists with a summary. | PARTIALLY IMPLEMENTED | HIGH |
-| Calendar views | FR-126 | No dedicated day, week, or month attendance view exists. | MISSING | HIGH |
-| Future attendance integrations | FR-127 | Source field and API/service boundary provide a foundation; no import/device/biometric adapter exists. | PARTIALLY IMPLEMENTED | LOW |
-| RBAC | General security requirements, FR-126 | Phase 6 permissions are checked at route boundaries and service operations. | IMPLEMENTED | LOW |
-| Tenant isolation | General multi-tenancy requirements | Reads and mutations include organization scope; cross-tenant entity lookup is rejected. | IMPLEMENTED | LOW |
-| Audit logging | General audit requirements | Mutations use transactional audit writes and actor IDs. | IMPLEMENTED | LOW |
-| API validation | Non-functional/security requirements | Zod schemas validate dates, times, status, correction, exception, overtime, and pagination inputs. | IMPLEMENTED | LOW |
-| Persisted E2E workflows | Quality requirements | Main workflow is database-backed and passes. | PARTIALLY IMPLEMENTED | MEDIUM |
+| Area                           | SRS reference                         | Current implementation                                                                                                  | Classification        | Severity |
+| ------------------------------ | ------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- | --------------------- | -------- |
+| Employee check-in              | FR-120                                | Authenticated session identity is used; duplicate daily records are rejected and records persist.                       | IMPLEMENTED           | LOW      |
+| Employee check-out             | FR-120                                | Active record is located for the tenant-scoped employee; checkout and duration persist; duplicate checkout is rejected. | IMPLEMENTED           | LOW      |
+| Attendance history             | FR-123, FR-124                        | `AttendanceHistory` records check-in/out, correction, exception, and status events with actor IDs.                      | IMPLEMENTED           | LOW      |
+| Attendance corrections         | FR-124                                | Employee requests and authorized HR review are persisted and audited.                                                   | PARTIALLY IMPLEMENTED | MEDIUM   |
+| Shifts                         | FR-122                                | Shift start/end, timezone, grace period, weekly-off metadata, and rotation metadata are stored and editable.            | PARTIALLY IMPLEMENTED | MEDIUM   |
+| Shift assignment               | FR-122                                | Tenant-safe employee/shift assignment and overlapping assignment rejection are implemented.                             | IMPLEMENTED           | LOW      |
+| Rosters/rotation               | FR-122                                | Assignment foundation exists, but rotation and weekly-off metadata are not used to generate or enforce a roster.        | PARTIALLY IMPLEMENTED | MEDIUM   |
+| Holidays                       | FR-122, FR-121                        | Holidays persist per organization and affect check-in status.                                                           | PARTIALLY IMPLEMENTED | LOW      |
+| Overtime                       | FR-125                                | Calculated and approved overtime fields are separate and audited.                                                       | PARTIALLY IMPLEMENTED | MEDIUM   |
+| Exceptions                     | FR-123, FR-124                        | Exception types and notes persist with history and audit events.                                                        | IMPLEMENTED           | LOW      |
+| Attendance calculations        | FR-123                                | Duration, late, early-departure, and overtime values are calculated.                                                    | PARTIALLY IMPLEMENTED | MEDIUM   |
+| Attendance reports             | FR-123, FR-126                        | Filtered, paginated report API exists with a summary.                                                                   | PARTIALLY IMPLEMENTED | HIGH     |
+| Calendar views                 | FR-126                                | No dedicated day, week, or month attendance view exists.                                                                | MISSING               | HIGH     |
+| Future attendance integrations | FR-127                                | Source field and API/service boundary provide a foundation; no import/device/biometric adapter exists.                  | PARTIALLY IMPLEMENTED | LOW      |
+| RBAC                           | General security requirements, FR-126 | Phase 6 permissions are checked at route boundaries and service operations.                                             | IMPLEMENTED           | LOW      |
+| Tenant isolation               | General multi-tenancy requirements    | Reads and mutations include organization scope; cross-tenant entity lookup is rejected.                                 | IMPLEMENTED           | LOW      |
+| Audit logging                  | General audit requirements            | Mutations use transactional audit writes and actor IDs.                                                                 | IMPLEMENTED           | LOW      |
+| API validation                 | Non-functional/security requirements  | Zod schemas validate dates, times, status, correction, exception, overtime, and pagination inputs.                      | IMPLEMENTED           | LOW      |
+| Persisted E2E workflows        | Quality requirements                  | Main workflow is database-backed and passes.                                                                            | PARTIALLY IMPLEMENTED | MEDIUM   |
 
 ## Detailed findings
 
@@ -147,12 +147,12 @@ The following areas were verified as implemented for the exercised paths:
 
 These are kept separate from application defects:
 
-| Item | Severity | Classification | Detail |
-|---|---|---|---|
-| Redis/BullMQ | ENVIRONMENT BLOCKED | ENVIRONMENT BLOCKED | Redis is unavailable; no fake queue or Redis implementation was used. |
-| S3 | ENVIRONMENT BLOCKED | ENVIRONMENT BLOCKED | Existing S3-compatible storage is unavailable; Phase 6 does not claim live object-storage verification. |
-| Live health/readiness probe | ENVIRONMENT BLOCKED | ENVIRONMENT BLOCKED | The endpoints build successfully, but no app process was listening on port 3000 during the live probe. |
-| Optional Valkey dependency warning | LOW | PARTIALLY IMPLEMENTED | Production build succeeds, but BullMQ reports an optional `@valkey/valkey-glide` resolution warning. |
+| Item                               | Severity            | Classification        | Detail                                                                                                  |
+| ---------------------------------- | ------------------- | --------------------- | ------------------------------------------------------------------------------------------------------- |
+| Redis/BullMQ                       | ENVIRONMENT BLOCKED | ENVIRONMENT BLOCKED   | Redis is unavailable; no fake queue or Redis implementation was used.                                   |
+| S3                                 | ENVIRONMENT BLOCKED | ENVIRONMENT BLOCKED   | Existing S3-compatible storage is unavailable; Phase 6 does not claim live object-storage verification. |
+| Live health/readiness probe        | ENVIRONMENT BLOCKED | ENVIRONMENT BLOCKED   | The endpoints build successfully, but no app process was listening on port 3000 during the live probe.  |
+| Optional Valkey dependency warning | LOW                 | PARTIALLY IMPLEMENTED | Production build succeeds, but BullMQ reports an optional `@valkey/valkey-glide` resolution warning.    |
 
 ## Phase 7 readiness
 

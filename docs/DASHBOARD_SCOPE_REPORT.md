@@ -16,13 +16,13 @@ The SRS does **not** explicitly require a separate dedicated Employee dashboard,
 
 ## Summary matrix
 
-| Requested dashboard | Explicit dedicated dashboard requirement? | Current status |
-|---|---:|---|
-| HR/Admin dashboard | **Yes for HR dashboard/action center; no separate Admin dashboard is specified** | PARTIAL |
-| Employee dashboard | No; employee self-service experience is required | Not applicable as a dedicated-dashboard requirement |
-| Recruiter dashboard | Yes, through the SRS requirement for recruitment dashboards | MISSING |
-| Manager dashboard | No; team-management workflows are required | Not applicable as a dedicated-dashboard requirement |
-| Analytics dashboard | Yes; cross-domain operational dashboards with drill-down | PARTIAL and roadmap-deferred to Phase 11 |
+| Requested dashboard |                                        Explicit dedicated dashboard requirement? | Current status                                      |
+| ------------------- | -------------------------------------------------------------------------------: | --------------------------------------------------- |
+| HR/Admin dashboard  | **Yes for HR dashboard/action center; no separate Admin dashboard is specified** | PARTIAL                                             |
+| Employee dashboard  |                                 No; employee self-service experience is required | Not applicable as a dedicated-dashboard requirement |
+| Recruiter dashboard |                      Yes, through the SRS requirement for recruitment dashboards | MISSING                                             |
+| Manager dashboard   |                                       No; team-management workflows are required | Not applicable as a dedicated-dashboard requirement |
+| Analytics dashboard |                         Yes; cross-domain operational dashboards with drill-down | PARTIAL and roadmap-deferred to Phase 11            |
 
 ## 1. HR dashboard and action center
 

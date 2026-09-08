@@ -10,5 +10,23 @@ import { submitInterviewEvaluation } from "@/modules/interviews/service";
 
 export async function POST(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const id = requestId(request);
-  try { const context = await getAuthenticatedContext(request); await requirePermission(context.session.user.id, context.organizationId, INTERVIEW_PERMISSIONS.evaluate); const parsed = parseBody(interviewEvaluationSchema, await request.json()); const evaluation = await submitInterviewEvaluation({ organizationId: context.organizationId, actorUserId: context.session.user.id, id: (await params).id, ...parsed, requestId: id }); return successResponse(evaluation, id, { status: 201 }); } catch (error) { return errorResponse(error, id); }
+  try {
+    const context = await getAuthenticatedContext(request);
+    await requirePermission(
+      context.session.user.id,
+      context.organizationId,
+      INTERVIEW_PERMISSIONS.evaluate,
+    );
+    const parsed = parseBody(interviewEvaluationSchema, await request.json());
+    const evaluation = await submitInterviewEvaluation({
+      organizationId: context.organizationId,
+      actorUserId: context.session.user.id,
+      id: (await params).id,
+      ...parsed,
+      requestId: id,
+    });
+    return successResponse(evaluation, id, { status: 201 });
+  } catch (error) {
+    return errorResponse(error, id);
+  }
 }

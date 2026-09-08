@@ -1,23 +1,255 @@
 "use client";
 import { useCallback, useEffect, useState } from "react";
 
-type Asset={id:string;assetType:string;identifier:string;status:string};
-type Employee={id:string;employeeNo:string;firstName:string;lastName:string;status:string};
-type ExitCase={id:string;status:string;reason:string|null;employee:Employee&{assets?:Asset[]};clearanceTasks:Array<{id:string;title:string;department:string;status:string}>;settlement?:{status:string}|null;interview?:{rating:number|null}|null};
-type Summary={exitCases:number;completedExitCases:number;clearanceTasks:number;returnedAssets:number};
+type Asset = { id: string; assetType: string; identifier: string; status: string };
+type Employee = {
+  id: string;
+  employeeNo: string;
+  firstName: string;
+  lastName: string;
+  status: string;
+};
+type ExitCase = {
+  id: string;
+  status: string;
+  reason: string | null;
+  employee: Employee & { assets?: Asset[] };
+  clearanceTasks: Array<{ id: string; title: string; department: string; status: string }>;
+  settlement?: { status: string } | null;
+  interview?: { rating: number | null } | null;
+};
+type Summary = {
+  exitCases: number;
+  completedExitCases: number;
+  clearanceTasks: number;
+  returnedAssets: number;
+};
 
-export default function OffboardingPage(){
-  const [org,setOrg]=useState("");
-  const [items,setItems]=useState<ExitCase[]>([]);
-  const [employees,setEmployees]=useState<Employee[]>([]);
-  const [employeeId,setEmployeeId]=useState("");
-  const [reason,setReason]=useState("");
-  const [documentId,setDocumentId]=useState("");
-  const [summary,setSummary]=useState<Summary|null>(null);
-  const [message,setMessage]=useState("Loading exit cases…");
-  const load=useCallback(async(value=org)=>{const [exitResponse,employeeResponse,summaryResponse]=await Promise.all([fetch("/api/v1/exit",{headers:{"x-organization-id":value}}),fetch("/api/v1/employees?page=1&pageSize=100",{headers:{"x-organization-id":value}}),fetch("/api/v1/reports/exit",{headers:{"x-organization-id":value}})]);const exitJson=await exitResponse.json();if(!exitResponse.ok)return setMessage(exitJson.error?.message||"Could not load exit cases");setItems(exitJson.data);if(employeeResponse.ok){const employeeJson=await employeeResponse.json();setEmployees(employeeJson.data.items.filter((employee:Employee)=>!["EXITED","INACTIVE"].includes(employee.status)));}if(summaryResponse.ok)setSummary((await summaryResponse.json()).data);setMessage("");},[org]);
-  async function action(url:string,method="POST",body?:unknown){const response=await fetch(url,{method,headers:{"x-organization-id":org,"content-type":"application/json"},body:body?JSON.stringify(body):undefined});const result=await response.json();setMessage(response.ok?"Saved":result.error?.message||"Action failed");if(response.ok)await load();return response.ok;}
-  async function initiate(){if(!employeeId||!reason.trim())return setMessage("Employee and resignation reason are required");if(await action(`/api/v1/employees/${employeeId}/exit`,"POST",{reason,noticePeriodDays:30})){setReason("");setEmployeeId("");}}
-  useEffect(()=>{const value=new URLSearchParams(window.location.search).get("organizationId")||"";setOrg(value);if(value)void load(value);},[load]);
-  return <main className="page-shell"><section className="panel"><p className="eyebrow">Exit & compliance</p><h1>Offboarding</h1><div className="toolbar"><input aria-label="Organization ID" value={org} onChange={event=>setOrg(event.target.value)}/><button type="button" onClick={()=>void load()}>Load exit cases</button></div>{summary&&<p role="status">Exit cases {summary.exitCases} · completed {summary.completedExitCases} · clearance tasks {summary.clearanceTasks} · returned assets {summary.returnedAssets}</p>}<section className="panel"><h2>Start exit case</h2><div className="form-grid"><label>Employee<select value={employeeId} onChange={event=>setEmployeeId(event.target.value)}><option value="">Select employee</option>{employees.map(employee=><option key={employee.id} value={employee.id}>{employee.employeeNo} · {employee.firstName} {employee.lastName}</option>)}</select></label><label>Reason<textarea value={reason} onChange={event=>setReason(event.target.value)}/></label><button type="button" onClick={()=>void initiate()}>Start exit case</button></div></section>{message&&<p role="status">{message}</p>}<div className="candidate-list">{items.map(item=><article className="candidate-row" key={item.id}><strong>{item.employee.employeeNo} · {item.employee.firstName} {item.employee.lastName}</strong><span>{item.status} · {item.reason||"No reason"}</span><span>Interview: {item.interview?`recorded${item.interview.rating?` (${item.interview.rating}/5)`:""}`:"pending"} · Settlement: {item.settlement?.status||"PENDING"}</span><div className="toolbar"><button type="button" onClick={()=>void action(`/api/v1/exit/${item.id}/tasks`,"POST",{department:"HR",title:"Complete HR clearance"})}>Add HR clearance</button><button type="button" onClick={()=>void action(`/api/v1/exit/${item.id}/interview`,"POST",{feedback:{summary:"Recorded in HR workspace"},rating:5})}>Record exit interview</button><button type="button" onClick={()=>void action(`/api/v1/exit/${item.id}/settlement`,"PATCH",{status:item.settlement?.status==="READY"?"COMPLETED":"READY"})}>Advance settlement</button>{item.status!=="COMPLETED"&&<button type="button" onClick={()=>void action(`/api/v1/exit/${item.id}/complete`)}>Complete exit</button>}</div><ul>{item.clearanceTasks.map(task=><li key={task.id}>{task.department} · {task.title} · {task.status} {task.status==="OPEN"&&<button type="button" onClick={()=>void action(`/api/v1/exit/tasks/${task.id}/status`,"PATCH",{status:"COMPLETED"})}>Complete task</button>}</li>)}</ul>{item.employee.assets?.filter(asset=>asset.status==="ASSIGNED").map(asset=><p key={asset.id}>Asset: {asset.assetType} · {asset.identifier} <button type="button" onClick={()=>void action(`/api/v1/employees/${item.employee.id}/assets/${asset.id}/return`,"POST",{})}>Mark returned</button></p>)}<div className="toolbar"><input aria-label={`Exit document ID for ${item.employee.employeeNo}`} placeholder="Existing employee document ID" value={documentId} onChange={event=>setDocumentId(event.target.value)}/><button type="button" disabled={!documentId} onClick={()=>void action(`/api/v1/exit/${item.id}/documents`,"POST",{documentId})}>Attach exit document</button><a href={`/hr/documents?organizationId=${encodeURIComponent(org)}`}>Manage documents</a></div></article>)}{items.length===0&&<p>No exit cases found.</p>}</div></section></main>;
+export default function OffboardingPage() {
+  const [org, setOrg] = useState("");
+  const [items, setItems] = useState<ExitCase[]>([]);
+  const [employees, setEmployees] = useState<Employee[]>([]);
+  const [employeeId, setEmployeeId] = useState("");
+  const [reason, setReason] = useState("");
+  const [documentId, setDocumentId] = useState("");
+  const [summary, setSummary] = useState<Summary | null>(null);
+  const [message, setMessage] = useState("Loading exit cases…");
+  const load = useCallback(
+    async (value = org) => {
+      const [exitResponse, employeeResponse, summaryResponse] = await Promise.all([
+        fetch("/api/v1/exit", { headers: { "x-organization-id": value } }),
+        fetch("/api/v1/employees?page=1&pageSize=100", { headers: { "x-organization-id": value } }),
+        fetch("/api/v1/reports/exit", { headers: { "x-organization-id": value } }),
+      ]);
+      const exitJson = await exitResponse.json();
+      if (!exitResponse.ok)
+        return setMessage(exitJson.error?.message || "Could not load exit cases");
+      setItems(exitJson.data);
+      if (employeeResponse.ok) {
+        const employeeJson = await employeeResponse.json();
+        setEmployees(
+          employeeJson.data.items.filter(
+            (employee: Employee) => !["EXITED", "INACTIVE"].includes(employee.status),
+          ),
+        );
+      }
+      if (summaryResponse.ok) setSummary((await summaryResponse.json()).data);
+      setMessage("");
+    },
+    [org],
+  );
+  async function action(url: string, method = "POST", body?: unknown) {
+    const response = await fetch(url, {
+      method,
+      headers: { "x-organization-id": org, "content-type": "application/json" },
+      body: body ? JSON.stringify(body) : undefined,
+    });
+    const result = await response.json();
+    setMessage(response.ok ? "Saved" : result.error?.message || "Action failed");
+    if (response.ok) await load();
+    return response.ok;
+  }
+  async function initiate() {
+    if (!employeeId || !reason.trim())
+      return setMessage("Employee and resignation reason are required");
+    if (
+      await action(`/api/v1/employees/${employeeId}/exit`, "POST", { reason, noticePeriodDays: 30 })
+    ) {
+      setReason("");
+      setEmployeeId("");
+    }
+  }
+  useEffect(() => {
+    const value = new URLSearchParams(window.location.search).get("organizationId") || "";
+    setOrg(value);
+    if (value) void load(value);
+  }, [load]);
+  return (
+    <main className="page-shell">
+      <section className="panel">
+        <p className="eyebrow">Exit & compliance</p>
+        <h1>Offboarding</h1>
+        <div className="toolbar">
+          <input
+            aria-label="Organization ID"
+            value={org}
+            onChange={(event) => setOrg(event.target.value)}
+          />
+          <button type="button" onClick={() => void load()}>
+            Load exit cases
+          </button>
+        </div>
+        {summary && (
+          <p role="status">
+            Exit cases {summary.exitCases} · completed {summary.completedExitCases} · clearance
+            tasks {summary.clearanceTasks} · returned assets {summary.returnedAssets}
+          </p>
+        )}
+        <section className="panel">
+          <h2>Start exit case</h2>
+          <div className="form-grid">
+            <label>
+              Employee
+              <select value={employeeId} onChange={(event) => setEmployeeId(event.target.value)}>
+                <option value="">Select employee</option>
+                {employees.map((employee) => (
+                  <option key={employee.id} value={employee.id}>
+                    {employee.employeeNo} · {employee.firstName} {employee.lastName}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label>
+              Reason
+              <textarea value={reason} onChange={(event) => setReason(event.target.value)} />
+            </label>
+            <button type="button" onClick={() => void initiate()}>
+              Start exit case
+            </button>
+          </div>
+        </section>
+        {message && <p role="status">{message}</p>}
+        <div className="candidate-list">
+          {items.map((item) => (
+            <article className="candidate-row" key={item.id}>
+              <strong>
+                {item.employee.employeeNo} · {item.employee.firstName} {item.employee.lastName}
+              </strong>
+              <span>
+                {item.status} · {item.reason || "No reason"}
+              </span>
+              <span>
+                Interview:{" "}
+                {item.interview
+                  ? `recorded${item.interview.rating ? ` (${item.interview.rating}/5)` : ""}`
+                  : "pending"}{" "}
+                · Settlement: {item.settlement?.status || "PENDING"}
+              </span>
+              <div className="toolbar">
+                <button
+                  type="button"
+                  onClick={() =>
+                    void action(`/api/v1/exit/${item.id}/tasks`, "POST", {
+                      department: "HR",
+                      title: "Complete HR clearance",
+                    })
+                  }
+                >
+                  Add HR clearance
+                </button>
+                <button
+                  type="button"
+                  onClick={() =>
+                    void action(`/api/v1/exit/${item.id}/interview`, "POST", {
+                      feedback: { summary: "Recorded in HR workspace" },
+                      rating: 5,
+                    })
+                  }
+                >
+                  Record exit interview
+                </button>
+                <button
+                  type="button"
+                  onClick={() =>
+                    void action(`/api/v1/exit/${item.id}/settlement`, "PATCH", {
+                      status: item.settlement?.status === "READY" ? "COMPLETED" : "READY",
+                    })
+                  }
+                >
+                  Advance settlement
+                </button>
+                {item.status !== "COMPLETED" && (
+                  <button
+                    type="button"
+                    onClick={() => void action(`/api/v1/exit/${item.id}/complete`)}
+                  >
+                    Complete exit
+                  </button>
+                )}
+              </div>
+              <ul>
+                {item.clearanceTasks.map((task) => (
+                  <li key={task.id}>
+                    {task.department} · {task.title} · {task.status}{" "}
+                    {task.status === "OPEN" && (
+                      <button
+                        type="button"
+                        onClick={() =>
+                          void action(`/api/v1/exit/tasks/${task.id}/status`, "PATCH", {
+                            status: "COMPLETED",
+                          })
+                        }
+                      >
+                        Complete task
+                      </button>
+                    )}
+                  </li>
+                ))}
+              </ul>
+              {item.employee.assets
+                ?.filter((asset) => asset.status === "ASSIGNED")
+                .map((asset) => (
+                  <p key={asset.id}>
+                    Asset: {asset.assetType} · {asset.identifier}{" "}
+                    <button
+                      type="button"
+                      onClick={() =>
+                        void action(
+                          `/api/v1/employees/${item.employee.id}/assets/${asset.id}/return`,
+                          "POST",
+                          {},
+                        )
+                      }
+                    >
+                      Mark returned
+                    </button>
+                  </p>
+                ))}
+              <div className="toolbar">
+                <input
+                  aria-label={`Exit document ID for ${item.employee.employeeNo}`}
+                  placeholder="Existing employee document ID"
+                  value={documentId}
+                  onChange={(event) => setDocumentId(event.target.value)}
+                />
+                <button
+                  type="button"
+                  disabled={!documentId}
+                  onClick={() =>
+                    void action(`/api/v1/exit/${item.id}/documents`, "POST", { documentId })
+                  }
+                >
+                  Attach exit document
+                </button>
+                <a href={`/hr/documents?organizationId=${encodeURIComponent(org)}`}>
+                  Manage documents
+                </a>
+              </div>
+            </article>
+          ))}
+          {items.length === 0 && <p>No exit cases found.</p>}
+        </div>
+      </section>
+    </main>
+  );
 }

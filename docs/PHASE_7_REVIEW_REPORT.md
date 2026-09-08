@@ -13,23 +13,23 @@ The implementation was reviewed against frozen requirements FR-140 through FR-14
 
 ## 2. Requirements coverage
 
-| Area | SRS reference | Classification | Review result |
-|---|---|---|---|
-| Leave types | FR-140 | PARTIALLY IMPLEMENTED | Model/API accept eligibility, accrual, carry-forward, and approval policy, but HR UI exposes only name/code and hardcodes the rest. Accrual policy is stored but has no balance-accrual behavior. |
-| Leave balances | FR-143 | IMPLEMENTED WITH ISSUES | Allocated/carried/used values and transactions persist, but concurrency and carry-forward edge cases lack verification. |
-| Leave requests | FR-141 | IMPLEMENTED WITH ISSUE | Authenticated self-service, dates, duration, type, reason, and optional attachment metadata exist; submitted attachment ownership is insufficiently bound to the employee. |
-| Approval/rejection | FR-142 | PARTIALLY IMPLEMENTED | States and multi-step persistence exist, but manager-versus-HR authority is not enforced. |
-| Invalid transitions | FR-142 | IMPLEMENTED | Non-pending decisions and duplicate final decisions are rejected. |
-| Overlap prevention | FR-141/FR-143 | IMPLEMENTED, TEST GAP | Pending/approved overlap is checked in a serializable request transaction; no concurrent request regression test proves the race behavior. |
-| Holidays/weekly offs | FR-145 | IMPLEMENTED WITH ISSUE | Phase 6 rules are reused, but approval does not reconcile duration when calendar rules changed after submission. |
-| Carry-forward | FR-140/FR-143 | IMPLEMENTED WITH ISSUE | Remaining-balance cap works for the tested case; zero-value duplicate and concurrent execution are not safely covered. |
-| Encashment | — | NOT APPLICABLE | The frozen SRS does not require encashment. Correctly not implemented. |
-| Attendance integration | FR-145 | IMPLEMENTED WITH HIGH ISSUE | Approval creates `LEAVE` attendance, but duration and affected dates can diverge after holiday/roster changes. No reversal exists; reversal is not a frozen SRS state. |
-| Notifications | Phase 7 supporting scope | PARTIALLY IMPLEMENTED | Atomic persistence exists, but request routing can notify the employee instead of HR and external email remains blocked. |
-| Employee self-service | FR-141/FR-143 | IMPLEMENTED | Session-derived employee identity, balances, requests, and approval history are available. |
-| Manager/HR workflow | FR-140/FR-142/FR-144 | PARTIALLY IMPLEMENTED | Queue and decisions exist; policy configuration, balance management, and manager/team boundaries are incomplete in UI/authorization. |
-| Reports/history | FR-143/FR-144 | PARTIALLY IMPLEMENTED | Request, approval, balance transaction history, and calendars exist; no dedicated report is required by the frozen SRS. The UI does not expose balance transaction history. |
-| PostgreSQL persistence | FR-143 | IMPLEMENTED | Migration and persisted workflow evidence are present. |
+| Area                   | SRS reference            | Classification              | Review result                                                                                                                                                                                     |
+| ---------------------- | ------------------------ | --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Leave types            | FR-140                   | PARTIALLY IMPLEMENTED       | Model/API accept eligibility, accrual, carry-forward, and approval policy, but HR UI exposes only name/code and hardcodes the rest. Accrual policy is stored but has no balance-accrual behavior. |
+| Leave balances         | FR-143                   | IMPLEMENTED WITH ISSUES     | Allocated/carried/used values and transactions persist, but concurrency and carry-forward edge cases lack verification.                                                                           |
+| Leave requests         | FR-141                   | IMPLEMENTED WITH ISSUE      | Authenticated self-service, dates, duration, type, reason, and optional attachment metadata exist; submitted attachment ownership is insufficiently bound to the employee.                        |
+| Approval/rejection     | FR-142                   | PARTIALLY IMPLEMENTED       | States and multi-step persistence exist, but manager-versus-HR authority is not enforced.                                                                                                         |
+| Invalid transitions    | FR-142                   | IMPLEMENTED                 | Non-pending decisions and duplicate final decisions are rejected.                                                                                                                                 |
+| Overlap prevention     | FR-141/FR-143            | IMPLEMENTED, TEST GAP       | Pending/approved overlap is checked in a serializable request transaction; no concurrent request regression test proves the race behavior.                                                        |
+| Holidays/weekly offs   | FR-145                   | IMPLEMENTED WITH ISSUE      | Phase 6 rules are reused, but approval does not reconcile duration when calendar rules changed after submission.                                                                                  |
+| Carry-forward          | FR-140/FR-143            | IMPLEMENTED WITH ISSUE      | Remaining-balance cap works for the tested case; zero-value duplicate and concurrent execution are not safely covered.                                                                            |
+| Encashment             | —                        | NOT APPLICABLE              | The frozen SRS does not require encashment. Correctly not implemented.                                                                                                                            |
+| Attendance integration | FR-145                   | IMPLEMENTED WITH HIGH ISSUE | Approval creates `LEAVE` attendance, but duration and affected dates can diverge after holiday/roster changes. No reversal exists; reversal is not a frozen SRS state.                            |
+| Notifications          | Phase 7 supporting scope | PARTIALLY IMPLEMENTED       | Atomic persistence exists, but request routing can notify the employee instead of HR and external email remains blocked.                                                                          |
+| Employee self-service  | FR-141/FR-143            | IMPLEMENTED                 | Session-derived employee identity, balances, requests, and approval history are available.                                                                                                        |
+| Manager/HR workflow    | FR-140/FR-142/FR-144     | PARTIALLY IMPLEMENTED       | Queue and decisions exist; policy configuration, balance management, and manager/team boundaries are incomplete in UI/authorization.                                                              |
+| Reports/history        | FR-143/FR-144            | PARTIALLY IMPLEMENTED       | Request, approval, balance transaction history, and calendars exist; no dedicated report is required by the frozen SRS. The UI does not expose balance transaction history.                       |
+| PostgreSQL persistence | FR-143                   | IMPLEMENTED                 | Migration and persisted workflow evidence are present.                                                                                                                                            |
 
 ## 3. Findings
 
@@ -112,19 +112,19 @@ The implementation was reviewed against frozen requirements FR-140 through FR-14
 
 ## 4. Specific risk conclusions
 
-| Risk reviewed | Conclusion |
-|---|---|
-| Balance race/concurrent requests | Serializable implementation exists; persisted race proof is missing. MEDIUM test gap. |
-| Approval beyond balance | Single approval rechecks remaining balance; concurrent approval behavior is not tested. |
-| Duplicate approvals | Sequential duplicate final approval is rejected and E2E-tested. |
-| Invalid rejection/approval | Rejection reason and non-pending transitions are enforced; approval-step actor type is not. HIGH. |
-| Cross-tenant access | Organization filters and cross-tenant decision E2E are present; broader request/balance/type/calendar cross-tenant negative coverage is incomplete. |
-| Employee self-approval | Same-email self-approval is rejected in service; no direct persisted negative assertion proves it. |
-| Approval/reversal attendance | Approval exists; no reversal state is required by the frozen SRS. Calendar-policy drift on approval is HIGH. |
-| Carry-forward | Tested positive cap path passes; zero duplicate and concurrent paths are missing. MEDIUM. |
-| Encashment | Not required by the frozen SRS; correctly absent. |
-| Audit consistency | Main mutations are transactional; concurrent/rollback event cardinality is not tested. |
-| Notification consistency | Transactional persistence is sound; recipient routing is incomplete. MEDIUM. |
+| Risk reviewed                    | Conclusion                                                                                                                                          |
+| -------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Balance race/concurrent requests | Serializable implementation exists; persisted race proof is missing. MEDIUM test gap.                                                               |
+| Approval beyond balance          | Single approval rechecks remaining balance; concurrent approval behavior is not tested.                                                             |
+| Duplicate approvals              | Sequential duplicate final approval is rejected and E2E-tested.                                                                                     |
+| Invalid rejection/approval       | Rejection reason and non-pending transitions are enforced; approval-step actor type is not. HIGH.                                                   |
+| Cross-tenant access              | Organization filters and cross-tenant decision E2E are present; broader request/balance/type/calendar cross-tenant negative coverage is incomplete. |
+| Employee self-approval           | Same-email self-approval is rejected in service; no direct persisted negative assertion proves it.                                                  |
+| Approval/reversal attendance     | Approval exists; no reversal state is required by the frozen SRS. Calendar-policy drift on approval is HIGH.                                        |
+| Carry-forward                    | Tested positive cap path passes; zero duplicate and concurrent paths are missing. MEDIUM.                                                           |
+| Encashment                       | Not required by the frozen SRS; correctly absent.                                                                                                   |
+| Audit consistency                | Main mutations are transactional; concurrent/rollback event cardinality is not tested.                                                              |
+| Notification consistency         | Transactional persistence is sound; recipient routing is incomplete. MEDIUM.                                                                        |
 
 ## 5. Test assessment
 

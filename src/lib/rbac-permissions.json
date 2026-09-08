@@ -83,6 +83,6 @@
   "expenses.read",
   "expenses.approve",
   "expenses.pay",
-  "payroll.reports"
-  ,"reports.export"
+  "payroll.reports",
+  "reports.export"
 ]

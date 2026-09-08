@@ -1,8 +1,25 @@
 export const CANDIDATE_SOURCES = ["ONLINE", "WALK_IN"] as const;
 export type CandidateSource = (typeof CANDIDATE_SOURCES)[number];
 
-export const CANDIDATE_STATUSES = ["APPLIED", "SCREENING", "SHORTLISTED", "INTERVIEW", "SELECTED", "HOLD", "REJECTED"] as const;
+export const CANDIDATE_STATUSES = [
+  "APPLIED",
+  "SCREENING",
+  "SHORTLISTED",
+  "INTERVIEW",
+  "SELECTED",
+  "HOLD",
+  "REJECTED",
+] as const;
 export type CandidateStatus = (typeof CANDIDATE_STATUSES)[number];
+
+export function assessInterviewRatings(communication: string, technical: string) {
+  if (![communication, technical].every((rating) => /^[1-5]$/.test(rating))) return null;
+  const score = (Number(communication) + Number(technical)) / 2;
+  return {
+    overallFit: String(score),
+    recommendation: score >= 4 ? "SHORTLISTED" : score >= 3 ? "HOLD" : "REJECTED",
+  };
+}
 
 export const CANDIDATE_PERMISSIONS = {
   read: "candidates.read",

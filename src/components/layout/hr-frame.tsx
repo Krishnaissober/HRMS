@@ -2,8 +2,9 @@
 
 import * as React from "react";
 import { AppShell } from "@/components/layout/app-shell";
+import { NavigationProgress } from "@/components/layout/navigation-progress";
 
-export function HrFrame({ children }: { children: React.ReactNode }) {
+export function HrFrame({ children, isAdmin }: { children: React.ReactNode; isAdmin: boolean }) {
   async function signOut() {
     const response = await fetch("/api/auth/sign-out", {
       method: "POST",
@@ -14,5 +15,12 @@ export function HrFrame({ children }: { children: React.ReactNode }) {
     if (response.ok) window.location.replace("/");
   }
 
-  return <AppShell organizationName="Triple Minds" onSignOut={() => void signOut()}>{children}</AppShell>;
+  return (
+    <>
+      <NavigationProgress />
+      <AppShell organizationName="Triple Minds" isAdmin={isAdmin} onSignOut={() => void signOut()}>
+        {children}
+      </AppShell>
+    </>
+  );
 }

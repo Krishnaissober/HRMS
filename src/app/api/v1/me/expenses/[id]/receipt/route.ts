@@ -8,7 +8,13 @@ export async function GET(r: NextRequest, { params }: { params: Promise<{ id: st
   try {
     const c = await getAuthenticatedContext(r);
     return Response.redirect(
-      await receiptDownload({ organizationId: c.organizationId, actorUserId: c.session.user.id, id: (await params).id, employeeEmail: c.session.user.email, requestId: id }),
+      await receiptDownload({
+        organizationId: c.organizationId,
+        actorUserId: c.session.user.id,
+        id: (await params).id,
+        employeeEmail: c.session.user.email,
+        requestId: id,
+      }),
     );
   } catch (e) {
     return errorResponse(e, id);

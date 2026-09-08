@@ -15,10 +15,19 @@ vi.mock("@/lib/storage", () => ({ createUploadUrl }));
 import { POST } from "@/app/api/v1/candidates/upload-url/route";
 
 const context = { organizationId: "org-a", session: { user: { id: "user-a" } } } as never;
-const validBody = { kind: "RESUME", fileName: "resume.pdf", contentType: "application/pdf", byteSize: 1024 };
+const validBody = {
+  kind: "RESUME",
+  fileName: "resume.pdf",
+  contentType: "application/pdf",
+  byteSize: 1024,
+};
 
 function request(body: unknown, organizationId = "org-a") {
-  return new NextRequest("http://localhost/api/v1/candidates/upload-url", { method: "POST", headers: { "content-type": "application/json", "x-organization-id": organizationId }, body: JSON.stringify(body) });
+  return new NextRequest("http://localhost/api/v1/candidates/upload-url", {
+    method: "POST",
+    headers: { "content-type": "application/json", "x-organization-id": organizationId },
+    body: JSON.stringify(body),
+  });
 }
 
 describe("authenticated upload URL contract", () => {
@@ -53,7 +62,9 @@ describe("authenticated upload URL contract", () => {
   });
 
   it("rejects invalid type and oversized files before storage", async () => {
-    const invalidType = await POST(request({ ...validBody, contentType: "application/x-msdownload" }));
+    const invalidType = await POST(
+      request({ ...validBody, contentType: "application/x-msdownload" }),
+    );
     const oversized = await POST(request({ ...validBody, byteSize: 10 * 1024 * 1024 + 1 }));
     expect(invalidType.status).toBe(422);
     expect(oversized.status).toBe(422);

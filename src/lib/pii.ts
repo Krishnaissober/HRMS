@@ -5,7 +5,9 @@ const algorithm = "aes-256-gcm";
 const version = "v1";
 
 function key() {
-  return createHash("sha256").update(env.PII_ENCRYPTION_KEY || env.BETTER_AUTH_SECRET).digest();
+  return createHash("sha256")
+    .update(env.PII_ENCRYPTION_KEY || env.BETTER_AUTH_SECRET)
+    .digest();
 }
 
 export function encryptPii(value: string) {
@@ -20,7 +22,10 @@ export function decryptPii(value: string) {
   if (storedVersion !== version || !ivValue || !tagValue || !encryptedValue) return value;
   const decipher = createDecipheriv(algorithm, key(), Buffer.from(ivValue, "base64url"));
   decipher.setAuthTag(Buffer.from(tagValue, "base64url"));
-  return Buffer.concat([decipher.update(Buffer.from(encryptedValue, "base64url")), decipher.final()]).toString("utf8");
+  return Buffer.concat([
+    decipher.update(Buffer.from(encryptedValue, "base64url")),
+    decipher.final(),
+  ]).toString("utf8");
 }
 
 export function maskAadhaar(value: string | null | undefined) {

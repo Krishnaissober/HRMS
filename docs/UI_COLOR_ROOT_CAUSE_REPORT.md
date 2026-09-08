@@ -18,23 +18,23 @@ However, the Tailwind color adapter and several legacy shared CSS declarations c
 
 Before the fix, live computed styles included:
 
-| Element | Previous computed value |
-|---|---|
-| `body` background color | `rgb(255, 255, 0)` |
-| `body` text color | `rgb(132, 95, 82)` |
-| `.app-header` background | `rgba(255, 255, 0, 0.7)` |
+| Element                         | Previous computed value   |
+| ------------------------------- | ------------------------- |
+| `body` background color         | `rgb(255, 255, 0)`        |
+| `body` text color               | `rgb(132, 95, 82)`        |
+| `.app-header` background        | `rgba(255, 255, 0, 0.7)`  |
 | `.dashboard-filters` background | `rgba(255, 255, 0, 0.52)` |
 
 After the fix:
 
-| Element | New computed value |
-|---|---|
-| `body` background color | `rgb(248, 250, 252)` |
-| `body` text color | `rgb(15, 23, 42)` |
-| `.hr-app-main` background color | `rgb(248, 250, 252)` |
-| `.panel` background | `rgba(255, 255, 255, 0.72)` |
+| Element                         | New computed value          |
+| ------------------------------- | --------------------------- |
+| `body` background color         | `rgb(248, 250, 252)`        |
+| `body` text color               | `rgb(15, 23, 42)`           |
+| `.hr-app-main` background color | `rgb(248, 250, 252)`        |
+| `.panel` background             | `rgba(255, 255, 255, 0.72)` |
 | `.dashboard-filters` background | `rgba(241, 245, 249, 0.52)` |
-| shared border color | `rgb(226, 232, 240)` |
+| shared border color             | `rgb(226, 232, 240)`        |
 
 ## Files changed
 

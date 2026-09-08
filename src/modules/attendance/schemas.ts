@@ -19,13 +19,17 @@ export const visitorCreateSchema = z.object({
   purpose: optionalText(500),
 });
 
-export const attendanceCheckInSchema = z.object({
-  visitId: z.string().trim().min(1).max(100).optional(),
-  candidateId: z.string().trim().min(1).max(100).optional(),
-  interviewId: z.string().trim().min(1).max(100).optional(),
-  hostUserId: z.string().trim().min(1).max(100).optional(),
-  purpose: optionalText(500),
-}).refine((value) => value.visitId || value.candidateId || value.interviewId, { message: "A visit, candidate or interview is required" });
+export const attendanceCheckInSchema = z
+  .object({
+    visitId: z.string().trim().min(1).max(100).optional(),
+    candidateId: z.string().trim().min(1).max(100).optional(),
+    interviewId: z.string().trim().min(1).max(100).optional(),
+    hostUserId: z.string().trim().min(1).max(100).optional(),
+    purpose: optionalText(500),
+  })
+  .refine((value) => value.visitId || value.candidateId || value.interviewId, {
+    message: "A visit, candidate or interview is required",
+  });
 
 export const attendanceCheckOutSchema = z.object({ visitId: z.string().trim().min(1).max(100) });
 

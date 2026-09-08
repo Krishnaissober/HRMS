@@ -1,5 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { calendarRange, isWeeklyOff, validateAttendanceStatusChange } from "@/modules/employee-attendance/rules";
+import {
+  calendarRange,
+  isWeeklyOff,
+  validateAttendanceStatusChange,
+} from "@/modules/employee-attendance/rules";
 
 describe("employee attendance rules", () => {
   it("builds exact day, Monday-to-Sunday week, and calendar-month ranges", () => {
@@ -14,9 +18,23 @@ describe("employee attendance rules", () => {
   });
 
   it("rejects attendance states that conflict with persisted calculations", () => {
-    const base = { current: "PRESENT" as const, checkInAt: new Date(), checkOutAt: null, lateArrivalMinutes: null, overtimeMinutes: null, holiday: false, weeklyOff: false };
-    expect(() => validateAttendanceStatusChange({ ...base, target: "ABSENT" })).toThrowError(/validation/i);
-    expect(() => validateAttendanceStatusChange({ ...base, target: "OVERTIME" })).toThrowError(/validation/i);
-    expect(() => validateAttendanceStatusChange({ ...base, target: "HOLIDAY" })).toThrowError(/validation/i);
+    const base = {
+      current: "PRESENT" as const,
+      checkInAt: new Date(),
+      checkOutAt: null,
+      lateArrivalMinutes: null,
+      overtimeMinutes: null,
+      holiday: false,
+      weeklyOff: false,
+    };
+    expect(() => validateAttendanceStatusChange({ ...base, target: "ABSENT" })).toThrowError(
+      /validation/i,
+    );
+    expect(() => validateAttendanceStatusChange({ ...base, target: "OVERTIME" })).toThrowError(
+      /validation/i,
+    );
+    expect(() => validateAttendanceStatusChange({ ...base, target: "HOLIDAY" })).toThrowError(
+      /validation/i,
+    );
   });
 });

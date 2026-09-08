@@ -23,7 +23,10 @@ export async function GET(request: NextRequest) {
     ]);
     const range = parseQuery(dashboardRangeSchema, request.nextUrl.searchParams);
     return successResponse(
-      await hrDashboard(context.organizationId, context.session.user.id, range),
+      {
+        ...(await hrDashboard(context.organizationId, context.session.user.id, range)),
+        user: { name: context.session.user.name },
+      },
       id,
     );
   } catch (error) {

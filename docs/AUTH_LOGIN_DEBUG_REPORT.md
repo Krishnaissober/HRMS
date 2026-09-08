@@ -59,23 +59,23 @@ The local-only variables and procedure are documented in `.env.example` and `doc
 
 ## Verification results
 
-| Check | Result | Evidence |
-|---|---|---|
-| Better Auth configuration | PASS | Prisma PostgreSQL adapter and email/password provider enabled |
-| Running server database | PASS | `.env.local` resolves to the reachable `hr_portal` database on port 5433 |
-| Local administrator bootstrap | PASS | User, credential account, active organization, membership, role, and permissions persisted |
-| Unauthenticated `/` | PASS | HTTP 200 sign-in entry |
-| Valid local credentials | PASS | Sign-in HTTP 200 and Better Auth session cookie issued |
-| Authenticated `/` | PASS | HTTP 307 to `/hr/candidates?organizationId={active membership organization}` |
-| Candidate workspace | PASS | Redirect target returned HTTP 200 |
-| Inactive/no membership behavior | PASS | Disposable authenticated user received `Organization access required`; fixture was removed afterward |
-| Invalid credentials | PASS | HTTP 401; server logged `Invalid password` without exposing credential data |
-| Unit/API tests | PASS | 18 files, 68 tests passed |
-| Playwright auth smoke | PASS | 1 persisted authenticated root/tenant redirect test passed |
-| Lint | PASS WITH WARNINGS | Exit 0; six pre-existing warnings in incomplete Phase 9 payroll code |
-| Typecheck | FAIL — unrelated existing defect | Incomplete Phase 9 payroll draft references Prisma models absent from the generated client and invalid employee-history metadata |
-| Production build | FAIL — unrelated existing defect | Compilation reaches type validation, then fails on the same incomplete Phase 9 payroll service |
-| Frozen SRS | PASS | `docs/SRS.md` was not modified |
+| Check                           | Result                           | Evidence                                                                                                                         |
+| ------------------------------- | -------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| Better Auth configuration       | PASS                             | Prisma PostgreSQL adapter and email/password provider enabled                                                                    |
+| Running server database         | PASS                             | `.env.local` resolves to the reachable `hr_portal` database on port 5433                                                         |
+| Local administrator bootstrap   | PASS                             | User, credential account, active organization, membership, role, and permissions persisted                                       |
+| Unauthenticated `/`             | PASS                             | HTTP 200 sign-in entry                                                                                                           |
+| Valid local credentials         | PASS                             | Sign-in HTTP 200 and Better Auth session cookie issued                                                                           |
+| Authenticated `/`               | PASS                             | HTTP 307 to `/hr/candidates?organizationId={active membership organization}`                                                     |
+| Candidate workspace             | PASS                             | Redirect target returned HTTP 200                                                                                                |
+| Inactive/no membership behavior | PASS                             | Disposable authenticated user received `Organization access required`; fixture was removed afterward                             |
+| Invalid credentials             | PASS                             | HTTP 401; server logged `Invalid password` without exposing credential data                                                      |
+| Unit/API tests                  | PASS                             | 18 files, 68 tests passed                                                                                                        |
+| Playwright auth smoke           | PASS                             | 1 persisted authenticated root/tenant redirect test passed                                                                       |
+| Lint                            | PASS WITH WARNINGS               | Exit 0; six pre-existing warnings in incomplete Phase 9 payroll code                                                             |
+| Typecheck                       | FAIL — unrelated existing defect | Incomplete Phase 9 payroll draft references Prisma models absent from the generated client and invalid employee-history metadata |
+| Production build                | FAIL — unrelated existing defect | Compilation reaches type validation, then fails on the same incomplete Phase 9 payroll service                                   |
+| Frozen SRS                      | PASS                             | `docs/SRS.md` was not modified                                                                                                   |
 
 ## Environment limitations
 

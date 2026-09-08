@@ -309,6 +309,12 @@ model Candidate {
   ctc                             String?
   hikePercentage                  String?
   noticePeriod                    String?
+  bankAccountName                 String?
+  bankName                        String?
+  bankBranchName                  String?
+  bankAccountNumber               String?
+  bankIfscCode                    String?
+  bankAccountType                 String?
   aadhaarNumber                   String?
   panNumber                       String?
   roleOfInterest                  String

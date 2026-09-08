@@ -10,5 +10,21 @@ import { listVisits } from "@/modules/attendance/service";
 
 export async function GET(request: NextRequest) {
   const id = requestId(request);
-  try { const context = await getAuthenticatedContext(request); await requirePermission(context.session.user.id, context.organizationId, ATTENDANCE_PERMISSIONS.read); return successResponse(await listVisits(context.organizationId, parseQuery(attendanceListSchema, request.nextUrl.searchParams)), id); } catch (error) { return errorResponse(error, id); }
+  try {
+    const context = await getAuthenticatedContext(request);
+    await requirePermission(
+      context.session.user.id,
+      context.organizationId,
+      ATTENDANCE_PERMISSIONS.read,
+    );
+    return successResponse(
+      await listVisits(
+        context.organizationId,
+        parseQuery(attendanceListSchema, request.nextUrl.searchParams),
+      ),
+      id,
+    );
+  } catch (error) {
+    return errorResponse(error, id);
+  }
 }

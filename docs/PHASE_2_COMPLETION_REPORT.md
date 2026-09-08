@@ -155,34 +155,34 @@ Live external delivery and Redis-backed reminder worker execution are not verifi
 
 ## 13. Definition of Done
 
-| Requirement | Status |
-|---|---|
-| Interview creation | PASS |
-| Interview scheduling | PASS |
-| Interviewer assignment | PASS |
-| Panel management | PASS |
-| Availability validation | PASS |
-| Timezone handling | PASS |
-| Interview status transitions | PASS |
-| Candidate check-in | PASS |
-| Candidate check-out | PASS |
-| Evaluation form | PASS |
-| Scorecard/consolidated evaluation view | PASS |
-| Interview history | PASS |
-| Interview notification contract | PASS |
-| Live notification delivery/reminders | ENVIRONMENT BLOCKED |
-| Calendar integration contract | PASS |
-| Live calendar synchronization | ENVIRONMENT BLOCKED |
-| RBAC tests | PASS |
-| Tenant isolation tests | PASS |
-| Audit tests | PASS |
-| Unit/API tests | PASS |
-| Playwright workflows | PASS |
-| Lint | PASS |
-| Typecheck | PASS |
-| Build | PASS |
-| Prisma migration validation | PASS |
-| `docs/SRS.md` unchanged | PASS |
+| Requirement                            | Status              |
+| -------------------------------------- | ------------------- |
+| Interview creation                     | PASS                |
+| Interview scheduling                   | PASS                |
+| Interviewer assignment                 | PASS                |
+| Panel management                       | PASS                |
+| Availability validation                | PASS                |
+| Timezone handling                      | PASS                |
+| Interview status transitions           | PASS                |
+| Candidate check-in                     | PASS                |
+| Candidate check-out                    | PASS                |
+| Evaluation form                        | PASS                |
+| Scorecard/consolidated evaluation view | PASS                |
+| Interview history                      | PASS                |
+| Interview notification contract        | PASS                |
+| Live notification delivery/reminders   | ENVIRONMENT BLOCKED |
+| Calendar integration contract          | PASS                |
+| Live calendar synchronization          | ENVIRONMENT BLOCKED |
+| RBAC tests                             | PASS                |
+| Tenant isolation tests                 | PASS                |
+| Audit tests                            | PASS                |
+| Unit/API tests                         | PASS                |
+| Playwright workflows                   | PASS                |
+| Lint                                   | PASS                |
+| Typecheck                              | PASS                |
+| Build                                  | PASS                |
+| Prisma migration validation            | PASS                |
+| `docs/SRS.md` unchanged                | PASS                |
 
 ## 14. Phase 3 prerequisites
 

@@ -12,7 +12,9 @@ export type AttendanceQuery = {
 };
 
 const attendanceInclude = {
-  employee: { select: { id: true, employeeNo: true, firstName: true, lastName: true, email: true } },
+  employee: {
+    select: { id: true, employeeNo: true, firstName: true, lastName: true, email: true },
+  },
   shift: true,
   assignment: true,
   history: {
@@ -22,22 +24,30 @@ const attendanceInclude = {
   corrections: { orderBy: { createdAt: "desc" as const } },
 } satisfies Prisma.AttendanceRecordInclude;
 
-export function attendanceWhere(organizationId: string, query: Pick<AttendanceQuery, "employeeId" | "status" | "from" | "to">) {
+export function attendanceWhere(
+  organizationId: string,
+  query: Pick<AttendanceQuery, "employeeId" | "status" | "from" | "to">,
+) {
   return {
     organizationId,
     ...(query.employeeId ? { employeeId: query.employeeId } : {}),
     ...(query.status ? { status: query.status } : {}),
-    ...(query.from || query.to ? {
-      workDate: {
-        ...(query.from ? { gte: new Date(`${query.from}T00:00:00.000Z`) } : {}),
-        ...(query.to ? { lte: new Date(`${query.to}T00:00:00.000Z`) } : {}),
-      },
-    } : {}),
+    ...(query.from || query.to
+      ? {
+          workDate: {
+            ...(query.from ? { gte: new Date(`${query.from}T00:00:00.000Z`) } : {}),
+            ...(query.to ? { lte: new Date(`${query.to}T00:00:00.000Z`) } : {}),
+          },
+        }
+      : {}),
   } satisfies Prisma.AttendanceRecordWhereInput;
 }
 
 export async function getAttendance(organizationId: string, id: string) {
-  return db.attendanceRecord.findFirst({ where: { id, organizationId }, include: attendanceInclude });
+  return db.attendanceRecord.findFirst({
+    where: { id, organizationId },
+    include: attendanceInclude,
+  });
 }
 
 export async function listAttendance(organizationId: string, query: AttendanceQuery) {
@@ -55,20 +65,35 @@ export async function listAttendance(organizationId: string, query: AttendanceQu
   return { items, total };
 }
 
-export async function summarizeAttendance(organizationId: string, query: Pick<AttendanceQuery, "employeeId" | "status" | "from" | "to">) {
+export async function summarizeAttendance(
+  organizationId: string,
+  query: Pick<AttendanceQuery, "employeeId" | "status" | "from" | "to">,
+) {
   const records = await db.attendanceRecord.findMany({
     where: attendanceWhere(organizationId, query),
-    select: { durationMinutes: true, overtimeMinutes: true, approvedOvertimeMinutes: true, status: true },
+    select: {
+      durationMinutes: true,
+      overtimeMinutes: true,
+      approvedOvertimeMinutes: true,
+      status: true,
+    },
   });
-  return records.reduce((summary, record) => ({
-    durationMinutes: summary.durationMinutes + (record.durationMinutes ?? 0),
-    overtimeMinutes: summary.overtimeMinutes + (record.approvedOvertimeMinutes ?? record.overtimeMinutes ?? 0),
-    lateCount: summary.lateCount + (record.status === "LATE" ? 1 : 0),
-    holidayCount: summary.holidayCount + (record.status === "HOLIDAY" ? 1 : 0),
-  }), { durationMinutes: 0, overtimeMinutes: 0, lateCount: 0, holidayCount: 0 });
+  return records.reduce(
+    (summary, record) => ({
+      durationMinutes: summary.durationMinutes + (record.durationMinutes ?? 0),
+      overtimeMinutes:
+        summary.overtimeMinutes + (record.approvedOvertimeMinutes ?? record.overtimeMinutes ?? 0),
+      lateCount: summary.lateCount + (record.status === "LATE" ? 1 : 0),
+      holidayCount: summary.holidayCount + (record.status === "HOLIDAY" ? 1 : 0),
+    }),
+    { durationMinutes: 0, overtimeMinutes: 0, lateCount: 0, holidayCount: 0 },
+  );
 }
 
-export async function calendarAttendance(organizationId: string, query: { from: string; to: string; employeeId?: string; status?: string }) {
+export async function calendarAttendance(
+  organizationId: string,
+  query: { from: string; to: string; employeeId?: string; status?: string },
+) {
   return db.attendanceRecord.findMany({
     where: attendanceWhere(organizationId, query),
     include: attendanceInclude,
@@ -80,7 +105,14 @@ export async function listShifts(organizationId: string) {
   return db.shift.findMany({
     where: { organizationId },
     orderBy: { name: "asc" },
-    include: { assignments: { where: { active: true }, include: { employee: { select: { id: true, employeeNo: true, firstName: true, lastName: true } } } } },
+    include: {
+      assignments: {
+        where: { active: true },
+        include: {
+          employee: { select: { id: true, employeeNo: true, firstName: true, lastName: true } },
+        },
+      },
+    },
   });
 }
 
@@ -89,7 +121,14 @@ export async function listHolidays(organizationId: string, from?: string, to?: s
     where: {
       organizationId,
       active: true,
-      ...(from || to ? { holidayDate: { ...(from ? { gte: new Date(`${from}T00:00:00.000Z`) } : {}), ...(to ? { lte: new Date(`${to}T00:00:00.000Z`) } : {}) } } : {}),
+      ...(from || to
+        ? {
+            holidayDate: {
+              ...(from ? { gte: new Date(`${from}T00:00:00.000Z`) } : {}),
+              ...(to ? { lte: new Date(`${to}T00:00:00.000Z`) } : {}),
+            },
+          }
+        : {}),
     },
     orderBy: { holidayDate: "asc" },
   });
@@ -99,6 +138,9 @@ export async function listCorrections(organizationId: string, employeeId?: strin
   return db.attendanceCorrection.findMany({
     where: { organizationId, ...(employeeId ? { employeeId } : {}) },
     orderBy: { createdAt: "desc" },
-    include: { employee: { select: { employeeNo: true, firstName: true, lastName: true } }, attendanceRecord: true },
+    include: {
+      employee: { select: { employeeNo: true, firstName: true, lastName: true } },
+      attendanceRecord: true,
+    },
   });
 }

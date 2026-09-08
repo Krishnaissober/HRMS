@@ -10,5 +10,23 @@ import { checkInInterview } from "@/modules/interviews/service";
 
 export async function POST(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const id = requestId(request);
-  try { const context = await getAuthenticatedContext(request); await requirePermission(context.session.user.id, context.organizationId, INTERVIEW_PERMISSIONS.attendance); parseBody(interviewCheckInSchema, await request.json()); const result = await checkInInterview({ organizationId: context.organizationId, actorUserId: context.session.user.id, id: (await params).id, requestId: id, direction: "CHECK_IN" }); return successResponse(result, id); } catch (error) { return errorResponse(error, id); }
+  try {
+    const context = await getAuthenticatedContext(request);
+    await requirePermission(
+      context.session.user.id,
+      context.organizationId,
+      INTERVIEW_PERMISSIONS.attendance,
+    );
+    parseBody(interviewCheckInSchema, await request.json());
+    const result = await checkInInterview({
+      organizationId: context.organizationId,
+      actorUserId: context.session.user.id,
+      id: (await params).id,
+      requestId: id,
+      direction: "CHECK_IN",
+    });
+    return successResponse(result, id);
+  } catch (error) {
+    return errorResponse(error, id);
+  }
 }

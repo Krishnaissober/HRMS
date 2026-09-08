@@ -15,12 +15,12 @@ All HIGH and MEDIUM application findings from the Phase 2 review have been addre
 
 ## Finding disposition
 
-| Review finding | Status | Resolution |
-|---|---|---|
-| HIGH no-show workflow | **RESOLVED** | `NO_SHOW` remains an existing supported status. API/schema/service validation requires a reason, accepts notes, enforces the existing transition table, preserves the actor, persists reason/notes, writes `INTERVIEW_NO_SHOW` history and audit events transactionally, and remains protected by RBAC and tenant context. |
-| MEDIUM rescheduling validation | **RESOLVED** | Rescheduling and panel changes now repeat active-member, candidate-overlap, interviewer-overlap and configured-availability checks inside the same transaction. The current interview is excluded from overlap queries, and invalid time windows remain rejected. |
-| MEDIUM template-driven scorecards | **RESOLVED** | Interviews now persist their selected template relationship. Evaluation submission automatically uses the interview template when no template is supplied, validates score keys against the template questions, and persists the resolved template. The detail UI renders the configured questions, competencies and scoring guidance instead of raw score JSON entry. The creation UI exposes round and template selection. |
-| MEDIUM critical E2E workflow | **RESOLVED — EXECUTION ENVIRONMENT BLOCKED** | Added `tests/e2e/interviews-persisted.spec.ts`, which signs in and uses real API/database persistence for template creation, interview creation/linkage, check-in, evaluation, check-out, scorecard/history read-back and UI display. The test was discovered and skipped because the authenticated fixture variables were not configured; the existing four UI E2E tests passed. |
+| Review finding                    | Status                                       | Resolution                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| --------------------------------- | -------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| HIGH no-show workflow             | **RESOLVED**                                 | `NO_SHOW` remains an existing supported status. API/schema/service validation requires a reason, accepts notes, enforces the existing transition table, preserves the actor, persists reason/notes, writes `INTERVIEW_NO_SHOW` history and audit events transactionally, and remains protected by RBAC and tenant context.                                                                                                   |
+| MEDIUM rescheduling validation    | **RESOLVED**                                 | Rescheduling and panel changes now repeat active-member, candidate-overlap, interviewer-overlap and configured-availability checks inside the same transaction. The current interview is excluded from overlap queries, and invalid time windows remain rejected.                                                                                                                                                            |
+| MEDIUM template-driven scorecards | **RESOLVED**                                 | Interviews now persist their selected template relationship. Evaluation submission automatically uses the interview template when no template is supplied, validates score keys against the template questions, and persists the resolved template. The detail UI renders the configured questions, competencies and scoring guidance instead of raw score JSON entry. The creation UI exposes round and template selection. |
+| MEDIUM critical E2E workflow      | **RESOLVED — EXECUTION ENVIRONMENT BLOCKED** | Added `tests/e2e/interviews-persisted.spec.ts`, which signs in and uses real API/database persistence for template creation, interview creation/linkage, check-in, evaluation, check-out, scorecard/history read-back and UI display. The test was discovered and skipped because the authenticated fixture variables were not configured; the existing four UI E2E tests passed.                                            |
 
 ## Implementation changes
 
@@ -37,20 +37,20 @@ All HIGH and MEDIUM application findings from the Phase 2 review have been addre
 
 ## Verification
 
-| Check | Status | Evidence |
-|---|---|---|
-| Lint | PASS | `npm run lint` |
-| Typecheck | PASS | `npm run typecheck` |
-| Unit/API tests | PASS | 31 tests passed |
-| Focused remediation tests | PASS | No-show validation, API authorization, no-show audit/history mock transaction, and conflict reschedule tests passed |
-| Playwright UI tests | PASS | 4 existing tests passed |
+| Check                         | Status              | Evidence                                                                                                                                                                              |
+| ----------------------------- | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Lint                          | PASS                | `npm run lint`                                                                                                                                                                        |
+| Typecheck                     | PASS                | `npm run typecheck`                                                                                                                                                                   |
+| Unit/API tests                | PASS                | 31 tests passed                                                                                                                                                                       |
+| Focused remediation tests     | PASS                | No-show validation, API authorization, no-show audit/history mock transaction, and conflict reschedule tests passed                                                                   |
+| Playwright UI tests           | PASS                | 4 existing tests passed                                                                                                                                                               |
 | Persisted Playwright workflow | ENVIRONMENT BLOCKED | New test skips unless `E2E_EMAIL`, `E2E_PASSWORD`, `E2E_ORGANIZATION_ID`, `E2E_CANDIDATE_ID`, `E2E_APPLICATION_ID`, and `E2E_INTERVIEWER_ID` are configured; it does not fake success |
-| Production build | PASS | Build completed; existing optional BullMQ `@valkey/valkey-glide` warning remains |
-| Prisma validation | PASS | Schema valid |
-| Prisma migration application | PASS | Remediation migration applied to PostgreSQL |
-| Prisma migration status | PASS | Database schema up to date |
-| Prisma schema diff | PASS | No difference detected |
-| SRS integrity | PASS | Frozen SRS hash unchanged: `ADFCA7D01C87C33884BD0C3F2CA726DBECDCCFE83F249D48F2365415AE104E09` |
+| Production build              | PASS                | Build completed; existing optional BullMQ `@valkey/valkey-glide` warning remains                                                                                                      |
+| Prisma validation             | PASS                | Schema valid                                                                                                                                                                          |
+| Prisma migration application  | PASS                | Remediation migration applied to PostgreSQL                                                                                                                                           |
+| Prisma migration status       | PASS                | Database schema up to date                                                                                                                                                            |
+| Prisma schema diff            | PASS                | No difference detected                                                                                                                                                                |
+| SRS integrity                 | PASS                | Frozen SRS hash unchanged: `ADFCA7D01C87C33884BD0C3F2CA726DBECDCCFE83F249D48F2365415AE104E09`                                                                                         |
 
 ## Required regression coverage
 
@@ -68,12 +68,12 @@ The following are covered by the new or updated tests:
 
 ## Environment blockers
 
-| Service / capability | Status | Exact limitation |
-|---|---|---|
-| PostgreSQL | PASS | Local PostgreSQL at the configured `DATABASE_URL` accepted the remediation migration; schema is current. |
-| Redis/BullMQ | ENVIRONMENT BLOCKED | Redis is unavailable at the configured endpoint, so queue/worker and reminder delivery cannot be verified. |
-| Calendar provider | ENVIRONMENT BLOCKED | Google Calendar/Microsoft Graph credentials/provider are not configured. |
-| External email delivery | ENVIRONMENT BLOCKED | The project uses the local console-backed provider; no approved external email service is configured. |
+| Service / capability                       | Status              | Exact limitation                                                                                                                                        |
+| ------------------------------------------ | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| PostgreSQL                                 | PASS                | Local PostgreSQL at the configured `DATABASE_URL` accepted the remediation migration; schema is current.                                                |
+| Redis/BullMQ                               | ENVIRONMENT BLOCKED | Redis is unavailable at the configured endpoint, so queue/worker and reminder delivery cannot be verified.                                              |
+| Calendar provider                          | ENVIRONMENT BLOCKED | Google Calendar/Microsoft Graph credentials/provider are not configured.                                                                                |
+| External email delivery                    | ENVIRONMENT BLOCKED | The project uses the local console-backed provider; no approved external email service is configured.                                                   |
 | Authenticated persisted Playwright fixture | ENVIRONMENT BLOCKED | The required E2E credentials and fixture IDs were not present in the environment. The test remains opt-in and does not manufacture data or credentials. |
 
 ## Scope confirmation

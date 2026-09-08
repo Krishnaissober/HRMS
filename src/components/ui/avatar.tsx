@@ -20,7 +20,11 @@ const Avatar = React.forwardRef<
     {...props}
   >
     {src ? (
-      <AvatarPrimitive.Image src={src} alt={alt || name || "Avatar"} className="aspect-square h-full w-full" />
+      <AvatarPrimitive.Image
+        src={src}
+        alt={alt || name || "Avatar"}
+        className="aspect-square h-full w-full"
+      />
     ) : (
       <AvatarPrimitive.Fallback className="flex h-full w-full items-center justify-center rounded-full bg-muted">
         {fallback ?? (name ? getInitials(name) : null)}
@@ -48,7 +52,10 @@ const AvatarFallback = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <AvatarPrimitive.Fallback
     ref={ref}
-    className={cn("flex h-full w-full items-center justify-center rounded-full bg-muted", className)}
+    className={cn(
+      "flex h-full w-full items-center justify-center rounded-full bg-muted",
+      className,
+    )}
     {...props}
   />
 ));

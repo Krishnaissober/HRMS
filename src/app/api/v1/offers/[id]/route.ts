@@ -8,5 +8,17 @@ import { getOffer } from "@/modules/hiring/repository";
 
 export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const id = requestId(request);
-  try { const context = await getAuthenticatedContext(request); await requirePermission(context.session.user.id, context.organizationId, HIRING_PERMISSIONS.offersRead); const offer = await getOffer(context.organizationId, (await params).id); if (!offer) throw notFoundError(); return successResponse(offer, id); } catch (error) { return errorResponse(error, id); }
+  try {
+    const context = await getAuthenticatedContext(request);
+    await requirePermission(
+      context.session.user.id,
+      context.organizationId,
+      HIRING_PERMISSIONS.offersRead,
+    );
+    const offer = await getOffer(context.organizationId, (await params).id);
+    if (!offer) throw notFoundError();
+    return successResponse(offer, id);
+  } catch (error) {
+    return errorResponse(error, id);
+  }
 }

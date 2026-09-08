@@ -8,4 +8,23 @@ import { EMPLOYEE_ATTENDANCE_PERMISSIONS } from "@/modules/employee-attendance/c
 import { attendanceListSchema } from "@/modules/employee-attendance/schemas";
 import { listAttendance } from "@/modules/employee-attendance/repository";
 
-export async function GET(request: NextRequest) { const id = requestId(request); try { const context = await getAuthenticatedContext(request); await requirePermission(context.session.user.id, context.organizationId, EMPLOYEE_ATTENDANCE_PERMISSIONS.read); return successResponse(await listAttendance(context.organizationId, parseQuery(attendanceListSchema, request.nextUrl.searchParams)), id); } catch (error) { return errorResponse(error, id); } }
+export async function GET(request: NextRequest) {
+  const id = requestId(request);
+  try {
+    const context = await getAuthenticatedContext(request);
+    await requirePermission(
+      context.session.user.id,
+      context.organizationId,
+      EMPLOYEE_ATTENDANCE_PERMISSIONS.read,
+    );
+    return successResponse(
+      await listAttendance(
+        context.organizationId,
+        parseQuery(attendanceListSchema, request.nextUrl.searchParams),
+      ),
+      id,
+    );
+  } catch (error) {
+    return errorResponse(error, id);
+  }
+}

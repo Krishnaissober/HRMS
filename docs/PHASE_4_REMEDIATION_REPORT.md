@@ -16,14 +16,14 @@ Phase 5 was not started.
 
 ## Finding status
 
-| Original finding | Status | Evidence |
-|---|---|---|
-| HIGH — invalid Hire/Hold/Reject transitions | **RESOLVED** | Added an explicit transition matrix. Decisions are accepted only from the existing interview-ready/hold states permitted by the current lifecycle. Conditional candidate and application updates reject stale concurrent transitions with `409 CONFLICT`. Reasons remain mandatory for Hold and Reject. |
-| HIGH — duplicate offers | **RESOLVED** | Added service pre-check, deterministic `409 CONFLICT`, unique `Offer.hiringDecisionId` database constraint, and transaction-safe handling of Prisma uniqueness conflicts. Added concurrent creation coverage proving exactly one persisted offer. |
-| HIGH — send/persistence/audit consistency | **RESOLVED** | Added durable `OfferDelivery` outbox records. The offer state and required `OFFER_SENT` audit event commit before provider invocation. Delivery is separately classified as `QUEUED`, `SUCCEEDED` or `FAILED`; failed delivery can be retried without creating a second offer/send intent. External provider execution is not falsely treated as part of the database transaction. |
-| MEDIUM — negative/API/E2E test coverage | **RESOLVED** | Added invalid transition, valid Hold/Reject, duplicate, concurrent duplicate, unauthorized send, unauthenticated download, cross-tenant approval/download, invalid send-state and delivery-failure contract coverage. Persisted PostgreSQL assertions verify offer count, delivery state and audit evidence. |
-| MEDIUM — Playwright stability | **RESOLVED** | The authenticated fixture shares one isolated PostgreSQL tenant, so Playwright now serializes persisted E2E workers to prevent shared-fixture status races and resource contention. The full suite passed twice with all 8 tests. Assertions were not weakened and global timeouts were not broadly increased. |
-| Environment blockers | **ENVIRONMENT BLOCKED** | Redis/BullMQ, S3-compatible storage, external email delivery and Prisma shadow-database creation remain unavailable or not configured as documented. No mocks were used to convert these into PASS. |
+| Original finding                            | Status                  | Evidence                                                                                                                                                                                                                                                                                                                                                                           |
+| ------------------------------------------- | ----------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| HIGH — invalid Hire/Hold/Reject transitions | **RESOLVED**            | Added an explicit transition matrix. Decisions are accepted only from the existing interview-ready/hold states permitted by the current lifecycle. Conditional candidate and application updates reject stale concurrent transitions with `409 CONFLICT`. Reasons remain mandatory for Hold and Reject.                                                                            |
+| HIGH — duplicate offers                     | **RESOLVED**            | Added service pre-check, deterministic `409 CONFLICT`, unique `Offer.hiringDecisionId` database constraint, and transaction-safe handling of Prisma uniqueness conflicts. Added concurrent creation coverage proving exactly one persisted offer.                                                                                                                                  |
+| HIGH — send/persistence/audit consistency   | **RESOLVED**            | Added durable `OfferDelivery` outbox records. The offer state and required `OFFER_SENT` audit event commit before provider invocation. Delivery is separately classified as `QUEUED`, `SUCCEEDED` or `FAILED`; failed delivery can be retried without creating a second offer/send intent. External provider execution is not falsely treated as part of the database transaction. |
+| MEDIUM — negative/API/E2E test coverage     | **RESOLVED**            | Added invalid transition, valid Hold/Reject, duplicate, concurrent duplicate, unauthorized send, unauthenticated download, cross-tenant approval/download, invalid send-state and delivery-failure contract coverage. Persisted PostgreSQL assertions verify offer count, delivery state and audit evidence.                                                                       |
+| MEDIUM — Playwright stability               | **RESOLVED**            | The authenticated fixture shares one isolated PostgreSQL tenant, so Playwright now serializes persisted E2E workers to prevent shared-fixture status races and resource contention. The full suite passed twice with all 8 tests. Assertions were not weakened and global timeouts were not broadly increased.                                                                     |
+| Environment blockers                        | **ENVIRONMENT BLOCKED** | Redis/BullMQ, S3-compatible storage, external email delivery and Prisma shadow-database creation remain unavailable or not configured as documented. No mocks were used to convert these into PASS.                                                                                                                                                                                |
 
 ## Transition remediation
 
@@ -65,23 +65,23 @@ The configured console provider is not claimed as external email delivery. A rea
 
 ## Regression verification
 
-| Check | Result |
-|---|---|
-| Unit/API tests | **PASS — 45 tests** |
-| Lint | **PASS** |
-| Typecheck | **PASS** |
-| Production build | **PASS**, with the existing optional BullMQ Valkey module warning |
-| Playwright full suite run 1 | **PASS — 8 tests** |
-| Playwright full suite run 2 | **PASS — 8 tests** |
-| Persisted decision workflow | **PASS** |
-| Persisted Hold → Reject workflow | **PASS** |
-| Concurrent duplicate-offer workflow | **PASS** |
-| Delivery failure API contract | **PASS** |
-| Audit persistence assertions | **PASS** |
-| RBAC and tenant isolation assertions | **PASS** |
-| Prisma validation | **PASS** |
-| Prisma migration status | **PASS — database up to date** |
-| Prisma migration diff | **PASS — no difference detected** |
+| Check                                | Result                                                            |
+| ------------------------------------ | ----------------------------------------------------------------- |
+| Unit/API tests                       | **PASS — 45 tests**                                               |
+| Lint                                 | **PASS**                                                          |
+| Typecheck                            | **PASS**                                                          |
+| Production build                     | **PASS**, with the existing optional BullMQ Valkey module warning |
+| Playwright full suite run 1          | **PASS — 8 tests**                                                |
+| Playwright full suite run 2          | **PASS — 8 tests**                                                |
+| Persisted decision workflow          | **PASS**                                                          |
+| Persisted Hold → Reject workflow     | **PASS**                                                          |
+| Concurrent duplicate-offer workflow  | **PASS**                                                          |
+| Delivery failure API contract        | **PASS**                                                          |
+| Audit persistence assertions         | **PASS**                                                          |
+| RBAC and tenant isolation assertions | **PASS**                                                          |
+| Prisma validation                    | **PASS**                                                          |
+| Prisma migration status              | **PASS — database up to date**                                    |
+| Prisma migration diff                | **PASS — no difference detected**                                 |
 
 ## Database changes
 

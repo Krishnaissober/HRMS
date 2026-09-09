@@ -161,7 +161,12 @@ export function LoginEntry({
               {userName || "Your account"} is signed in but has no active Triple Minds membership.
               Contact an administrator for access.
             </p>
-            <button type="button" disabled={signingOut} onClick={() => void signOut()}>
+            <button
+              type="button"
+              className="sign-out-button"
+              disabled={signingOut}
+              onClick={() => void signOut()}
+            >
               {signingOut ? "Signing out…" : "Sign out"}
             </button>
           </>

@@ -41,3 +41,12 @@ export async function getAdminContext(request?: Request) {
   if (!membershipHasAdminAccess(membership, context.session.user.email)) throw forbiddenError();
   return { ...context, membership };
 }
+
+// Master Admin is the product-facing name for the existing, deliberately
+// narrow administrator boundary. Keep the legacy exports above for existing
+// admin pages and APIs, but use this name when wiring the workspace shell.
+export const membershipHasMasterAdminAccess = membershipHasAdminAccess;
+
+export async function getMasterAdminContext(request?: Request) {
+  return getAdminContext(request);
+}

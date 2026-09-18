@@ -13,7 +13,7 @@ export function DashboardGeminiBackground() {
 
   return (
     <div className="pointer-events-none absolute inset-0 overflow-hidden opacity-70">
-      <div className="absolute inset-0 bg-gradient-to-br from-indigo-950/50 via-slate-950/20 to-purple-950/40" />
+      <div className="absolute inset-0 bg-primary" />
       <GoogleGeminiEffect
         pathLengths={[
           pathLengthFirst,

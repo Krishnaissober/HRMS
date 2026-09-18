@@ -26,6 +26,12 @@ export async function createHiringDecision(input: {
   notes?: string;
   requestId?: string;
 }) {
+  if (input.decision === "HIRE")
+    throw new AppError(
+      "CONFLICT",
+      "Hiring approval is now a two-step workflow: Master approval followed by the final HR Hire Candidate action.",
+      409,
+    );
   if ((input.decision === "HOLD" || input.decision === "REJECT") && !input.reason?.trim())
     throw validationError({ reason: ["A reason is required for hold or rejection"] });
   return db.$transaction(async (tx) => {
@@ -47,6 +53,22 @@ export async function createHiringDecision(input: {
       throw new AppError(
         "CONFLICT",
         "Complete the interview before recording a hiring decision.",
+        409,
+      );
+    const physicalInterviewCompleted = await tx.interview.findFirst({
+      where: {
+        organizationId: input.organizationId,
+        candidateId: application.candidateId,
+        applicationId: application.id,
+        stage: "PHYSICAL",
+        status: "COMPLETED",
+      },
+      select: { id: true },
+    });
+    if (physicalInterviewCompleted)
+      throw new AppError(
+        "CONFLICT",
+        "Complete the required interview path, then send the candidate to Master review instead of recording a direct hiring decision.",
         409,
       );
     if (!canRecordHiringDecision(application.candidate.status, input.decision))

@@ -1,3 +1,4 @@
+import { BrandLogo } from "@/components/layout/brand-logo";
 import { CandidateForm } from "@/components/candidates/CandidateForm";
 import { FormDescription } from "@/components/candidates/FormDescription";
 import { db } from "@/lib/db";
@@ -14,11 +15,19 @@ export default async function PublicApplicationPage({
     experienceRequired?: string;
     skillsRequired?: string;
     fields?: string;
+    documents?: string;
   }>;
 }) {
   const { organizationSlug } = await params;
-  const { requisitionId, position, description, experienceRequired, skillsRequired, fields } =
-    await searchParams;
+  const {
+    requisitionId,
+    position,
+    description,
+    experienceRequired,
+    skillsRequired,
+    fields,
+    documents,
+  } = await searchParams;
   const organization = await db.organization.findUnique({
     where: { slug: organizationSlug },
     select: { id: true },
@@ -34,10 +43,17 @@ export default async function PublicApplicationPage({
   const positionUnavailable = Boolean(requisitionId && !selectedRequisition);
   return (
     <main className="page-shell">
-      <section className="panel">
-        <p className="eyebrow">Triple Minds Careers</p>
-        <h1>Apply to Join Triple Minds</h1>
-        <p>Your application is submitted securely to the Triple Minds HR team for review.</p>
+      <section className="panel public-application-panel">
+        <div className="public-application-header">
+          <div className="public-application-intro">
+            <p className="eyebrow">Triple Minds Careers</p>
+            <h1>Apply to Join Triple Minds</h1>
+            <p>Your application is submitted securely to the Triple Minds HR team for review.</p>
+          </div>
+          <div className="public-application-brand">
+            <BrandLogo />
+          </div>
+        </div>
         {description && <FormDescription value={description} />}
         {positionUnavailable ? (
           <p className="form-message" role="alert">
@@ -53,6 +69,7 @@ export default async function PublicApplicationPage({
             requisitions={requisitions}
             formRequirements={{ experience: experienceRequired, skills: skillsRequired }}
             formFields={fields?.split(",").filter(Boolean)}
+            requestedDocuments={documents?.split(",").filter(Boolean)}
             showInterviewDetails={false}
           />
         )}

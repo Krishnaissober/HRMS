@@ -12,7 +12,6 @@ import {
   ShieldCheck,
   Users,
 } from "lucide-react";
-import { DashboardGeminiBackground } from "@/components/layout/dashboard-gemini-background";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { getAdminContext } from "@/lib/admin-access";
@@ -85,51 +84,50 @@ export default async function AdminReportsPage() {
 
   return (
     <main className="page-shell space-y-6 pb-12">
-      <section className="relative overflow-hidden rounded-3xl border border-indigo-500/20 bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900 p-6 text-white shadow-2xl sm:p-8">
-        <DashboardGeminiBackground />
+      <section className="enterprise-hero relative overflow-hidden rounded-xl border border-primary/20 bg-card p-6 text-foreground shadow-sm sm:p-8">
         <div className="relative z-10">
           <Link
             href="/admin"
-            className="mb-6 inline-flex items-center gap-2 text-sm font-bold text-indigo-200 transition hover:text-white"
+            className="mb-6 inline-flex items-center gap-2 text-sm font-bold text-primary-ink transition hover:text-foreground"
           >
             <ArrowLeft className="size-4" /> Admin Command Center
           </Link>
-          <p className="mb-3 text-xs font-black uppercase tracking-[0.24em] text-indigo-300">
+          <p className="mb-3 text-xs font-bold uppercase tracking-[0.24em] text-primary-ink">
             Administrator workspace
           </p>
-          <h1 className="text-3xl font-black tracking-tight sm:text-4xl">
+          <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
             Reports &amp; Export Hub
           </h1>
-          <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-300 sm:text-base">
+          <p className="mt-3 max-w-2xl text-sm leading-6 text-muted-foreground sm:text-base">
             One place to open the organization’s operational reports and review the records
             available for controlled export.
           </p>
         </div>
       </section>
-      <section className="rounded-3xl border border-border/60 bg-card p-6 shadow-sm">
+      <section className="rounded-xl border border-border/60 bg-card p-6 shadow-sm">
         <div className="mb-5 flex items-center justify-between">
           <div>
             <p className="eyebrow">Report catalog</p>
-            <h2 className="mt-1 text-xl font-black tracking-tight">Choose a reporting area</h2>
+            <h2 className="mt-1 text-xl font-bold tracking-tight">Choose a reporting area</h2>
           </div>
-          <BarChart3 className="size-5 text-indigo-500" />
+          <BarChart3 className="size-5 text-primary-ink" />
         </div>
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
           {reports.map(([label, detail, href, count, Icon]) => (
             <Link
               key={label}
               href={href}
-              className="group rounded-2xl border border-border/60 p-5 transition hover:-translate-y-1 hover:border-indigo-400/60 hover:bg-indigo-500/5"
+              className="group rounded-2xl border border-border/60 p-5 transition hover:-translate-y-px hover:border-primary/60 hover:bg-primary/5"
             >
               <div className="mb-5 flex items-center justify-between">
-                <span className="flex size-11 items-center justify-center rounded-xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-300">
+                <span className="flex size-11 items-center justify-center rounded-xl bg-primary/10 text-primary-ink dark:text-primary-ink">
                   <Icon className="size-5" />
                 </span>
-                <span className="text-2xl font-black">{count}</span>
+                <span className="text-2xl font-bold">{count}</span>
               </div>
-              <h3 className="text-sm font-black">{label}</h3>
+              <h3 className="text-sm font-bold">{label}</h3>
               <p className="mt-2 min-h-10 text-xs leading-5 text-muted-foreground">{detail}</p>
-              <span className="mt-4 inline-flex items-center gap-1 text-xs font-bold text-indigo-600">
+              <span className="mt-4 inline-flex items-center gap-1 text-xs font-bold text-primary-ink">
                 Open report <ArrowRight className="size-3 transition group-hover:translate-x-1" />
               </span>
             </Link>
@@ -137,25 +135,25 @@ export default async function AdminReportsPage() {
         </div>
       </section>
       <section className="grid gap-6 md:grid-cols-2">
-        <div className="rounded-3xl border border-indigo-500/20 bg-indigo-500/5 p-6 shadow-sm">
-          <FileDown className="mb-4 size-6 text-indigo-600" />
+        <div className="rounded-xl border border-primary/20 bg-primary/5 p-6 shadow-sm">
+          <FileDown className="mb-4 size-6 text-primary-ink" />
           <p className="eyebrow">Controlled exports</p>
-          <h2 className="mt-1 text-xl font-black tracking-tight">Export with context</h2>
+          <h2 className="mt-1 text-xl font-bold tracking-tight">Export with context</h2>
           <p className="mt-3 text-sm leading-6 text-muted-foreground">
             Reports remain organization-scoped and use the existing permission checks. Downloads and
             exports are recorded in the audit trail for administrator review.
           </p>
           <Link
             href="/admin/audit"
-            className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-indigo-700 hover:underline"
+            className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-primary-ink hover:underline"
           >
             Review export activity <ArrowRight className="size-4" />
           </Link>
         </div>
-        <div className="rounded-3xl border border-border/60 bg-card p-6 shadow-sm">
-          <ShieldCheck className="mb-4 size-6 text-emerald-500" />
+        <div className="rounded-xl border border-border/60 bg-card p-6 shadow-sm">
+          <ShieldCheck className="mb-4 size-6 text-success-ink" />
           <p className="eyebrow">Access boundary</p>
-          <h2 className="mt-1 text-xl font-black tracking-tight">Administrator only</h2>
+          <h2 className="mt-1 text-xl font-bold tracking-tight">Administrator only</h2>
           <p className="mt-3 text-sm leading-6 text-muted-foreground">
             This hub is protected by the administrator role and configured administrator email.
             Normal HR users continue using their existing Reports page.

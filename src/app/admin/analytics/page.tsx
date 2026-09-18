@@ -11,7 +11,6 @@ import {
   TrendingUp,
   Users,
 } from "lucide-react";
-import { DashboardGeminiBackground } from "@/components/layout/dashboard-gemini-background";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { getAdminContext } from "@/lib/admin-access";
@@ -75,7 +74,7 @@ export default async function AdminAnalyticsPage() {
       applications,
       change(applications, previousApplications),
       BriefcaseBusiness,
-      "text-indigo-500",
+      "text-primary-ink",
       "/hr/candidates",
     ],
     [
@@ -83,7 +82,7 @@ export default async function AdminAnalyticsPage() {
       hires,
       change(hires, previousHires),
       CheckCircle2,
-      "text-emerald-500",
+      "text-success-ink",
       "/hr/employees",
     ],
     [
@@ -91,7 +90,7 @@ export default async function AdminAnalyticsPage() {
       newEmployees,
       change(newEmployees, previousEmployees),
       Users,
-      "text-sky-500",
+      "text-info-ink",
       "/hr/employees",
     ],
     [
@@ -99,27 +98,26 @@ export default async function AdminAnalyticsPage() {
       leaveRequests,
       change(leaveRequests, previousLeave),
       CalendarDays,
-      "text-amber-500",
+      "text-warning-ink",
       "/hr/leave",
     ],
   ] as const;
 
   return (
     <main className="page-shell space-y-6 pb-12">
-      <section className="relative overflow-hidden rounded-3xl border border-indigo-500/20 bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900 p-6 text-white shadow-2xl sm:p-8">
-        <DashboardGeminiBackground />
+      <section className="enterprise-hero relative overflow-hidden rounded-xl border border-primary/20 bg-card p-6 text-foreground shadow-sm sm:p-8">
         <div className="relative z-10">
           <Link
             href="/admin"
-            className="mb-6 inline-flex items-center gap-2 text-sm font-bold text-indigo-200 transition hover:text-white"
+            className="mb-6 inline-flex items-center gap-2 text-sm font-bold text-primary-ink transition hover:text-foreground"
           >
             <ArrowLeft className="size-4" /> Admin Command Center
           </Link>
-          <p className="mb-3 text-xs font-black uppercase tracking-[0.24em] text-indigo-300">
+          <p className="mb-3 text-xs font-bold uppercase tracking-[0.24em] text-primary-ink">
             Administrator workspace
           </p>
-          <h1 className="text-3xl font-black tracking-tight sm:text-4xl">Executive Analytics</h1>
-          <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-300 sm:text-base">
+          <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">Executive Analytics</h1>
+          <p className="mt-3 max-w-2xl text-sm leading-6 text-muted-foreground sm:text-base">
             Understand how the organization is moving across the last 30 days, with a comparison
             against the previous period.
           </p>
@@ -130,20 +128,20 @@ export default async function AdminAnalyticsPage() {
           <Link
             key={label}
             href={href}
-            className="rounded-2xl border border-border/60 bg-card p-5 shadow-sm transition hover:-translate-y-1 hover:border-indigo-400/60"
+            className="rounded-2xl border border-border/60 bg-card p-5 shadow-sm transition hover:-translate-y-px hover:border-primary/60"
           >
             <div className="mb-4 flex items-center justify-between">
               <span
-                className={`flex size-10 items-center justify-center rounded-xl bg-indigo-500/10 ${tone}`}
+                className={`flex size-10 items-center justify-center rounded-xl bg-primary/10 ${tone}`}
               >
                 <Icon className="size-5" />
               </span>
-              <span className="text-xs font-black text-muted-foreground">vs previous 30d</span>
+              <span className="text-xs font-bold text-muted-foreground">vs previous 30d</span>
             </div>
             <p className="text-sm font-semibold text-muted-foreground">{label}</p>
-            <p className="mt-1 text-3xl font-black tracking-tight">{value}</p>
+            <p className="mt-1 text-3xl font-bold tracking-tight">{value}</p>
             <p
-              className={`mt-2 text-sm font-bold ${delta.startsWith("-") ? "text-rose-600" : "text-emerald-600"}`}
+              className={`mt-2 text-sm font-bold ${delta.startsWith("-") ? "text-destructive-ink" : "text-success-ink"}`}
             >
               {delta}
             </p>
@@ -151,13 +149,13 @@ export default async function AdminAnalyticsPage() {
         ))}
       </section>
       <div className="grid gap-6 xl:grid-cols-[1.1fr_0.9fr]">
-        <section className="rounded-3xl border border-border/60 bg-card p-6 shadow-sm">
+        <section className="rounded-xl border border-border/60 bg-card p-6 shadow-sm">
           <div className="mb-5 flex items-center justify-between">
             <div>
               <p className="eyebrow">Operational pulse</p>
-              <h2 className="mt-1 text-xl font-black tracking-tight">What needs context</h2>
+              <h2 className="mt-1 text-xl font-bold tracking-tight">What needs context</h2>
             </div>
-            <TrendingUp className="size-5 text-indigo-500" />
+            <TrendingUp className="size-5 text-primary-ink" />
           </div>
           <div className="space-y-4">
             {[
@@ -183,13 +181,13 @@ export default async function AdminAnalyticsPage() {
               <Link
                 key={label}
                 href={href as string}
-                className="flex items-center justify-between rounded-2xl border border-border/60 p-4 transition hover:border-indigo-400/60 hover:bg-muted/30"
+                className="flex items-center justify-between rounded-2xl border border-border/60 p-4 transition hover:border-primary/60 hover:bg-muted/30"
               >
                 <div>
-                  <p className="text-sm font-black">{label}</p>
+                  <p className="text-sm font-bold">{label}</p>
                   <p className="mt-1 text-xs text-muted-foreground">{detail}</p>
                 </div>
-                <span className="flex items-center gap-2 text-xl font-black">
+                <span className="flex items-center gap-2 text-xl font-bold">
                   {value}
                   <ArrowRight className="size-4 text-muted-foreground" />
                 </span>
@@ -197,16 +195,16 @@ export default async function AdminAnalyticsPage() {
             ))}
           </div>
         </section>
-        <section className="rounded-3xl border border-indigo-500/20 bg-indigo-500/5 p-6 shadow-sm">
-          <BarChart3 className="mb-4 size-6 text-indigo-600" />
+        <section className="rounded-xl border border-primary/20 bg-primary/5 p-6 shadow-sm">
+          <BarChart3 className="mb-4 size-6 text-primary-ink" />
           <p className="eyebrow">Reporting boundary</p>
-          <h2 className="mt-1 text-xl font-black tracking-tight">Real data, clear context</h2>
+          <h2 className="mt-1 text-xl font-bold tracking-tight">Real data, clear context</h2>
           <p className="mt-3 text-sm leading-6 text-muted-foreground">
             All values are limited to the current organization. Period comparisons use the last 30
             complete days of stored records and do not include demo data or cross-organization
             totals.
           </p>
-          <div className="mt-5 flex items-center gap-2 text-sm font-bold text-indigo-700">
+          <div className="mt-5 flex items-center gap-2 text-sm font-bold text-primary-ink">
             <CalendarDays className="size-4" /> Last 30 days vs previous 30 days
           </div>
         </section>

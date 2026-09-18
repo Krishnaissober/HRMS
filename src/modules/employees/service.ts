@@ -59,6 +59,23 @@ export async function convertCandidateToEmployee(input: {
     include: { onboardingInstances: true },
   });
   if (existing) return { employee: existing, created: false };
+  const completionLink = await db.candidateCompletionLink.findFirst({
+    where: {
+      organizationId: input.organizationId,
+      candidateId: input.candidateId,
+    },
+    orderBy: { createdAt: "desc" },
+    select: { usedAt: true, revokedAt: true, expiresAt: true },
+  });
+  if (completionLink && !completionLink.usedAt) {
+    throw new AppError(
+      "CONFLICT",
+      completionLink.revokedAt || completionLink.expiresAt <= new Date()
+        ? "Candidate onboarding details must be requested again and completed before conversion"
+        : "Candidate onboarding is still incomplete. Wait for the candidate to submit the requested details.",
+      409,
+    );
+  }
   try {
     return await db.$transaction(async (tx) => {
       const offer = await tx.offer.findFirst({
@@ -90,6 +107,12 @@ export async function convertCandidateToEmployee(input: {
         throw new AppError(
           "CONFLICT",
           "A selected candidate with an application is required before onboarding",
+          409,
+        );
+      if (candidate.status !== "SELECTED" || candidate.hiringApprovalStatus !== "FINAL_HIRED")
+        throw new AppError(
+          "CONFLICT",
+          "Onboarding is locked until Master approves hiring and HR performs the final Hire Candidate action",
           409,
         );
       const joiningDate = input.joiningDate ? new Date(input.joiningDate) : new Date();
@@ -353,6 +376,91 @@ export async function changeEmployeeStatus(input: {
       entityId: current.id,
       requestId: input.requestId,
       metadata: { from: current.status, to: input.status },
+    });
+    return updated;
+  });
+}
+
+export async function removeEmployee(input: {
+  organizationId: string;
+  actorUserId: string;
+  id: string;
+  separationType: "FIRED" | "LEFT_COMPANY";
+  reason: string;
+  requestId?: string;
+}) {
+  return db.$transaction(async (tx) => {
+    const current = await tx.employee.findFirst({
+      where: { id: input.id, organizationId: input.organizationId },
+    });
+    if (!current) throw notFoundError();
+    if (["EXITED", "INACTIVE"].includes(current.status) && current.separationType)
+      throw new AppError("CONFLICT", "Employee is already in the former employees archive", 409);
+
+    const assignedAssets = await tx.onboardingAsset.count({
+      where: {
+        organizationId: input.organizationId,
+        employeeId: current.id,
+        status: "ASSIGNED",
+      },
+    });
+    if (assignedAssets)
+      throw new AppError(
+        "CONFLICT",
+        "Return all assigned assets before removing this employee",
+        409,
+      );
+
+    const separatedAt = new Date();
+    const updated = await tx.employee.update({
+      where: { id: current.id },
+      data: {
+        status: "INACTIVE",
+        separationType: input.separationType,
+        separationReason: input.reason.trim(),
+        separatedAt,
+        managerEmployeeId: null,
+      },
+    });
+    await tx.employee.updateMany({
+      where: { organizationId: input.organizationId, managerEmployeeId: current.id },
+      data: { managerEmployeeId: null },
+    });
+    await tx.employeeShiftAssignment.updateMany({
+      where: { organizationId: input.organizationId, employeeId: current.id, active: true },
+      data: { active: false, endDate: separatedAt },
+    });
+    await tx.systemAccessProvisioning.updateMany({
+      where: {
+        organizationId: input.organizationId,
+        employeeId: current.id,
+        status: { not: "REVOKED" },
+      },
+      data: {
+        status: "REVOKED",
+        notes: `Revoked when employee was ${input.separationType === "FIRED" ? "fired" : "marked as having left"}`,
+      },
+    });
+    await tx.employeeHistory.create({
+      data: {
+        organizationId: input.organizationId,
+        employeeId: current.id,
+        eventType: input.separationType === "FIRED" ? "EMPLOYEE_FIRED" : "EMPLOYEE_LEFT_COMPANY",
+        fromValue: current.status,
+        toValue: "INACTIVE",
+        notes: input.reason.trim(),
+        actorUserId: input.actorUserId,
+        effectiveDate: separatedAt,
+      },
+    });
+    await writeAuditEvent(tx, {
+      organizationId: input.organizationId,
+      actorUserId: input.actorUserId,
+      action: "EMPLOYEE_REMOVED",
+      entityType: "Employee",
+      entityId: current.id,
+      requestId: input.requestId,
+      metadata: { separationType: input.separationType, reason: input.reason.trim() },
     });
     return updated;
   });
@@ -907,7 +1015,15 @@ export async function completeExitCase(input: {
         requestId: input.requestId,
         metadata: { exitCaseId: item.id, systemName: access.systemName },
       });
-    await tx.employee.update({ where: { id: item.employeeId }, data: { status: "EXITED" } });
+    await tx.employee.update({
+      where: { id: item.employeeId },
+      data: {
+        status: "EXITED",
+        separationType: item.employee.separationType || "LEFT_COMPANY",
+        separationReason: item.employee.separationReason || item.reason,
+        separatedAt: item.employee.separatedAt || new Date(),
+      },
+    });
     await tx.employeeHistory.create({
       data: {
         organizationId: input.organizationId,
@@ -1171,6 +1287,50 @@ export async function createOnboarding(input: {
     throw error;
   }
 }
+
+export async function archiveOnboarding(input: {
+  organizationId: string;
+  actorUserId: string;
+  id: string;
+  reason: string;
+  requestId?: string;
+}) {
+  return db.$transaction(async (tx) => {
+    const current = await tx.onboardingInstance.findFirst({
+      where: { id: input.id, organizationId: input.organizationId },
+      include: { employee: { select: { employeeNo: true } } },
+    });
+    if (!current) throw notFoundError();
+    if (current.status === "ARCHIVED")
+      throw new AppError("CONFLICT", "This onboarding plan is already archived", 409);
+    const updated = await tx.onboardingInstance.update({
+      where: { id: current.id },
+      data: { status: "ARCHIVED" },
+    });
+    await tx.employeeHistory.create({
+      data: {
+        organizationId: input.organizationId,
+        employeeId: current.employeeId,
+        eventType: "ONBOARDING_PLAN_ARCHIVED",
+        fromValue: current.status,
+        toValue: "ARCHIVED",
+        notes: input.reason.trim(),
+        actorUserId: input.actorUserId,
+      },
+    });
+    await writeAuditEvent(tx, {
+      organizationId: input.organizationId,
+      actorUserId: input.actorUserId,
+      action: "ONBOARDING_PLAN_ARCHIVED",
+      entityType: "OnboardingInstance",
+      entityId: current.id,
+      requestId: input.requestId,
+      metadata: { employeeNo: current.employee.employeeNo, reason: input.reason.trim() },
+    });
+    return updated;
+  });
+}
+
 export async function getOnboardingProgress(organizationId: string, id: string) {
   const onboarding = await getOnboarding(organizationId, id);
   if (!onboarding) throw notFoundError();

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Archive, RefreshCw, Search } from "lucide-react";
+import { Archive, RefreshCw, Search, Users } from "lucide-react";
 
 type Candidate = {
   id: string;
@@ -60,27 +60,38 @@ export default function CandidateArchivePage() {
     "inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-border px-4 py-2 text-sm font-semibold transition-colors hover:bg-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-indigo-500 disabled:opacity-50";
   return (
     <main className="page-shell space-y-6 pb-12">
-      <header className="flex flex-wrap items-center justify-between gap-4 rounded-3xl bg-gradient-to-br from-slate-900 to-indigo-950 p-6 text-white">
+      <header className="enterprise-hero flex flex-wrap items-center justify-between gap-4 rounded-xl bg-card p-6 text-foreground">
         <div>
-          <p className="text-xs font-bold uppercase tracking-widest text-indigo-300">
+          <p className="text-xs font-bold uppercase tracking-widest text-primary-ink">
             Phase 1 · Hiring
           </p>
-          <h1 className="mt-2 flex items-center gap-3 text-3xl font-extrabold">
+          <h1 className="mt-2 flex items-center gap-3 text-3xl font-semibold">
             <Archive aria-hidden="true" />
             Candidate archive
           </h1>
-          <p className="mt-3 text-sm text-indigo-100">
+          <p className="mt-3 text-sm text-primary-ink">
             On-hold and rejected candidates, with their saved forms and review history.
           </p>
         </div>
         <Link
           href="/hr/candidates"
-          className="rounded-xl bg-white/10 px-4 py-3 text-sm font-semibold hover:bg-white/20"
+          className="rounded-xl bg-muted px-4 py-3 text-sm font-semibold hover:bg-muted"
         >
           All candidates
         </Link>
       </header>
-      <section className="space-y-5 rounded-3xl border border-border bg-card p-5 sm:p-6">
+      <section className="space-y-5 rounded-xl border border-border bg-card p-5 sm:p-6">
+        <nav
+          className="flex flex-wrap gap-2 border-b border-border pb-4"
+          aria-label="Archive sections"
+        >
+          <Link className={`${button} bg-primary text-white hover:bg-primary`} href="/hr/archive">
+            <Archive className="h-4 w-4" /> Candidate records
+          </Link>
+          <Link className={button} href="/hr/archive/employees">
+            <Users className="h-4 w-4" /> Former employees
+          </Link>
+        </nav>
         <div className="flex flex-wrap items-center gap-2" aria-label="Archive status filters">
           {[
             ["", "All archived"],
@@ -95,7 +106,7 @@ export default function CandidateArchivePage() {
                 setStatus(value);
                 setPage(1);
               }}
-              className={`${button} ${status === value ? "bg-indigo-600 text-white hover:bg-indigo-700" : "text-foreground"}`}
+              className={`${button} ${status === value ? "bg-primary text-white hover:bg-primary" : "text-foreground"}`}
             >
               {label}
             </button>
@@ -133,7 +144,7 @@ export default function CandidateArchivePage() {
         {loading ? (
           <p role="status">Loading archived candidates…</p>
         ) : error ? (
-          <p role="alert" className="text-red-600">
+          <p role="alert" className="text-destructive-ink">
             {error}
           </p>
         ) : (
@@ -163,7 +174,7 @@ export default function CandidateArchivePage() {
                     </p>
                   </div>
                   <span
-                    className={`rounded-full px-3 py-1 text-xs font-bold ${candidate.status === "HOLD" ? "bg-amber-100 text-amber-800" : "bg-rose-100 text-rose-800"}`}
+                    className={`rounded-full px-3 py-1 text-xs font-bold ${candidate.status === "HOLD" ? "bg-warning-light text-warning-ink" : "bg-destructive-light text-destructive-ink"}`}
                   >
                     {candidate.status === "HOLD" ? "On hold" : "Rejected"}
                   </span>

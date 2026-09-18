@@ -26,27 +26,32 @@ interface AppShellProps {
 }
 
 function phaseForPath(pathname: string): NavigationPhase {
+  // Tab-isolated sessions may prefix application routes with /t/<tab-id>.
+  // Detect the workspace from the actual application path, not the tab scope.
+  const appPath = pathname.replace(/^\/t\/[^/]+/, "") || "/";
+  if (appPath.startsWith("/admin")) return "admin";
   if (
-    pathname.startsWith("/hr/operations") ||
-    pathname.startsWith("/hr/employees") ||
-    pathname.startsWith("/hr/onboarding") ||
-    pathname.startsWith("/hr/leave") ||
-    pathname.startsWith("/hr/attendance") ||
-    pathname.startsWith("/hr/documents") ||
-    pathname.startsWith("/hr/payroll")
+    appPath.startsWith("/hr/operations") ||
+    appPath.startsWith("/hr/employees") ||
+    appPath.startsWith("/hr/onboarding") ||
+    appPath.startsWith("/hr/documents") ||
+    appPath.startsWith("/hr/payroll")
   ) {
     return "employee";
   }
   if (
-    pathname.startsWith("/hr/workplace") ||
-    pathname.startsWith("/hr/shifts") ||
-    pathname.startsWith("/hr/holidays") ||
-    pathname.startsWith("/hr/visitors") ||
-    pathname.startsWith("/hr/offboarding")
+    appPath.startsWith("/hr/workplace") ||
+    appPath.startsWith("/hr/leave") ||
+    appPath.startsWith("/hr/attendance") ||
+    appPath.startsWith("/hr/employee-attendance") ||
+    appPath.startsWith("/hr/shifts") ||
+    appPath.startsWith("/hr/holidays") ||
+    appPath.startsWith("/hr/visitors") ||
+    appPath.startsWith("/hr/offboarding")
   ) {
     return "workplace";
   }
-  if (pathname.startsWith("/hr/reports")) return "reports";
+  if (appPath.startsWith("/hr/reports")) return "reports";
   return "recruitment";
 }
 
@@ -68,6 +73,7 @@ export function AppShell({
 }: AppShellProps) {
   const pathname = usePathname();
   const [sidebarCollapsed, setSidebarCollapsed] = React.useState(false);
+  const [mobileNavOpen, setMobileNavOpen] = React.useState(false);
   const [activePhase, setActivePhase] = React.useState<NavigationPhase>(() =>
     phaseForPath(pathname),
   );
@@ -85,22 +91,24 @@ export function AppShell({
   return (
     <div
       className={cn(
-        "min-h-screen bg-background flex",
+        "min-h-screen bg-muted/30 flex",
         sidebarCollapsed && "sidebar-collapsed",
         className,
       )}
     >
       <Sidebar
         organizationId={organizationId}
+        isAdmin={isAdmin}
         collapsed={sidebarCollapsed}
         onToggle={toggleSidebar}
         activePhase={activePhase}
-        onPhaseChange={setActivePhase}
+        mobileOpen={mobileNavOpen}
+        onMobileOpenChange={setMobileNavOpen}
       />
       <div
         className={cn(
-          "flex-1 flex flex-col min-w-0 transition-[padding-left] duration-100 ease-out",
-          sidebarCollapsed ? "lg:pl-20" : "lg:pl-64",
+          "flex-1 flex min-w-0 flex-col transition-[padding-left] duration-150 ease-out",
+          sidebarCollapsed ? "lg:pl-20" : "lg:pl-60",
         )}
       >
         <Header
@@ -113,7 +121,10 @@ export function AppShell({
           onSignOut={onSignOut}
           activePhase={activePhase}
           onPhaseChange={setActivePhase}
-          showPhaseNavigation={sidebarCollapsed}
+          mobileMenuOpen={mobileNavOpen}
+          onMobileMenuOpen={() => setMobileNavOpen(true)}
+          showPhaseNavigation
+          sidebarExpanded={!sidebarCollapsed}
         />
         <main className="hr-app-main flex-1 p-4 sm:p-6 lg:p-8" id="main-content" tabIndex={-1}>
           {(pageTitle || breadcrumbs) && (
@@ -149,6 +160,7 @@ export function AppShellWithBreadcrumbs({
 >) {
   const pathname = usePathname();
   const [sidebarCollapsed, setSidebarCollapsed] = React.useState(false);
+  const [mobileNavOpen, setMobileNavOpen] = React.useState(false);
   const [activePhase, setActivePhase] = React.useState<NavigationPhase>(() =>
     phaseForPath(pathname),
   );
@@ -167,22 +179,24 @@ export function AppShellWithBreadcrumbs({
   return (
     <div
       className={cn(
-        "min-h-screen bg-background flex",
+        "min-h-screen bg-muted/30 flex",
         sidebarCollapsed && "sidebar-collapsed",
         className,
       )}
     >
       <Sidebar
         organizationId={organizationId}
+        isAdmin={isAdmin}
         collapsed={sidebarCollapsed}
         onToggle={toggleSidebar}
         activePhase={activePhase}
-        onPhaseChange={setActivePhase}
+        mobileOpen={mobileNavOpen}
+        onMobileOpenChange={setMobileNavOpen}
       />
       <div
         className={cn(
-          "flex-1 flex flex-col min-w-0 transition-[padding-left] duration-100 ease-out",
-          sidebarCollapsed ? "lg:pl-20" : "lg:pl-64",
+          "flex-1 flex min-w-0 flex-col transition-[padding-left] duration-150 ease-out",
+          sidebarCollapsed ? "lg:pl-20" : "lg:pl-60",
         )}
       >
         <Header
@@ -195,7 +209,10 @@ export function AppShellWithBreadcrumbs({
           onSignOut={onSignOut}
           activePhase={activePhase}
           onPhaseChange={setActivePhase}
-          showPhaseNavigation={sidebarCollapsed}
+          mobileMenuOpen={mobileNavOpen}
+          onMobileMenuOpen={() => setMobileNavOpen(true)}
+          showPhaseNavigation
+          sidebarExpanded={!sidebarCollapsed}
         />
         <main className="hr-app-main flex-1 p-4 sm:p-6 lg:p-8" id="main-content" tabIndex={-1}>
           {children}

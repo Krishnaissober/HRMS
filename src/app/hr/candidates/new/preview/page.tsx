@@ -13,6 +13,7 @@ type SearchParams = {
   experienceRequired?: string;
   skillsRequired?: string;
   fields?: string;
+  documents?: string;
 };
 
 export default async function CandidateFormPreview({
@@ -71,6 +72,7 @@ export default async function CandidateFormPreview({
             skills: params.skillsRequired,
           }}
           formFields={params.fields?.split(",").filter(Boolean)}
+          requestedDocuments={params.documents?.split(",").filter(Boolean)}
           showInterviewDetails={kind === "walk-in"}
         />
       </section>

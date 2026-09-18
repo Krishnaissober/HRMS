@@ -3,7 +3,11 @@ import { writeAuditEvent } from "@/lib/audit";
 import { AppError, validationError } from "@/lib/errors";
 import { encryptPii } from "@/lib/pii";
 import type { Prisma } from "@prisma/client";
-import type { CandidateStatus, CandidateSource } from "@/modules/candidates/constants";
+import {
+  CANDIDATE_REMOVAL_ACTIONS,
+  type CandidateStatus,
+  type CandidateSource,
+} from "@/modules/candidates/constants";
 
 function protectSensitiveFormData(fields: Record<string, unknown>) {
   const protectedFields = { ...fields };
@@ -334,6 +338,7 @@ export async function listCandidates(
     view?: "archive";
     status?: CandidateStatus;
     source?: CandidateSource;
+    approval?: string;
     from?: string;
     to?: string;
     page: number;
@@ -343,6 +348,7 @@ export async function listCandidates(
 ) {
   const where = {
     organizationId,
+    employee: null,
     ...(query.view === "archive"
       ? {
           status: {
@@ -351,10 +357,14 @@ export async function listCandidates(
               : ["HOLD", "REJECTED"],
           },
         }
-      : query.status
-        ? { status: query.status }
-        : {}),
+      : {
+          ...(query.status ? { status: query.status } : {}),
+          activities: {
+            none: { action: { in: [...CANDIDATE_REMOVAL_ACTIONS] } },
+          },
+        }),
     ...(query.source ? { source: query.source } : {}),
+    ...(query.approval ? { hiringApprovalStatus: query.approval } : {}),
     ...(query.q
       ? {
           OR: [
@@ -393,6 +403,11 @@ export async function listCandidates(
         roleOfInterest: true,
         source: true,
         status: true,
+        hiringApprovalStatus: true,
+        hiringApprovalRequestedAt: true,
+        masterDecisionAt: true,
+        finalDecisionAt: true,
+        hrReviewedAt: true,
         createdAt: true,
         updatedAt: true,
         applications: {
@@ -401,7 +416,14 @@ export async function listCandidates(
           take: 1,
         },
         interviews: {
-          select: { id: true, status: true, scheduledStart: true, scheduledEnd: true },
+          select: {
+            id: true,
+            stage: true,
+            round: true,
+            status: true,
+            scheduledStart: true,
+            scheduledEnd: true,
+          },
           orderBy: { scheduledStart: "desc" },
         },
       },
@@ -425,6 +447,8 @@ export async function getCandidate(organizationId: string, id: string) {
         select: {
           id: true,
           applicationId: true,
+          stage: true,
+          round: true,
           status: true,
           scheduledStart: true,
           scheduledEnd: true,
@@ -508,9 +532,9 @@ export async function updateCandidateDetails(
   return db.$transaction(async (tx) => {
     const current = await tx.candidate.findFirst({ where: { id, organizationId } });
     if (!current) return null;
-    if (current.status !== "SELECTED") {
+    if (current.status !== "SELECTED" || current.hiringApprovalStatus !== "FINAL_HIRED") {
       throw validationError({
-        candidate: ["Candidate details can only be edited after the candidate is selected."],
+        candidate: ["Candidate details can only be edited after the final hiring decision."],
       });
     }
     const updated = await tx.candidate.update({ where: { id: current.id }, data: values });

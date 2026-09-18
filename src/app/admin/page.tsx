@@ -16,21 +16,20 @@ import {
   WalletCards,
 } from "lucide-react";
 import { AdminRefreshButton } from "@/components/admin/admin-refresh-button";
-import { DashboardGeminiBackground } from "@/components/layout/dashboard-gemini-background";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { getAdminContext } from "@/lib/admin-access";
-import { DashboardWavyBackground } from "@/components/layout/dashboard-wavy-background";
 
 export const dynamic = "force-dynamic";
 
-const cardClass = "rounded-2xl border border-border/60 bg-card p-5 shadow-sm";
+const cardClass =
+  "rounded-3xl border border-border/70 bg-card/95 p-5 shadow-[0_12px_32px_rgb(15_23_42/0.06)] backdrop-blur-sm md:p-6";
 const tones = {
-  indigo: "bg-indigo-500/10 text-indigo-600 dark:text-indigo-300",
-  emerald: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-300",
-  amber: "bg-amber-500/10 text-amber-600 dark:text-amber-300",
-  sky: "bg-sky-500/10 text-sky-600 dark:text-sky-300",
-  rose: "bg-rose-500/10 text-rose-600 dark:text-rose-300",
+  indigo: "bg-primary/10 text-primary-ink dark:text-primary-ink",
+  emerald: "bg-success/10 text-success-ink dark:text-success-ink",
+  amber: "bg-warning/10 text-warning-ink dark:text-warning-ink",
+  sky: "bg-info/10 text-info-ink dark:text-info-ink",
+  rose: "bg-destructive/10 text-destructive-ink dark:text-destructive-ink",
 };
 
 function formatAction(action: string) {
@@ -145,17 +144,17 @@ export default async function AdminEntryPage() {
   ] as const;
 
   return (
-    <main className="page-shell space-y-6 pb-12">
-      <section className="relative overflow-hidden rounded-3xl border border-indigo-500/20 bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900 p-6 text-white shadow-2xl sm:p-8">
-        <DashboardWavyBackground />
-        <DashboardGeminiBackground />
+    <main className="page-shell admin-command-center space-y-6 pb-12">
+      <section className="admin-hero enterprise-hero">
         <div className="relative z-10 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
           <div>
-            <p className="mb-3 text-xs font-black uppercase tracking-[0.24em] text-indigo-300">
-              Administrator workspace
+            <p className="mb-3 text-xs font-bold uppercase tracking-[0.24em] text-primary-ink">
+              MASTER ADMIN workspace
             </p>
-            <h1 className="text-3xl font-black tracking-tight sm:text-4xl">Admin Command Center</h1>
-            <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-300 sm:text-base">
+            <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
+              Master Admin Control Center
+            </h1>
+            <p className="mt-3 max-w-2xl text-sm leading-6 text-muted-foreground sm:text-base">
               Keep a clear view of people, hiring activity, approvals, and the work that needs
               attention today.
             </p>
@@ -164,7 +163,7 @@ export default async function AdminEntryPage() {
             <AdminRefreshButton />
             <Link
               href="/hr/reports"
-              className="inline-flex items-center gap-2 rounded-xl bg-white px-4 py-2.5 text-sm font-bold text-indigo-700 transition hover:-translate-y-0.5 hover:bg-indigo-50"
+              className="inline-flex items-center gap-2 rounded-xl bg-white px-4 py-2.5 text-sm font-bold text-primary-ink transition hover:-translate-y-0.5 hover:bg-primary-light"
             >
               Open reports <ArrowRight className="size-4" />
             </Link>
@@ -172,23 +171,23 @@ export default async function AdminEntryPage() {
         </div>
       </section>
 
-      <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
+      <section className="admin-metrics grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
         {metrics.map(([label, value, Icon, tone]) => (
-          <div key={label} className={`${cardClass} transition hover:-translate-y-1`}>
-            <div className={`mb-4 flex size-10 items-center justify-center rounded-xl ${tone}`}>
+          <div key={label} className={`${cardClass} admin-metric-card transition hover:-translate-y-1`}>
+            <div className={`mb-5 flex size-11 items-center justify-center rounded-2xl ${tone}`}>
               <Icon className="size-5" />
             </div>
             <p className="text-sm font-semibold text-muted-foreground">{label}</p>
-            <p className="mt-1 text-3xl font-black tracking-tight">{value}</p>
+            <p className="mt-1 text-3xl font-bold tracking-tight">{value}</p>
           </div>
         ))}
       </section>
 
-      <section className={cardClass}>
+      <section className={`${cardClass} admin-workflow`}>
         <div className="mb-5 flex items-end justify-between gap-4">
           <div>
             <p className="eyebrow">Workflow overview</p>
-            <h2 className="mt-1 text-xl font-black tracking-tight">
+            <h2 className="mt-1 text-xl font-bold tracking-tight">
               Follow work from hiring to employment
             </h2>
           </div>
@@ -201,7 +200,7 @@ export default async function AdminEntryPage() {
             <Link
               key={label}
               href={href}
-              className="group flex items-center justify-between rounded-2xl border border-border/60 bg-muted/30 p-4 transition hover:-translate-y-1 hover:border-indigo-400/60 hover:bg-indigo-500/5"
+              className="group flex items-center justify-between rounded-2xl border border-border/60 bg-muted/30 p-4 transition hover:-translate-y-px hover:border-primary/60 hover:bg-primary/5"
             >
               <span className="flex items-center gap-3">
                 <span className={`flex size-10 items-center justify-center rounded-xl ${tone}`}>
@@ -209,7 +208,7 @@ export default async function AdminEntryPage() {
                 </span>
                 <span className="text-sm font-bold">{label}</span>
               </span>
-              <span className="flex items-center gap-2 text-xl font-black">
+              <span className="flex items-center gap-2 text-xl font-bold">
                 {value}
                 <ArrowRight className="size-4 text-muted-foreground transition group-hover:translate-x-1" />
               </span>
@@ -219,28 +218,28 @@ export default async function AdminEntryPage() {
       </section>
 
       <div className="grid gap-6 xl:grid-cols-[1.1fr_0.9fr]">
-        <section className={cardClass}>
+        <section className={`${cardClass} admin-queue`}>
           <div className="mb-5 flex items-center justify-between">
             <div>
               <p className="eyebrow">Attention queue</p>
-              <h2 className="mt-1 text-xl font-black tracking-tight">
+              <h2 className="mt-1 text-xl font-bold tracking-tight">
                 Decisions waiting for action
               </h2>
             </div>
-            <Activity className="size-5 text-indigo-500" />
+            <Activity className="size-5 text-primary-ink" />
           </div>
           <div className="space-y-3">
             {attentionItems.map(([label, value, href, Icon]) => (
               <Link
                 key={label as string}
                 href={href as string}
-                className="flex items-center justify-between rounded-xl border border-border/60 p-3 transition hover:border-indigo-400/60 hover:bg-muted/40"
+                className="flex items-center justify-between rounded-xl border border-border/60 p-3 transition hover:border-primary/60 hover:bg-muted/40"
               >
                 <span className="flex items-center gap-3">
-                  <Icon className="size-4 text-indigo-500" />
+                  <Icon className="size-4 text-primary-ink" />
                   <span className="text-sm font-bold">{label as string}</span>
                 </span>
-                <span className="flex items-center gap-2 text-sm font-black">
+                <span className="flex items-center gap-2 text-sm font-bold">
                   {value as number}
                   <ArrowRight className="size-4 text-muted-foreground" />
                 </span>
@@ -248,19 +247,19 @@ export default async function AdminEntryPage() {
             ))}
           </div>
         </section>
-        <section className={cardClass}>
+        <section className={`${cardClass} admin-status`}>
           <div className="mb-5 flex items-center justify-between">
             <div>
               <p className="eyebrow">Control status</p>
-              <h2 className="mt-1 text-xl font-black tracking-tight">Protected and ready</h2>
+              <h2 className="mt-1 text-xl font-bold tracking-tight">Protected and ready</h2>
             </div>
-            <ShieldCheck className="size-5 text-emerald-500" />
+            <ShieldCheck className="size-5 text-success-ink" />
           </div>
           <div className="space-y-3">
             {[
-              ["Admin access", "Protected by role and email", "text-emerald-500"],
-              ["Database", "Connected — live metrics loaded", "text-emerald-500"],
-              ["Organization scope", "Current organization only", "text-indigo-500"],
+              ["Admin access", "Protected by role and email", "text-success-ink"],
+              ["Database", "Connected — live metrics loaded", "text-success-ink"],
+              ["Organization scope", "Current organization only", "text-primary-ink"],
             ].map(([label, value, tone]) => (
               <div key={label} className="flex items-start gap-3 rounded-xl bg-muted/30 p-3">
                 <CheckCircle2 className={`mt-0.5 size-4 ${tone}`} />
@@ -274,66 +273,73 @@ export default async function AdminEntryPage() {
         </section>
       </div>
 
-      <section className={cardClass}>
-        <div className="mb-5 flex items-center justify-between">
+      <section className={`${cardClass} admin-audit`}>
+        <div className="mb-4 flex items-center justify-between">
           <div>
             <p className="eyebrow">Audit trail</p>
-            <h2 className="mt-1 text-xl font-black tracking-tight">Recent activity</h2>
+            <h2 className="mt-1 text-xl font-bold tracking-tight">Recent activity</h2>
           </div>
-          <div className="flex items-center gap-4">
-            <Link
-              href="/admin/health"
-              className="text-sm font-bold text-indigo-600 hover:underline"
-            >
-              System health
-            </Link>
-            <Link href="/admin/audit" className="text-sm font-bold text-indigo-600 hover:underline">
-              Audit log
-            </Link>
-            <Link
-              href="/admin/access"
-              className="text-sm font-bold text-indigo-600 hover:underline"
-            >
-              People &amp; access
-            </Link>
-            <Link
-              href="/admin/governance"
-              className="text-sm font-bold text-indigo-600 hover:underline"
-            >
-              Organization policy
-            </Link>
-            <Link
-              href="/admin/operations"
-              className="text-sm font-bold text-indigo-600 hover:underline"
-            >
-              Workflow oversight
-            </Link>
-            <Link
-              href="/admin/analytics"
-              className="text-sm font-bold text-indigo-600 hover:underline"
-            >
-              Executive analytics
-            </Link>
-            <Link
-              href="/admin/reports"
-              className="text-sm font-bold text-indigo-600 hover:underline"
-            >
-              Reports &amp; exports
-            </Link>
-            <Link
-              href="/admin/security"
-              className="text-sm font-bold text-indigo-600 hover:underline"
-            >
-              Account security
-            </Link>
-            <Link
-              href="/admin/wavy-demo"
-              className="text-sm font-bold text-indigo-600 hover:underline"
-            >
-              Wavy effect demo
-            </Link>
-          </div>
+          <Activity className="size-5 text-primary-ink" aria-hidden="true" />
         </div>
+        <nav
+          className="mb-2 flex flex-wrap gap-2 border-y border-border/60 py-3"
+          aria-label="Master admin navigation"
+        >
+          <Link
+            href="/admin/health"
+            className="rounded-lg bg-muted/50 px-3 py-2 text-xs font-bold text-foreground transition-colors hover:bg-primary/10 hover:text-primary-ink"
+          >
+            System health
+          </Link>
+          <Link
+            href="/admin/audit"
+            className="rounded-lg bg-primary/10 px-3 py-2 text-xs font-bold text-primary-ink transition-colors hover:bg-primary/15"
+          >
+            Audit log
+          </Link>
+          <Link
+            href="/admin/access"
+            className="rounded-lg bg-muted/50 px-3 py-2 text-xs font-bold text-foreground transition-colors hover:bg-primary/10 hover:text-primary-ink"
+          >
+            People &amp; access
+          </Link>
+          <Link
+            href="/admin/governance"
+            className="rounded-lg bg-muted/50 px-3 py-2 text-xs font-bold text-foreground transition-colors hover:bg-primary/10 hover:text-primary-ink"
+          >
+            Organization policy
+          </Link>
+          <Link
+            href="/admin/operations"
+            className="rounded-lg bg-muted/50 px-3 py-2 text-xs font-bold text-foreground transition-colors hover:bg-primary/10 hover:text-primary-ink"
+          >
+            Workflow oversight
+          </Link>
+          <Link
+            href="/admin/analytics"
+            className="rounded-lg bg-muted/50 px-3 py-2 text-xs font-bold text-foreground transition-colors hover:bg-primary/10 hover:text-primary-ink"
+          >
+            Executive analytics
+          </Link>
+          <Link
+            href="/admin/reports"
+            className="rounded-lg bg-muted/50 px-3 py-2 text-xs font-bold text-foreground transition-colors hover:bg-primary/10 hover:text-primary-ink"
+          >
+            Reports &amp; exports
+          </Link>
+          <Link
+            href="/admin/security"
+            className="rounded-lg bg-muted/50 px-3 py-2 text-xs font-bold text-foreground transition-colors hover:bg-primary/10 hover:text-primary-ink"
+          >
+            Account security
+          </Link>
+          <Link
+            href="/admin/wavy-demo"
+            className="rounded-lg bg-muted/50 px-3 py-2 text-xs font-bold text-foreground transition-colors hover:bg-primary/10 hover:text-primary-ink"
+          >
+            Wavy effect demo
+          </Link>
+        </nav>
         {recentActivity.length ? (
           <div className="divide-y divide-border/60">
             {recentActivity.map((event) => (

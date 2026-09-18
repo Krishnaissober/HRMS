@@ -25,7 +25,8 @@ test("persists accepted-offer conversion, onboarding progress and employee found
       phone: `922${String(Date.now()).slice(-7)}`,
       roleOfInterest: requisition.title,
       source: "WALK_IN",
-      status: "INTERVIEW",
+      status: "SELECTED",
+      hiringApprovalStatus: "FINAL_HIRED",
       declarationAccepted: true,
       consentAccepted: true,
     },
@@ -36,7 +37,7 @@ test("persists accepted-offer conversion, onboarding progress and employee found
       referenceNo: `APP-P5-${suffix}`,
       candidateId: candidate.id,
       requisitionId: requisition.id,
-      status: "INTERVIEW",
+      status: "SELECTED",
     },
   });
   const decision = await db.hiringDecision.create({
@@ -689,7 +690,8 @@ test("persists accepted-offer conversion, onboarding progress and employee found
       phone: `924${String(Date.now()).slice(-7)}`,
       roleOfInterest: requisition.title,
       source: "WALK_IN",
-      status: "INTERVIEW",
+      status: "SELECTED",
+      hiringApprovalStatus: "FINAL_HIRED",
       declarationAccepted: true,
       consentAccepted: true,
     },
@@ -700,7 +702,7 @@ test("persists accepted-offer conversion, onboarding progress and employee found
       referenceNo: `APP-P5-RACE-${suffix}`,
       candidateId: concurrentCandidate.id,
       requisitionId: requisition.id,
-      status: "INTERVIEW",
+      status: "SELECTED",
     },
   });
   const concurrentDecision = await db.hiringDecision.create({
@@ -782,7 +784,8 @@ test("persists accepted-offer conversion, onboarding progress and employee found
       phone: `923${String(Date.now()).slice(-7)}`,
       roleOfInterest: requisition.title,
       source: "WALK_IN",
-      status: "INTERVIEW",
+      status: "SELECTED",
+      hiringApprovalStatus: "FINAL_HIRED",
       declarationAccepted: true,
       consentAccepted: true,
     },
@@ -793,7 +796,7 @@ test("persists accepted-offer conversion, onboarding progress and employee found
       referenceNo: `APP-P5-M-${suffix}`,
       candidateId: mentorCandidate.id,
       requisitionId: requisition.id,
-      status: "INTERVIEW",
+      status: "SELECTED",
     },
   });
   const mentorDecision = await db.hiringDecision.create({

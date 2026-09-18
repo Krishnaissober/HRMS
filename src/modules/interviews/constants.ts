@@ -8,6 +8,9 @@ export const INTERVIEW_STATUSES = [
 ] as const;
 export type InterviewStatus = (typeof INTERVIEW_STATUSES)[number];
 
+export const INTERVIEW_STAGES = ["ONLINE", "PHYSICAL"] as const;
+export type InterviewStage = (typeof INTERVIEW_STAGES)[number];
+
 export const INTERVIEW_PERMISSIONS = {
   read: "interviews.read",
   create: "interviews.create",

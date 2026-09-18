@@ -30,6 +30,15 @@ describe("interview scheduling", () => {
     ).toThrow();
   });
 
+  it("requires physical interviews to be in person", () => {
+    expect(() =>
+      interviewCreateSchema.parse({ ...valid, stage: "PHYSICAL", mode: "VIDEO" }),
+    ).toThrow();
+    expect(
+      interviewCreateSchema.parse({ ...valid, stage: "PHYSICAL", mode: "IN_PERSON" }).mode,
+    ).toBe("IN_PERSON");
+  });
+
   it("enforces supported status transitions", () => {
     expect(canTransitionInterview("SCHEDULED", "CHECKED_IN")).toBe(true);
     expect(canTransitionInterview("CHECKED_IN", "COMPLETED")).toBe(true);

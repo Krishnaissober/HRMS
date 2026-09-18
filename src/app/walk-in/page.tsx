@@ -1,12 +1,18 @@
+import { BrandLogo } from "@/components/layout/brand-logo";
 import { CandidateForm } from "@/components/candidates/CandidateForm";
 import { db } from "@/lib/db";
 
 export default async function PublicWalkInPage({
   searchParams,
 }: {
-  searchParams: Promise<{ requisitionId?: string; position?: string; fields?: string }>;
+  searchParams: Promise<{
+    requisitionId?: string;
+    position?: string;
+    fields?: string;
+    documents?: string;
+  }>;
 }) {
-  const { requisitionId, position, fields } = await searchParams;
+  const { requisitionId, position, fields, documents } = await searchParams;
   const organization = await db.organization.findUnique({
     where: { slug: "triple-minds" },
     select: { id: true },
@@ -22,6 +28,9 @@ export default async function PublicWalkInPage({
   return (
     <main className="page-shell">
       <section className="panel">
+        <div className="mb-6">
+          <BrandLogo />
+        </div>
         <p className="eyebrow">Triple Minds Walk-In Application</p>
         <h1>Complete your walk-in form</h1>
         <p>
@@ -41,6 +50,7 @@ export default async function PublicWalkInPage({
             position={position}
             requisitions={requisitions}
             formFields={fields?.split(",").filter(Boolean)}
+            requestedDocuments={documents?.split(",").filter(Boolean)}
             publicWalkIn
           />
         )}

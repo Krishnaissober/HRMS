@@ -12,7 +12,6 @@ import {
   UserRound,
   WalletCards,
 } from "lucide-react";
-import { DashboardGeminiBackground } from "@/components/layout/dashboard-gemini-background";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { getAdminContext } from "@/lib/admin-access";
@@ -90,47 +89,46 @@ export default async function AdminOperationsPage() {
 
   return (
     <main className="page-shell space-y-6 pb-12">
-      <section className="relative overflow-hidden rounded-3xl border border-indigo-500/20 bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900 p-6 text-white shadow-2xl sm:p-8">
-        <DashboardGeminiBackground />
+      <section className="enterprise-hero relative overflow-hidden rounded-xl border border-primary/20 bg-card p-6 text-foreground shadow-sm sm:p-8">
         <div className="relative z-10">
           <Link
             href="/admin"
-            className="mb-6 inline-flex items-center gap-2 text-sm font-bold text-indigo-200 transition hover:text-white"
+            className="mb-6 inline-flex items-center gap-2 text-sm font-bold text-primary-ink transition hover:text-foreground"
           >
             <ArrowLeft className="size-4" /> Admin Command Center
           </Link>
-          <p className="mb-3 text-xs font-black uppercase tracking-[0.24em] text-indigo-300">
+          <p className="mb-3 text-xs font-bold uppercase tracking-[0.24em] text-primary-ink">
             Administrator workspace
           </p>
-          <h1 className="text-3xl font-black tracking-tight sm:text-4xl">Workflow Oversight</h1>
-          <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-300 sm:text-base">
+          <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">Workflow Oversight</h1>
+          <p className="mt-3 max-w-2xl text-sm leading-6 text-muted-foreground sm:text-base">
             Find stalled work and exceptions quickly so the right team can follow up before they
             become larger problems.
           </p>
         </div>
       </section>
       <section className="grid gap-4 sm:grid-cols-3">
-        <div className="rounded-2xl border border-amber-500/30 bg-amber-500/5 p-5 shadow-sm">
-          <AlertTriangle className="mb-4 size-5 text-amber-500" />
+        <div className="rounded-2xl border border-warning/30 bg-warning/5 p-5 shadow-sm">
+          <AlertTriangle className="mb-4 size-5 text-warning-ink" />
           <p className="text-sm font-semibold text-muted-foreground">Needs attention</p>
-          <p className="mt-1 text-3xl font-black tracking-tight">{attentionCount}</p>
+          <p className="mt-1 text-3xl font-bold tracking-tight">{attentionCount}</p>
         </div>
-        <div className="rounded-2xl border border-indigo-500/20 bg-card p-5 shadow-sm">
-          <ClipboardCheck className="mb-4 size-5 text-indigo-500" />
+        <div className="rounded-2xl border border-primary/20 bg-card p-5 shadow-sm">
+          <ClipboardCheck className="mb-4 size-5 text-primary-ink" />
           <p className="text-sm font-semibold text-muted-foreground">Active onboarding</p>
-          <p className="mt-1 text-3xl font-black tracking-tight">{pendingOnboarding}</p>
+          <p className="mt-1 text-3xl font-bold tracking-tight">{pendingOnboarding}</p>
         </div>
-        <div className="rounded-2xl border border-slate-200/60 bg-card p-5 shadow-sm dark:border-slate-800">
-          <UserRound className="mb-4 size-5 text-sky-500" />
+        <div className="rounded-2xl border border-border/60 bg-card p-5 shadow-sm dark:border-border">
+          <UserRound className="mb-4 size-5 text-info-ink" />
           <p className="text-sm font-semibold text-muted-foreground">Candidates on hold</p>
-          <p className="mt-1 text-3xl font-black tracking-tight">{heldCandidates}</p>
+          <p className="mt-1 text-3xl font-bold tracking-tight">{heldCandidates}</p>
         </div>
       </section>
-      <section className="rounded-3xl border border-border/60 bg-card p-6 shadow-sm">
+      <section className="rounded-xl border border-border/60 bg-card p-6 shadow-sm">
         <div className="mb-5 flex items-end justify-between gap-4">
           <div>
             <p className="eyebrow">Follow-up queues</p>
-            <h2 className="mt-1 text-xl font-black tracking-tight">Where attention is needed</h2>
+            <h2 className="mt-1 text-xl font-bold tracking-tight">Where attention is needed</h2>
           </div>
           <span className="hidden text-sm text-muted-foreground sm:block">
             Live organization totals
@@ -141,30 +139,30 @@ export default async function AdminOperationsPage() {
             <Link
               key={label}
               href={href}
-              className="group rounded-2xl border border-border/60 p-4 transition hover:-translate-y-1 hover:border-indigo-400/60 hover:bg-indigo-500/5"
+              className="group rounded-2xl border border-border/60 p-4 transition hover:-translate-y-px hover:border-primary/60 hover:bg-primary/5"
             >
               <div className="mb-4 flex items-center justify-between">
-                <span className="flex size-10 items-center justify-center rounded-xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-300">
+                <span className="flex size-10 items-center justify-center rounded-xl bg-primary/10 text-primary-ink dark:text-primary-ink">
                   <Icon className="size-5" />
                 </span>
-                <span className="text-2xl font-black">{value}</span>
+                <span className="text-2xl font-bold">{value}</span>
               </div>
-              <p className="text-sm font-black">{label}</p>
+              <p className="text-sm font-bold">{label}</p>
               <p className="mt-1 text-xs text-muted-foreground">{detail}</p>
-              <span className="mt-4 inline-flex items-center gap-1 text-xs font-bold text-indigo-600">
+              <span className="mt-4 inline-flex items-center gap-1 text-xs font-bold text-primary-ink">
                 Open queue <ArrowRight className="size-3 transition group-hover:translate-x-1" />
               </span>
             </Link>
           ))}
         </div>
       </section>
-      <section className="rounded-3xl border border-border/60 bg-card p-6 shadow-sm">
+      <section className="rounded-xl border border-border/60 bg-card p-6 shadow-sm">
         <div className="mb-5 flex items-center justify-between">
           <div>
             <p className="eyebrow">Hiring follow-up</p>
-            <h2 className="mt-1 text-xl font-black tracking-tight">Recently updated candidates</h2>
+            <h2 className="mt-1 text-xl font-bold tracking-tight">Recently updated candidates</h2>
           </div>
-          <Link href="/hr/candidates" className="text-sm font-bold text-indigo-600 hover:underline">
+          <Link href="/hr/candidates" className="text-sm font-bold text-primary-ink hover:underline">
             View candidates
           </Link>
         </div>
@@ -174,15 +172,15 @@ export default async function AdminOperationsPage() {
               <Link
                 key={candidate.id}
                 href={`/hr/candidates/${candidate.id}`}
-                className="flex flex-col gap-3 rounded-2xl border border-border/60 p-4 transition hover:border-indigo-400/60 hover:bg-muted/30 sm:flex-row sm:items-center sm:justify-between"
+                className="flex flex-col gap-3 rounded-2xl border border-border/60 p-4 transition hover:border-primary/60 hover:bg-muted/30 sm:flex-row sm:items-center sm:justify-between"
               >
                 <div className="flex items-center gap-3">
-                  <span className="flex size-10 items-center justify-center rounded-full bg-indigo-500/10 text-sm font-black text-indigo-600">
+                  <span className="flex size-10 items-center justify-center rounded-full bg-primary/10 text-sm font-bold text-primary-ink">
                     {candidate.firstName.charAt(0)}
                     {candidate.lastName.charAt(0)}
                   </span>
                   <div>
-                    <p className="text-sm font-black">
+                    <p className="text-sm font-bold">
                       {candidate.firstName} {candidate.lastName}
                     </p>
                     <p className="text-xs text-muted-foreground">
@@ -199,7 +197,7 @@ export default async function AdminOperationsPage() {
           </div>
         ) : (
           <div className="rounded-2xl border border-dashed border-border/70 bg-muted/20 p-10 text-center text-sm text-muted-foreground">
-            <CheckCircle2 className="mx-auto mb-3 size-6 text-emerald-500" />
+            <CheckCircle2 className="mx-auto mb-3 size-6 text-success-ink" />
             No active candidate follow-up records found.
           </div>
         )}

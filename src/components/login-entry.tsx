@@ -1,15 +1,24 @@
 "use client";
-import { useEffect, useState } from "react";
-import { Eye, EyeOff, LogIn, UserPlus } from "lucide-react";
+
+import { BrandLogo } from "@/components/layout/brand-logo";
+import { useCallback, useEffect, useState } from "react";
+import { Eye, EyeOff, Globe2, LogIn, UserPlus } from "lucide-react";
+import {
+  establishClientTabSession,
+  getClientTabPath,
+  prepareClientTabOAuth,
+} from "@/lib/tab-session-client";
 export function LoginEntry({
   signedInWithoutAccess = false,
   databaseUnavailable = false,
   localActivationEnabled = false,
+  googleOAuthEnabled = false,
   userName,
 }: {
   signedInWithoutAccess?: boolean;
   databaseUnavailable?: boolean;
   localActivationEnabled?: boolean;
+  googleOAuthEnabled?: boolean;
   userName?: string;
 }) {
   const [email, setEmail] = useState("");
@@ -20,7 +29,15 @@ export function LoginEntry({
   const [message, setMessage] = useState("");
   const [busy, setBusy] = useState(false);
   const [signingOut, setSigningOut] = useState(false);
-  async function activateLocalAccount() {
+  const [googleBusy, setGoogleBusy] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
+  const finishAuthentication = useCallback(async (path: string) => {
+    setIsClosing(true);
+    const duration = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 760;
+    await new Promise<void>((resolve) => window.setTimeout(resolve, duration));
+    window.location.assign(path);
+  }, []);
+  const activateLocalAccount = useCallback(async () => {
     if (!localActivationEnabled) return;
     const response = await fetch("/api/auth/activate-local", {
       method: "POST",
@@ -30,7 +47,7 @@ export function LoginEntry({
       const result = await response.json().catch(() => null);
       throw new Error(result?.error?.message || "Could not activate the local account.");
     }
-  }
+  }, [localActivationEnabled]);
   useEffect(() => {
     if (!signedInWithoutAccess || !localActivationEnabled) return;
     let cancelled = false;
@@ -47,7 +64,7 @@ export function LoginEntry({
     return () => {
       cancelled = true;
     };
-  }, [signedInWithoutAccess]);
+  }, [activateLocalAccount, localActivationEnabled, signedInWithoutAccess]);
   async function signIn(event: React.FormEvent) {
     event.preventDefault();
     setBusy(true);
@@ -60,24 +77,35 @@ export function LoginEntry({
         body: JSON.stringify({ email, password }),
       });
     } catch {
+      setIsClosing(false);
       setBusy(false);
       setMessage("Unable to reach the server. Make sure the HRMS app is running and try again.");
       return;
     }
     if (!response.ok) {
+      setIsClosing(false);
       setBusy(false);
       setMessage("Sign-in failed. Check your email and password.");
       return;
     }
+    const sessionToken = response.headers.get("set-auth-token");
+    if (!sessionToken) {
+      setIsClosing(false);
+      setBusy(false);
+      setMessage("Sign-in did not create an isolated browser-tab session. Please try again.");
+      return;
+    }
     try {
+      await establishClientTabSession(sessionToken);
       await activateLocalAccount();
     } catch (error) {
+      setIsClosing(false);
       setBusy(false);
       setMessage(error instanceof Error ? error.message : "Could not activate the local account.");
       return;
     }
     setBusy(false);
-    window.location.assign("/");
+    await finishAuthentication(getClientTabPath("/"));
   }
   async function signUp(event: React.FormEvent) {
     event.preventDefault();
@@ -91,11 +119,13 @@ export function LoginEntry({
         body: JSON.stringify({ name, email, password }),
       });
     } catch {
+      setIsClosing(false);
       setBusy(false);
       setMessage("Unable to reach the server. Make sure the HRMS app is running and try again.");
       return;
     }
     if (!response.ok) {
+      setIsClosing(false);
       setBusy(false);
       const result = await response.json().catch(() => null);
       setMessage(
@@ -107,15 +137,26 @@ export function LoginEntry({
       );
       return;
     }
+    const sessionToken = response.headers.get("set-auth-token");
+    if (!sessionToken) {
+      setIsClosing(false);
+      setBusy(false);
+      setMessage(
+        "Account creation did not create an isolated browser-tab session. Please try again.",
+      );
+      return;
+    }
     try {
+      await establishClientTabSession(sessionToken);
       await activateLocalAccount();
     } catch (error) {
+      setIsClosing(false);
       setBusy(false);
       setMessage(error instanceof Error ? error.message : "Could not activate the local account.");
       return;
     }
     setBusy(false);
-    window.location.assign("/");
+    await finishAuthentication(getClientTabPath("/"));
   }
   async function signOut() {
     setSigningOut(true);
@@ -138,9 +179,62 @@ export function LoginEntry({
       setSigningOut(false);
     }
   }
+  async function signInWithGoogle() {
+    setGoogleBusy(true);
+    setMessage("");
+    try {
+      const tabId = await prepareClientTabOAuth();
+      const response = await fetch("/api/auth/sign-in/social", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          provider: "google",
+          callbackURL: `${window.location.origin}/t/${tabId}/`,
+          disableRedirect: true,
+        }),
+      });
+      const result = await response.json().catch(() => null);
+      if (!response.ok || !result?.url) {
+        throw new Error(
+          result?.message || result?.error?.message || "Google sign-in is not available.",
+        );
+      }
+      window.location.assign(result.url);
+    } catch (error) {
+      setIsClosing(false);
+      setGoogleBusy(false);
+      setMessage(error instanceof Error ? error.message : "Google sign-in failed.");
+    }
+  }
   return (
-    <main className="shell">
-      <section className="card" aria-labelledby="title">
+    <main className={`shell auth-shell${isClosing ? " auth-shell-closing" : ""}`}>
+      <aside className="auth-brand auth-brand-init" aria-label="Triple Minds">
+        <div className="auth-brand-motion" aria-hidden="true" />
+        <div className="auth-brand-top">
+          <BrandLogo />
+          <span className="auth-brand-chip">Triple Minds HRMS</span>
+        </div>
+        <div className="auth-brand-content">
+          <div className="auth-brand-copy">
+            <p className="eyebrow">PEOPLE. PURPOSE. PROGRESS.</p>
+            <h2>A better workplace starts with your people.</h2>
+            <p>Your workspace for hiring, employee management, and everything that comes next.</p>
+          </div>
+          <div className="auth-brand-points" aria-label="HRMS capabilities">
+            <span>Hiring</span>
+            <span>People operations</span>
+            <span>Growth</span>
+          </div>
+        </div>
+        <div className="auth-brand-footer">
+          <span className="auth-brand-dot" /> Secure people operations{" "}
+          <span className="auth-brand-line" /> Est. 2024
+        </div>
+      </aside>
+      <section className="card auth-card-init" aria-labelledby="title">
+        <div className="auth-card-brand">
+          <BrandLogo />
+        </div>
         <p className="eyebrow">Triple Minds HR</p>
         <h1 id="title">
           {databaseUnavailable
@@ -235,6 +329,22 @@ export function LoginEntry({
                 </p>
               )}
             </form>
+            {!creating && googleOAuthEnabled && (
+              <>
+                <div className="auth-divider" aria-hidden="true">
+                  <span>or</span>
+                </div>
+                <button
+                  type="button"
+                  className="button-link secondary google-auth-button"
+                  disabled={busy || googleBusy}
+                  onClick={() => void signInWithGoogle()}
+                >
+                  <Globe2 className="h-4 w-4" aria-hidden="true" />
+                  {googleBusy ? "Connecting to Google…" : "Continue with Google"}
+                </button>
+              </>
+            )}
             <button
               type="button"
               className="button-link secondary auth-mode-toggle"

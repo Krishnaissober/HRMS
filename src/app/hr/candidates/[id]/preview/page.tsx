@@ -51,6 +51,31 @@ function value(input?: string | null) {
   return input?.trim() || "Not provided";
 }
 
+function EducationSummary({ input }: { input?: string | null }) {
+  if (!input?.trim()) return <span>Not provided</span>;
+  try {
+    const details = JSON.parse(input) as Record<string, string>;
+    const rows = [
+      ["10th", details.tenthInstitution, details.tenthScore],
+      ["12th", details.twelfthInstitution, details.twelfthScore],
+      ["College", details.collegeName, details.collegeScore],
+    ].filter(([, name, score]) => name || score);
+    if (!rows.length) return <span>{input}</span>;
+    return (
+      <div className="candidate-education-summary">
+        {rows.map(([level, name, score]) => (
+          <div key={level}>
+            <strong>{level}</strong>
+            <span>{[name, score && `Grade: ${score}`].filter(Boolean).join(" · ")}</span>
+          </div>
+        ))}
+      </div>
+    );
+  } catch {
+    return <span>{input}</span>;
+  }
+}
+
 export default function CandidateSubmissionPreview({
   params,
 }: {
@@ -84,7 +109,7 @@ export default function CandidateSubmissionPreview({
 
   return (
     <main className="page-shell space-y-6 pb-12">
-      <section className="candidate-profile-panel candidate-submission-preview rounded-3xl border border-border/60 bg-card shadow-sm">
+      <section className="candidate-profile-panel candidate-submission-preview rounded-xl border border-border/60 bg-card shadow-sm">
         <div className="candidate-profile-header candidate-preview-hero">
           <div>
             <p className="eyebrow">Submitted candidate form</p>
@@ -162,7 +187,9 @@ export default function CandidateSubmissionPreview({
               <dt>Skills</dt>
               <dd>{value(candidate.skills)}</dd>
               <dt>Education</dt>
-              <dd>{value(candidate.education)}</dd>
+              <dd>
+                <EducationSummary input={candidate.education} />
+              </dd>
               <dt>Current / last company</dt>
               <dd>{value(candidate.currentCompany)}</dd>
               <dt>Employment history</dt>

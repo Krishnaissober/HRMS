@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
 const { spawn, spawnSync } = require("node:child_process");
+const { existsSync, readFileSync, unlinkSync, writeFileSync } = require("node:fs");
 const path = require("node:path");
 
 const root = path.resolve(__dirname, "..");
@@ -16,33 +17,51 @@ const npm = process.platform === "win32" ? process.env.ComSpec || "cmd.exe" : "n
 const npmArgs = (args) =>
   process.platform === "win32" ? ["/d", "/s", "/c", `npm ${args.join(" ")}`] : args;
 
-const build = spawnSync(npm, npmArgs(["run", "build"]), {
-  cwd: root,
-  env,
-  stdio: "inherit",
-  windowsHide: true,
-});
+newFunction();
+function newFunction() {
+  const generatedConfigPaths = ["next-env.d.ts", "tsconfig.json"].map((file) => path.join(root, file)
+  );
+  const generatedConfigSnapshots = generatedConfigPaths.map((file) => existsSync(file) ? readFileSync(file) : null
+  );
 
-if (build.status !== 0) process.exit(build.status || 1);
+  let build;
+  try {
+    build = spawnSync(npm, npmArgs(["run", "build"]), {
+      cwd: root,
+      env,
+      stdio: "inherit",
+      windowsHide: true,
+    });
+  } finally {
+    generatedConfigPaths.forEach((file, index) => {
+      const snapshot = generatedConfigSnapshots[index];
+      if (snapshot) writeFileSync(file, snapshot);
+      else if (existsSync(file)) unlinkSync(file);
+    });
+  }
 
-const server = spawn(npm, npmArgs(["run", "start", "--", "-p", "3002"]), {
-  cwd: root,
-  env,
-  stdio: "inherit",
-  windowsHide: true,
-});
+  if (build.status !== 0) process.exit(build.status || 1);
 
-function stop() {
-  if (!server.killed) server.kill();
-}
+  const server = spawn(npm, npmArgs(["run", "start", "--", "-p", "3002"]), {
+    cwd: root,
+    env,
+    stdio: "inherit",
+    windowsHide: true,
+  });
 
-for (const signal of ["SIGINT", "SIGTERM", "SIGHUP"]) {
-  process.on(signal, () => {
-    stop();
-    process.exit(0);
+  function stop() {
+    if (!server.killed) server.kill();
+  }
+
+  for (const signal of ["SIGINT", "SIGTERM", "SIGHUP"]) {
+    process.on(signal, () => {
+      stop();
+      process.exit(0);
+    });
+  }
+
+  server.on("exit", (code, signal) => {
+    process.exitCode = code || (signal ? 1 : 0);
   });
 }
 
-server.on("exit", (code, signal) => {
-  process.exitCode = code || (signal ? 1 : 0);
-});

@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { INTERVIEW_STATUSES } from "@/modules/interviews/constants";
+import { INTERVIEW_STAGES, INTERVIEW_STATUSES } from "@/modules/interviews/constants";
 
 const optionalText = (max: number) => z.string().trim().max(max).optional().or(z.literal(""));
 
@@ -32,12 +32,19 @@ export const interviewCreateSchema = z
     candidateId: z.string().trim().min(1).max(100),
     applicationId: z.string().trim().min(1).max(100),
     round: z.number().int().min(1).max(100).default(1),
+    stage: z.enum(INTERVIEW_STAGES).default("ONLINE"),
     participantIds: z.array(z.string().trim().min(1).max(100)).min(1).max(20),
     templateId: z.string().trim().min(1).max(100).optional(),
     ...scheduleFields,
   })
   .superRefine((value, context) => {
     validateWindow(value, context);
+    if (value.stage === "PHYSICAL" && value.mode !== "IN_PERSON")
+      context.addIssue({
+        code: "custom",
+        path: ["mode"],
+        message: "Physical interviews must use in-person mode",
+      });
   });
 
 export const interviewUpdateSchema = z

@@ -9,6 +9,7 @@ type FormKind = "social" | "walk-in";
 const experienceOptions = ["3-6 month", "1-5 year", "5-9 year", "10+"];
 type QuestionOption = readonly [string, string];
 type QuestionGroup = { heading: string; options: readonly QuestionOption[] };
+type DocumentGroup = { heading: string; options: readonly QuestionOption[] };
 const requiredQuestionOptions: readonly QuestionOption[] = [
   ["fullName", "Full name"],
   ["email", "Email address"],
@@ -54,6 +55,30 @@ const questionGroups: readonly QuestionGroup[] = [
   },
 ] as const;
 const questionOptions = questionGroups.flatMap((group) => group.options);
+const documentGroups: readonly DocumentGroup[] = [
+  {
+    heading: "Before joining · verification",
+    options: [
+      ["identityProof", "Identity proof · Aadhaar, passport, driving licence or voter ID"],
+      ["panCard", "PAN card"],
+      ["addressProof", "Address proof · Aadhaar, utility bill or rent agreement"],
+      ["educationProof", "Education certificates / marksheets"],
+      ["experienceProof", "Experience, relieving or service letter"],
+      ["candidatePhoto", "Recent passport-size photograph"],
+    ],
+  },
+  {
+    heading: "After joining · payroll and compliance",
+    options: [
+      ["bankProof", "Bank proof · cancelled cheque or passbook front page"],
+      ["pfUanProof", "PF / UAN document, if applicable"],
+      ["esicProof", "ESIC document, if applicable"],
+      ["taxDeclaration", "Tax declaration or investment proof"],
+      ["signedAgreement", "Signed offer, appointment or confidentiality agreement"],
+      ["otherDocument", "Other document requested by HR"],
+    ],
+  },
+] as const;
 
 export function CandidateFormShareLinks() {
   const [kind, setKind] = useState<FormKind>("social");
@@ -64,6 +89,7 @@ export function CandidateFormShareLinks() {
   const [selectedQuestions, setSelectedQuestions] = useState<string[]>(
     questionOptions.map(([value]) => value),
   );
+  const [selectedDocuments, setSelectedDocuments] = useState<string[]>([]);
   const [deployed, setDeployed] = useState(false);
   const [message, setMessage] = useState("");
   const [saved, setSaved] = useState(false);
@@ -79,11 +105,13 @@ export function CandidateFormShareLinks() {
           description?: string;
           experience?: string;
           questions?: string[];
+          documents?: string[];
         };
         setManualPosition(value.position || "");
         setFormDescription(value.description || "");
         setExperienceRequired(value.experience || "");
         if (value.questions) setSelectedQuestions(value.questions);
+        if (value.documents) setSelectedDocuments(value.documents);
       } catch {
         window.localStorage.removeItem("triple-minds-form-editor-social");
       }
@@ -100,11 +128,24 @@ export function CandidateFormShareLinks() {
     // Keep an empty fields value so the public form can distinguish
     // "no optional questions selected" from "use the default checklist".
     value.searchParams.set("fields", selectedQuestions.join(","));
+    value.searchParams.set("documents", selectedDocuments.join(","));
     return value.toString();
-  }, [kind, origin, manualPosition, experienceRequired, formDescription, selectedQuestions]);
+  }, [
+    kind,
+    origin,
+    manualPosition,
+    experienceRequired,
+    formDescription,
+    selectedQuestions,
+    selectedDocuments,
+  ]);
   const qrUrl = `https://quickchart.io/qr?size=240&text=${encodeURIComponent(url)}`;
   function previewUrlFor(nextKind: FormKind) {
-    const params = new URLSearchParams({ kind: nextKind, fields: selectedQuestions.join(",") });
+    const params = new URLSearchParams({
+      kind: nextKind,
+      fields: selectedQuestions.join(","),
+      documents: selectedDocuments.join(","),
+    });
     if (manualPosition.trim()) params.set("position", manualPosition.trim());
     if (nextKind === "social" && experienceRequired)
       params.set("experienceRequired", experienceRequired);
@@ -136,11 +177,13 @@ export function CandidateFormShareLinks() {
           description?: string;
           experience?: string;
           questions?: string[];
+          documents?: string[];
         };
         setManualPosition(value.position || "");
         setFormDescription(value.description || "");
         setExperienceRequired(value.experience || "");
         setSelectedQuestions(value.questions || questionOptions.map(([value]) => value));
+        setSelectedDocuments(value.documents || []);
         setSaved(true);
       } catch {
         window.localStorage.removeItem(`triple-minds-form-editor-${nextKind}`);
@@ -156,6 +199,7 @@ export function CandidateFormShareLinks() {
         description: kind === "social" ? formDescription : "",
         experience: experienceRequired,
         questions: selectedQuestions,
+        documents: selectedDocuments,
       }),
     );
     setSaved(true);
@@ -362,6 +406,36 @@ export function CandidateFormShareLinks() {
                       checked={selectedQuestions.includes(value)}
                       onChange={(event) => {
                         setSelectedQuestions((current) =>
+                          event.target.checked
+                            ? [...current, value]
+                            : current.filter((item) => item !== value),
+                        );
+                        setDeployed(false);
+                        setSaved(false);
+                      }}
+                    />
+                    {label}
+                  </label>
+                ))}
+              </div>
+            </div>
+          ))}
+          {documentGroups.map((group) => (
+            <div key={group.heading} className="form-question-group form-document-request-group">
+              <h3>{group.heading}</h3>
+              <p>
+                Ask only for documents needed for this hiring stage. Candidates can upload a clear
+                PDF or image.
+              </p>
+              <div>
+                {group.options.map(([value, label]) => (
+                  <label key={value}>
+                    <input
+                      type="checkbox"
+                      disabled={!selectedDocuments.includes(value) && selectedDocuments.length >= 4}
+                      checked={selectedDocuments.includes(value)}
+                      onChange={(event) => {
+                        setSelectedDocuments((current) =>
                           event.target.checked
                             ? [...current, value]
                             : current.filter((item) => item !== value),

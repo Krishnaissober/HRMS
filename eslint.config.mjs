@@ -9,7 +9,8 @@ const config = [...compat.extends("next/core-web-vitals", "next/typescript")];
 const eslintConfig = [
   globalIgnores([
     ".next/**",
-    "node_modules/**",
+    ".next-*/**",
+    "**/node_modules/**",
     "coverage/**",
     "playwright-report/**",
     "test-results/**",

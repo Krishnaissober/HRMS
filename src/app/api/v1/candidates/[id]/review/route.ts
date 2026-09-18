@@ -24,11 +24,14 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
     const candidateId = (await params).id;
     const candidate = await getCandidate(context.organizationId, candidateId);
     if (!candidate) return errorResponse(notFoundError(), id);
-    if (!candidate.interviews.some((interview) => interview.status === "COMPLETED")) {
+    const completedInterview = candidate.interviews.some(
+      (interview) => interview.status === "COMPLETED",
+    );
+    if (!completedInterview) {
       return errorResponse(
         new AppError(
           "CONFLICT",
-          "HR review is available only after the interview is completed",
+          "Complete the scheduled interview before recording the HR evaluation",
           409,
         ),
         id,
@@ -40,12 +43,26 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
         where: { id: candidateId, organizationId: context.organizationId },
       });
       if (!current) throw notFoundError();
-      const postInterviewShortlist =
-        current.status === "INTERVIEW" && input.status === "SHORTLISTED";
+      const completedInterview = await tx.interview.findFirst({
+        where: {
+          candidateId,
+          organizationId: context.organizationId,
+          status: "COMPLETED",
+        },
+        select: { id: true },
+      });
+      if (!completedInterview)
+        throw new AppError(
+          "CONFLICT",
+          "Complete the scheduled interview before recording the HR evaluation",
+          409,
+        );
+      // A completed interview unlocks the HR recommendation. This is not a
+      // final hire decision; Master review and HR's final hire action remain separate.
+      const reviewStatus = input.status;
       if (
-        current.status !== input.status &&
-        !postInterviewShortlist &&
-        !canTransition(current.status as CandidateStatus, input.status)
+        current.status !== reviewStatus &&
+        !canTransition(current.status as CandidateStatus, reviewStatus as CandidateStatus)
       ) {
         throw new AppError(
           "CONFLICT",
@@ -56,7 +73,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
       const updated = await tx.candidate.update({
         where: { id: candidateId },
         data: {
-          status: input.status,
+          status: reviewStatus,
           statusReason: input.comments,
           hrInterviewScheduledBy: context.session.user.name,
           hrInterviewerName: context.session.user.name,
@@ -78,7 +95,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
           actorUserId: context.session.user.id,
           action: "HR_REVIEW_UPDATED",
           fromStatus: current.status,
-          toStatus: input.status,
+          toStatus: reviewStatus,
           note: input.comments || undefined,
         },
       });

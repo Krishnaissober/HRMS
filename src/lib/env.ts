@@ -13,9 +13,18 @@ const envSchema = z.object({
   S3_BUCKET: z.string().default("hr-portal-private"),
   S3_ACCESS_KEY_ID: z.string().optional(),
   S3_SECRET_ACCESS_KEY: z.string().optional(),
-  EMAIL_PROVIDER: z.enum(["console", "resend"]).default("console"),
+  EMAIL_PROVIDER: z.enum(["console", "resend", "microsoft-graph", "graph"]).default("console"),
   EMAIL_FROM: z.string().email().default("no-reply@example.test"),
   RESEND_API_KEY: z.string().optional(),
+  MICROSOFT_TENANT_ID: z.string().trim().min(1).optional(),
+  MICROSOFT_CLIENT_ID: z.string().trim().min(1).optional(),
+  MICROSOFT_CLIENT_SECRET: z.string().trim().min(1).optional(),
+  MICROSOFT_SENDER_EMAIL: z.string().email().optional(),
+  // Backward-compatible name used by the first Graph implementation.
+  MICROSOFT_GRAPH_SENDER_EMAIL: z.string().email().optional(),
+  EMAIL_DEV_LOG_OTP: z.enum(["true", "false"]).default("false"),
+  GOOGLE_CLIENT_ID: z.string().trim().min(1).optional(),
+  GOOGLE_CLIENT_SECRET: z.string().trim().min(1).optional(),
   SENTRY_DSN: z.string().url().optional(),
   OTEL_EXPORTER_OTLP_ENDPOINT: z.string().url().optional(),
   LOG_LEVEL: z.enum(["debug", "info", "warn", "error"]).default("info"),
@@ -37,6 +46,14 @@ const optionalSettings = [
   "EMAIL_PROVIDER",
   "EMAIL_FROM",
   "RESEND_API_KEY",
+  "MICROSOFT_TENANT_ID",
+  "MICROSOFT_CLIENT_ID",
+  "MICROSOFT_CLIENT_SECRET",
+  "MICROSOFT_SENDER_EMAIL",
+  "MICROSOFT_GRAPH_SENDER_EMAIL",
+  "EMAIL_DEV_LOG_OTP",
+  "GOOGLE_CLIENT_ID",
+  "GOOGLE_CLIENT_SECRET",
   "SENTRY_DSN",
   "OTEL_EXPORTER_OTLP_ENDPOINT",
   "LOG_LEVEL",
@@ -71,6 +88,56 @@ if (
   parsed.data.BETTER_AUTH_SECRET.includes("development-only")
 ) {
   throw new Error("BETTER_AUTH_SECRET must be replaced in production");
+}
+
+if (Boolean(parsed.data.GOOGLE_CLIENT_ID) !== Boolean(parsed.data.GOOGLE_CLIENT_SECRET)) {
+  throw new Error("GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET must be configured together");
+}
+
+const microsoftGraphSettings = [
+  parsed.data.MICROSOFT_TENANT_ID,
+  parsed.data.MICROSOFT_CLIENT_ID,
+  parsed.data.MICROSOFT_CLIENT_SECRET,
+  parsed.data.MICROSOFT_SENDER_EMAIL ?? parsed.data.MICROSOFT_GRAPH_SENDER_EMAIL,
+];
+const microsoftGraphSettingsConfigured = microsoftGraphSettings.every(Boolean);
+const microsoftGraphSettingsPartial = microsoftGraphSettings.some(Boolean);
+if (microsoftGraphSettingsPartial && !microsoftGraphSettingsConfigured) {
+  throw new Error(
+    "MICROSOFT_TENANT_ID, MICROSOFT_CLIENT_ID, MICROSOFT_CLIENT_SECRET, and MICROSOFT_SENDER_EMAIL must be configured together",
+  );
+}
+
+if (
+  parsed.data.NODE_ENV === "production" &&
+  process.env.NEXT_PHASE !== "phase-production-build" &&
+  process.env.E2E_TEST_MODE !== "1"
+) {
+  if (parsed.data.EMAIL_PROVIDER === "console") {
+    throw new Error("EMAIL_PROVIDER must be set to a transactional provider in production");
+  }
+  if (parsed.data.EMAIL_PROVIDER === "resend" && !parsed.data.RESEND_API_KEY) {
+    throw new Error("RESEND_API_KEY is required when EMAIL_PROVIDER=resend in production");
+  }
+  if (
+    parsed.data.EMAIL_PROVIDER === "resend" &&
+    parsed.data.EMAIL_FROM === "no-reply@example.test"
+  ) {
+    throw new Error(
+      "EMAIL_FROM must be a verified sender address when EMAIL_PROVIDER=resend in production",
+    );
+  }
+  if (["microsoft-graph", "graph"].includes(parsed.data.EMAIL_PROVIDER) && !microsoftGraphSettingsConfigured) {
+    throw new Error(
+      "Microsoft Graph settings are required when EMAIL_PROVIDER=graph in production",
+    );
+  }
+}
+
+if (["microsoft-graph", "graph"].includes(parsed.data.EMAIL_PROVIDER) && !microsoftGraphSettingsConfigured) {
+  throw new Error(
+    "Microsoft Graph settings are required when EMAIL_PROVIDER=graph",
+  );
 }
 
 export const env = parsed.data;

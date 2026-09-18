@@ -1,5 +1,7 @@
 "use client";
 
+import { BrandLogo } from "@/components/layout/brand-logo";
+
 import { useEffect, useState } from "react";
 import { CandidateForm } from "@/components/candidates/CandidateForm";
 
@@ -23,6 +25,7 @@ export default function WalkInCandidatePage() {
   return (
     <main className="page-shell">
       <section className="panel">
+        <div className="mb-6"><BrandLogo /></div>
         <p className="eyebrow">Triple Minds Walk-In Application</p>
         <h1>Register walk-in candidate</h1>
         <p>

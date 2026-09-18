@@ -115,19 +115,19 @@ export default function HrSearchPage() {
 
   return (
     <main className="page-shell space-y-6 pb-12">
-      <section className="prism-light relative overflow-hidden rounded-3xl border border-indigo-500/20 bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 p-6 text-white shadow-2xl md:p-8">
+      <section className="enterprise-hero prism-light relative overflow-hidden rounded-xl border border-primary/20 bg-card p-6 text-foreground shadow-sm md:p-8">
         <div className="relative z-10 space-y-2">
-          <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-indigo-300">
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary-ink">
             HR workspace
           </p>
-          <h1 className="text-2xl font-black tracking-tight md:text-3xl">Global search</h1>
-          <p className="max-w-2xl text-sm font-medium text-indigo-100/75 md:text-base">
+          <h1 className="text-2xl font-bold tracking-tight md:text-3xl">Global search</h1>
+          <p className="max-w-2xl text-sm font-medium text-primary-ink/75 md:text-base">
             Find candidates and employees quickly from one place.
           </p>
         </div>
       </section>
 
-      <section className="rounded-3xl border border-border/60 bg-card p-6 shadow-sm">
+      <section className="rounded-xl border border-border/60 bg-card p-6 shadow-sm">
         <form onSubmit={submit} className="flex flex-col gap-3 sm:flex-row">
           <label className="relative flex-1">
             <span className="sr-only">Search candidates and employees</span>
@@ -136,29 +136,29 @@ export default function HrSearchPage() {
               value={query}
               onChange={(event) => setQuery(event.target.value)}
               placeholder="Search name, email, role, or employee number…"
-              className="h-12 w-full rounded-xl border border-border bg-background pl-12 pr-4 text-sm outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
+              className="h-12 w-full rounded-xl border border-border bg-background pl-12 pr-4 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20"
               autoFocus
             />
           </label>
           <button
             type="submit"
-            className="h-12 rounded-xl bg-indigo-600 px-6 text-sm font-bold text-white transition hover:bg-indigo-500 active:scale-[0.98]"
+            className="h-12 rounded-xl bg-primary px-6 text-sm font-bold text-white transition hover:bg-primary active:scale-[0.98]"
           >
             Search
           </button>
         </form>
       </section>
 
-      <section className="rounded-3xl border border-border/60 bg-card p-6 shadow-sm">
+      <section className="rounded-xl border border-border/60 bg-card p-6 shadow-sm">
         <div className="mb-5 flex items-center justify-between gap-3">
           <div>
-            <p className="text-xs font-extrabold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">
+            <p className="text-xs font-semibold uppercase tracking-wider text-primary-ink dark:text-primary-ink">
               Results
             </p>
-            <h2 className="mt-1 text-xl font-black tracking-tight">People directory</h2>
+            <h2 className="mt-1 text-xl font-bold tracking-tight">People directory</h2>
           </div>
           {results.length > 0 && (
-            <span className="rounded-full bg-indigo-500/10 px-3 py-1 text-xs font-bold text-indigo-600">
+            <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-bold text-primary-ink">
               {results.length} found
             </span>
           )}
@@ -173,9 +173,9 @@ export default function HrSearchPage() {
               <Link
                 key={result.id}
                 href={result.href}
-                className="group flex items-center gap-4 rounded-2xl border border-border/60 p-4 transition hover:-translate-y-0.5 hover:border-indigo-500/40 hover:shadow-sm"
+                className="group flex items-center gap-4 rounded-2xl border border-border/60 p-4 transition hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-sm"
               >
-                <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-300">
+                <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary-ink dark:text-primary-ink">
                   {result.kind === "Candidate" ? (
                     <UserRound className="size-5" />
                   ) : (
@@ -188,7 +188,7 @@ export default function HrSearchPage() {
                     {result.kind} · {result.subtitle}
                   </span>
                 </span>
-                <ArrowRight className="size-4 text-muted-foreground transition group-hover:translate-x-1 group-hover:text-indigo-600" />
+                <ArrowRight className="size-4 text-muted-foreground transition group-hover:translate-x-1 group-hover:text-primary-ink" />
               </Link>
             ))}
           </div>

@@ -1,8 +1,15 @@
 "use client";
 
-import { ThemeProvider as NextThemesProvider } from "next-themes";
-import type { ComponentProps } from "react";
+import type { ReactNode } from "react";
 
-export function ThemeProvider({ children, ...props }: ComponentProps<typeof NextThemesProvider>) {
-  return <NextThemesProvider {...props}>{children}</NextThemesProvider>;
+type ThemeProviderProps = {
+  children: ReactNode;
+  [key: string]: unknown;
+};
+
+// Theme state is intentionally controlled by the account-scoped HR header.
+// A global next-themes provider would reapply its own default during navigation
+// and could overwrite another account's selected theme.
+export function ThemeProvider({ children }: ThemeProviderProps) {
+  return <>{children}</>;
 }

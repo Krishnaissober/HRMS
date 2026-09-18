@@ -12,6 +12,21 @@ export const CANDIDATE_STATUSES = [
 ] as const;
 export type CandidateStatus = (typeof CANDIDATE_STATUSES)[number];
 
+export const HIRING_APPROVAL_STATUSES = [
+  "NOT_REQUESTED",
+  "AWAITING_MASTER_REVIEW",
+  "MASTER_APPROVED",
+  "MASTER_REJECTED",
+  "FINAL_HIRED",
+  "FINAL_REJECTED",
+] as const;
+export type HiringApprovalStatus = (typeof HIRING_APPROVAL_STATUSES)[number];
+
+export const CANDIDATE_REMOVAL_ACTIONS = [
+  "CANDIDATE_REMOVED",
+  "SELECTED_CANDIDATE_REMOVED",
+] as const;
+
 export function assessInterviewRatings(communication: string, technical: string) {
   if (![communication, technical].every((rating) => /^[1-5]$/.test(rating))) return null;
   const score = (Number(communication) + Number(technical)) / 2;
@@ -31,15 +46,14 @@ export const CANDIDATE_PERMISSIONS = {
 } as const;
 
 export const STATUS_TRANSITIONS: Record<CandidateStatus, readonly CandidateStatus[]> = {
-  // A completed interview can be reviewed directly even when an older or
-  // imported application is still in APPLIED. Keep SELECTED terminal and
-  // require the normal review decision before hiring.
-  APPLIED: ["SCREENING", "SHORTLISTED", "HOLD", "REJECTED"],
-  SCREENING: ["SHORTLISTED", "HOLD", "REJECTED"],
+  // Candidates are shortlisted only after the interview workflow is complete.
+  // Existing SHORTLISTED records remain supported for backwards compatibility.
+  APPLIED: ["SCREENING", "INTERVIEW", "HOLD", "REJECTED"],
+  SCREENING: ["INTERVIEW", "HOLD", "REJECTED"],
   SHORTLISTED: ["INTERVIEW", "HOLD", "REJECTED"],
-  INTERVIEW: ["SELECTED", "HOLD", "REJECTED"],
+  INTERVIEW: ["SHORTLISTED", "HOLD", "REJECTED"],
   SELECTED: [],
-  HOLD: ["SCREENING", "SHORTLISTED", "REJECTED"],
+  HOLD: ["SCREENING", "INTERVIEW", "REJECTED"],
   REJECTED: [],
 };
 

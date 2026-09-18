@@ -1,6 +1,10 @@
 import { z } from "zod";
 import { validationError } from "@/lib/errors";
-import { CANDIDATE_SOURCES, CANDIDATE_STATUSES } from "@/modules/candidates/constants";
+import {
+  CANDIDATE_SOURCES,
+  CANDIDATE_STATUSES,
+  HIRING_APPROVAL_STATUSES,
+} from "@/modules/candidates/constants";
 
 const optionalText = (max: number) => z.string().trim().max(max).optional().or(z.literal(""));
 const optionalIfsc = z
@@ -173,6 +177,14 @@ export const statusUpdateSchema = z.object({
   notes: optionalText(2000),
 });
 
+export const selectedCandidateRemovalSchema = z.object({
+  reason: z.string().trim().min(3).max(2000),
+});
+
+export const bulkCandidateRemovalSchema = selectedCandidateRemovalSchema.extend({
+  candidateIds: z.array(z.string().trim().min(1)).min(1).max(100),
+});
+
 export const visitCheckInSchema = z.object({
   visitId: z.string().trim().min(1).max(100).optional(),
   visitDate: z.string().datetime().optional(),
@@ -187,6 +199,7 @@ export const candidateListSchema = z.object({
   view: z.enum(["archive"]).optional(),
   q: optionalText(200),
   status: z.enum(CANDIDATE_STATUSES).optional(),
+  approval: z.enum(HIRING_APPROVAL_STATUSES).optional(),
   source: z.enum(CANDIDATE_SOURCES).optional(),
   from: z.string().date().optional(),
   to: z.string().date().optional(),

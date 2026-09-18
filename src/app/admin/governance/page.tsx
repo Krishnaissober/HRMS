@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import {
   ArrowLeft,
+  ArrowRight,
   CheckCircle2,
   Globe2,
   KeyRound,
@@ -10,7 +11,6 @@ import {
   ShieldCheck,
   Users,
 } from "lucide-react";
-import { DashboardGeminiBackground } from "@/components/layout/dashboard-gemini-background";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { env } from "@/lib/env";
@@ -54,30 +54,29 @@ export default async function AdminGovernancePage() {
   });
   const adminRole = organization.roles.find((role) => role.slug === env.ADMIN_ROLE_SLUG);
   const governanceMetrics = [
-    ["Organization status", organization.status, CheckCircle2, "text-emerald-500"],
-    ["Active members", activeMembers, Users, "text-indigo-500"],
-    ["Configured roles", organization._count.roles, ShieldCheck, "text-amber-500"],
-    ["Timezone", organization.timezone, Globe2, "text-sky-500"],
+    ["Organization status", organization.status, CheckCircle2, "text-success-ink"],
+    ["Active members", activeMembers, Users, "text-primary-ink"],
+    ["Configured roles", organization._count.roles, ShieldCheck, "text-warning-ink"],
+    ["Timezone", organization.timezone, Globe2, "text-info-ink"],
   ] as const;
 
   return (
     <main className="page-shell space-y-6 pb-12">
-      <section className="relative overflow-hidden rounded-3xl border border-indigo-500/20 bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900 p-6 text-white shadow-2xl sm:p-8">
-        <DashboardGeminiBackground />
+      <section className="enterprise-hero relative overflow-hidden rounded-xl border border-primary/20 bg-card p-6 text-foreground shadow-sm sm:p-8">
         <div className="relative z-10">
           <Link
             href="/admin"
-            className="mb-6 inline-flex items-center gap-2 text-sm font-bold text-indigo-200 transition hover:text-white"
+            className="mb-6 inline-flex items-center gap-2 text-sm font-bold text-primary-ink transition hover:text-foreground"
           >
             <ArrowLeft className="size-4" /> Admin Command Center
           </Link>
-          <p className="mb-3 text-xs font-black uppercase tracking-[0.24em] text-indigo-300">
+          <p className="mb-3 text-xs font-bold uppercase tracking-[0.24em] text-primary-ink">
             Administrator workspace
           </p>
-          <h1 className="text-3xl font-black tracking-tight sm:text-4xl">
+          <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
             Organization &amp; Policy
           </h1>
-          <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-300 sm:text-base">
+          <p className="mt-3 max-w-2xl text-sm leading-6 text-muted-foreground sm:text-base">
             A single source of truth for organization status, regional settings, and the access
             roles that govern the workspace.
           </p>
@@ -88,19 +87,19 @@ export default async function AdminGovernancePage() {
           <div key={label} className="rounded-2xl border border-border/60 bg-card p-5 shadow-sm">
             <Icon className={`mb-4 size-5 ${tone}`} />
             <p className="text-sm font-semibold text-muted-foreground">{label}</p>
-            <p className="mt-1 truncate text-2xl font-black tracking-tight">{value}</p>
+            <p className="mt-1 truncate text-2xl font-bold tracking-tight">{value}</p>
           </div>
         ))}
       </section>
       <div className="grid gap-6 xl:grid-cols-[0.85fr_1.15fr]">
-        <section className="rounded-3xl border border-border/60 bg-card p-6 shadow-sm">
+        <section className="rounded-xl border border-border/60 bg-card p-6 shadow-sm">
           <div className="mb-5 flex items-center gap-3">
-            <span className="flex size-10 items-center justify-center rounded-xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-300">
+            <span className="flex size-10 items-center justify-center rounded-xl bg-primary/10 text-primary-ink dark:text-primary-ink">
               <Settings2 className="size-5" />
             </span>
             <div>
               <p className="eyebrow">Organization profile</p>
-              <h2 className="mt-1 text-xl font-black tracking-tight">Core configuration</h2>
+              <h2 className="mt-1 text-xl font-bold tracking-tight">Core configuration</h2>
             </div>
           </div>
           <dl className="space-y-4">
@@ -120,13 +119,13 @@ export default async function AdminGovernancePage() {
             ))}
           </dl>
         </section>
-        <section className="rounded-3xl border border-border/60 bg-card p-6 shadow-sm">
+        <section className="rounded-xl border border-border/60 bg-card p-6 shadow-sm">
           <div className="mb-5 flex items-center justify-between">
             <div>
               <p className="eyebrow">Access policy</p>
-              <h2 className="mt-1 text-xl font-black tracking-tight">Role coverage</h2>
+              <h2 className="mt-1 text-xl font-bold tracking-tight">Role coverage</h2>
             </div>
-            <KeyRound className="size-5 text-indigo-500" />
+            <KeyRound className="size-5 text-primary-ink" />
           </div>
           <div className="space-y-3">
             {organization.roles.length ? (
@@ -136,10 +135,10 @@ export default async function AdminGovernancePage() {
                   className="flex flex-col gap-3 rounded-2xl border border-border/60 p-4 sm:flex-row sm:items-center sm:justify-between"
                 >
                   <div>
-                    <p className="text-sm font-black">
+                    <p className="text-sm font-bold">
                       {role.name}
                       {role.slug === env.ADMIN_ROLE_SLUG ? (
-                        <span className="ml-2 rounded-full bg-amber-500/10 px-2 py-1 text-[10px] font-black uppercase tracking-wide text-amber-700">
+                        <span className="ml-2 rounded-full bg-warning/10 px-2 py-1 text-[10px] font-bold uppercase tracking-wide text-warning-ink">
                           Admin role
                         </span>
                       ) : null}
@@ -153,6 +152,14 @@ export default async function AdminGovernancePage() {
                     <span>
                       {role._count.permissions} permission{role._count.permissions === 1 ? "" : "s"}
                     </span>
+                    {role.slug === "hr-admin" && (
+                      <Link
+                        href="/admin/access?role=hr-admin"
+                        className="inline-flex items-center gap-1 text-primary-ink hover:underline"
+                      >
+                        View administrators <ArrowRight className="size-3.5" />
+                      </Link>
+                    )}
                   </div>
                 </div>
               ))
@@ -164,11 +171,11 @@ export default async function AdminGovernancePage() {
           </div>
         </section>
       </div>
-      <section className="rounded-3xl border border-indigo-500/20 bg-indigo-500/5 p-6 shadow-sm">
+      <section className="rounded-xl border border-primary/20 bg-primary/5 p-6 shadow-sm">
         <div className="flex items-start gap-3">
-          <ShieldCheck className="mt-0.5 size-5 text-indigo-600" />
+          <ShieldCheck className="mt-0.5 size-5 text-primary-ink" />
           <div>
-            <h2 className="text-lg font-black tracking-tight">Governance status</h2>
+            <h2 className="text-lg font-bold tracking-tight">Governance status</h2>
             <p className="mt-1 text-sm leading-6 text-muted-foreground">
               {adminRole
                 ? `The ${adminRole.name} role is configured with ${adminRole._count.permissions} permissions.`

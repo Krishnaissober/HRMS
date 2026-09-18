@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { headers } from "next/headers";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { membershipHasAdminAccess } from "@/lib/admin-access";
+import { membershipHasMasterAdminAccess } from "@/lib/admin-access";
 import { HrFrame } from "@/components/layout/hr-frame";
 
 export default async function HrLayout({ children }: { children: ReactNode }) {
@@ -14,6 +14,17 @@ export default async function HrLayout({ children }: { children: ReactNode }) {
         orderBy: { createdAt: "asc" },
       })
     : null;
-  const isAdmin = Boolean(session && membershipHasAdminAccess(membership, session.user.email));
-  return <HrFrame isAdmin={isAdmin}>{children}</HrFrame>;
+  const isAdmin = Boolean(
+    session && membershipHasMasterAdminAccess(membership, session.user.email),
+  );
+  return (
+    <HrFrame
+      isAdmin={isAdmin}
+      organizationId={membership?.organizationId}
+      userName={session?.user.name}
+      userEmail={session?.user.email}
+    >
+      {children}
+    </HrFrame>
+  );
 }

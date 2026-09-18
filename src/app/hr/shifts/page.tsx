@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Clock, Plus, RefreshCw } from "lucide-react";
+import { CalendarDays, Clock, Globe2, Plus, RefreshCw } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 type Shift = {
@@ -58,25 +58,25 @@ export default function ShiftsPage() {
   return (
     <main className="page-shell space-y-6 pb-12">
       {/* Hero Banner */}
-      <section className="relative overflow-hidden rounded-3xl border border-indigo-500/20 bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 p-6 md:p-8 text-white shadow-2xl">
-        <div className="absolute -right-16 -top-16 h-64 w-64 rounded-full bg-indigo-500/20 blur-3xl pointer-events-none" />
-        <div className="absolute right-1/3 -bottom-16 h-48 w-48 rounded-full bg-purple-500/15 blur-3xl pointer-events-none" />
+      <section className="enterprise-hero relative overflow-hidden rounded-xl border border-primary/20 bg-card p-6 md:p-8 text-foreground shadow-sm">
+        <div className="absolute -right-16 -top-16 h-64 w-64 rounded-full bg-primary/20 blur-3xl pointer-events-none" />
+        <div className="absolute right-1/3 -bottom-16 h-48 w-48 rounded-full bg-info/15 blur-3xl pointer-events-none" />
         <div className="relative z-10 flex flex-col md:flex-row md:items-start justify-between gap-6">
           <div className="space-y-2">
-            <p className="text-xs font-extrabold uppercase tracking-widest text-indigo-300">
+            <p className="text-xs font-semibold uppercase tracking-widest text-primary-ink">
               Shifts &amp; Rosters
             </p>
-            <h1 className="text-2xl md:text-3xl font-black tracking-tight text-white">
+            <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-foreground">
               Shift Management
             </h1>
-            <p className="text-sm text-indigo-100/75 font-medium max-w-lg">
+            <p className="text-sm text-primary-ink/75 font-medium max-w-lg">
               Define work shifts, set grace periods, and manage weekly schedules.
             </p>
           </div>
           <button
             type="button"
             onClick={() => void load()}
-            className="inline-flex items-center gap-2 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/20 px-4 py-2.5 text-xs font-bold text-white shadow-lg backdrop-blur-md transition-all active:scale-95 shrink-0 self-start"
+            className="inline-flex items-center gap-2 rounded-2xl bg-muted hover:bg-muted border border-white/20 px-4 py-2.5 text-xs font-bold text-foreground shadow-lg backdrop-blur-md transition-all active:scale-95 shrink-0 self-start"
           >
             <RefreshCw className={cn("h-3.5 w-3.5", isLoading && "animate-spin")} />
             Refresh
@@ -92,27 +92,27 @@ export default function ShiftsPage() {
             isLoading
               ? "bg-muted/60 text-muted-foreground border-border/40 animate-pulse"
               : message === "Shift created"
-                ? "bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 border-emerald-200/60"
-                : "bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300 border-rose-200/60",
+                ? "bg-success-light dark:bg-success-light/40 text-success-ink dark:text-success-ink border-success/60"
+                : "bg-destructive-light dark:bg-destructive-light/40 text-destructive-ink dark:text-destructive-ink border-destructive/60",
           )}
         >
-          {isLoading && <RefreshCw className="h-4 w-4 animate-spin text-indigo-600" />}
+          {isLoading && <RefreshCw className="h-4 w-4 animate-spin text-primary-ink" />}
           {message}
         </div>
       )}
 
       <div className="grid lg:grid-cols-5 gap-6">
         {/* Create Shift Form */}
-        <section className="lg:col-span-2 rounded-3xl border border-border/60 bg-card p-6 shadow-sm space-y-5">
+        <section className="lg:col-span-2 rounded-xl border border-border/60 bg-card p-6 shadow-sm space-y-5">
           <div className="border-b border-border/50 pb-4">
-            <p className="text-xs font-extrabold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">
+            <p className="text-xs font-semibold uppercase tracking-wider text-primary-ink dark:text-primary-ink">
               New Shift
             </p>
-            <h2 className="text-lg font-extrabold text-foreground">Create Standard Shift</h2>
+            <h2 className="text-lg font-semibold text-foreground">Create Standard Shift</h2>
           </div>
           <form className="space-y-4" onSubmit={create}>
             <div>
-              <label className="block text-xs font-extrabold uppercase tracking-wider text-muted-foreground mb-1.5">
+              <label className="block text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1.5">
                 Shift Name
               </label>
               <input
@@ -120,23 +120,35 @@ export default function ShiftsPage() {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="e.g. Morning Shift, Night Shift…"
-                className="w-full rounded-xl border border-border/60 bg-background px-4 py-2.5 text-sm font-medium text-foreground placeholder:text-muted-foreground focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 transition-colors"
+                className="w-full rounded-xl border border-border/60 bg-background px-4 py-2.5 text-sm font-medium text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-colors"
               />
             </div>
             <div className="rounded-xl border border-border/40 bg-muted/30 p-4 space-y-2">
-              <p className="text-xs font-extrabold uppercase tracking-wider text-muted-foreground">
+              <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                 Default Settings
               </p>
               <div className="grid grid-cols-2 gap-2 text-xs font-medium text-muted-foreground">
-                <div>🕘 09:00 – 17:00</div>
-                <div>🌐 UTC timezone</div>
-                <div>⏱ 15 min grace</div>
-                <div>📅 Sat, Sun off</div>
+                <div className="inline-flex items-center gap-1.5">
+                  <Clock className="h-3.5 w-3.5 text-primary-ink" aria-hidden="true" />
+                  09:00 – 17:00
+                </div>
+                <div className="inline-flex items-center gap-1.5">
+                  <Globe2 className="h-3.5 w-3.5 text-primary-ink" aria-hidden="true" />
+                  UTC timezone
+                </div>
+                <div className="inline-flex items-center gap-1.5">
+                  <Clock className="h-3.5 w-3.5 text-primary-ink" aria-hidden="true" />
+                  15 min grace
+                </div>
+                <div className="inline-flex items-center gap-1.5">
+                  <CalendarDays className="h-3.5 w-3.5 text-primary-ink" aria-hidden="true" />
+                  Sat, Sun off
+                </div>
               </div>
             </div>
             <button
               type="submit"
-              className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 px-5 py-2.5 text-sm font-bold text-white transition-colors"
+              className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-primary hover:bg-primary px-5 py-2.5 text-sm font-bold text-white transition-colors"
             >
               <Plus className="h-4 w-4" />
               Create Shift
@@ -145,15 +157,15 @@ export default function ShiftsPage() {
         </section>
 
         {/* Shifts List */}
-        <section className="lg:col-span-3 rounded-3xl border border-border/60 bg-card shadow-sm overflow-hidden">
+        <section className="lg:col-span-3 rounded-xl border border-border/60 bg-card shadow-sm overflow-hidden">
           <div className="flex items-center justify-between border-b border-border/50 px-6 py-4">
             <div>
-              <p className="text-xs font-extrabold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">
+              <p className="text-xs font-semibold uppercase tracking-wider text-primary-ink dark:text-primary-ink">
                 Active Schedules
               </p>
-              <h2 className="text-lg font-extrabold text-foreground">All Shifts</h2>
+              <h2 className="text-lg font-semibold text-foreground">All Shifts</h2>
             </div>
-            <span className="text-sm font-black text-foreground">{items.length}</span>
+            <span className="text-sm font-bold text-foreground">{items.length}</span>
           </div>
           <div className="p-6 space-y-2.5">
             {!isLoading && items.length === 0 && (
@@ -167,13 +179,13 @@ export default function ShiftsPage() {
             {items.map((item) => (
               <div
                 key={item.id}
-                className="flex items-center gap-4 rounded-2xl border border-border/50 bg-background/60 p-4 transition-all hover:border-indigo-500/40 hover:bg-card hover:shadow-md"
+                className="flex items-center gap-4 rounded-2xl border border-border/50 bg-background/60 p-4 transition-all hover:border-primary/40 hover:bg-card hover:shadow-md"
               >
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-indigo-100 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary-light dark:bg-primary-light/60 text-primary-ink dark:text-primary-ink">
                   <Clock className="h-5 w-5" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <span className="block font-extrabold text-sm text-foreground">{item.name}</span>
+                  <span className="block font-semibold text-sm text-foreground">{item.name}</span>
                   <span className="block text-xs text-muted-foreground font-medium">
                     {item.startTime} – {item.endTime} · {item.timezone}
                   </span>

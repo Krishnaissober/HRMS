@@ -5,7 +5,11 @@ import { getAuthenticatedContext } from "@/lib/tenant";
 import { requirePermission } from "@/lib/rbac";
 import { CANDIDATE_PERMISSIONS } from "@/modules/candidates/constants";
 import { getCandidate, updateCandidateDetails } from "@/modules/candidates/repository";
-import { candidateUpdateSchema } from "@/modules/candidates/schemas";
+import {
+  candidateUpdateSchema,
+  selectedCandidateRemovalSchema,
+} from "@/modules/candidates/schemas";
+import { removeSelectedCandidate } from "@/modules/candidates/service";
 import { parseBody } from "@/lib/validate";
 
 export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
@@ -45,6 +49,34 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
     );
     if (!candidate) return errorResponse(notFoundError(), id);
     return successResponse(candidate, id);
+  } catch (error) {
+    return errorResponse(error, id);
+  }
+}
+
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
+) {
+  const id = requestId(request);
+  try {
+    const context = await getAuthenticatedContext(request);
+    await requirePermission(
+      context.session.user.id,
+      context.organizationId,
+      CANDIDATE_PERMISSIONS.update,
+    );
+    const body = parseBody(selectedCandidateRemovalSchema, await request.json());
+    return successResponse(
+      await removeSelectedCandidate({
+        organizationId: context.organizationId,
+        actorUserId: context.session.user.id,
+        id: (await params).id,
+        reason: body.reason,
+        requestId: id,
+      }),
+      id,
+    );
   } catch (error) {
     return errorResponse(error, id);
   }

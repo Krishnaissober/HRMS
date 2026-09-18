@@ -15,8 +15,14 @@ export const conversionSchema = z.object({
 export const employeeListSchema = z.object({
   q: z.string().trim().optional(),
   status: z.enum(EMPLOYEE_STATUSES).optional(),
+  view: z.enum(["archive"]).optional(),
+  separationType: z.enum(["FIRED", "LEFT_COMPANY"]).optional(),
   page: z.coerce.number().int().min(1).default(1),
   pageSize: z.coerce.number().int().min(1).max(100).default(25),
+});
+export const employeeRemovalSchema = z.object({
+  separationType: z.enum(["FIRED", "LEFT_COMPANY"]),
+  reason: z.string().trim().min(3).max(2000),
 });
 export const employeeUpdateSchema = z.object({
   department: z.string().trim().max(160).optional().nullable(),
@@ -125,6 +131,9 @@ export const onboardingListSchema = z.object({
   status: z.enum(ONBOARDING_STATUSES).optional(),
   page: z.coerce.number().int().min(1).default(1),
   pageSize: z.coerce.number().int().min(1).max(100).default(50),
+});
+export const onboardingArchiveSchema = z.object({
+  reason: z.string().trim().min(3).max(2000),
 });
 export const taskListSchema = z.object({ status: z.enum(ONBOARDING_TASK_STATUSES).optional() });
 export const exitCreateSchema = z.object({

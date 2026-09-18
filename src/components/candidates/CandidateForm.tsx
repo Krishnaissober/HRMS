@@ -146,20 +146,36 @@ const howFoundOptions = [
   "Social Media",
   "Other",
 ];
+const requestedDocumentLabels: Record<string, string> = {
+  identityProof: "Identity proof (Aadhaar, passport, driving licence or voter ID)",
+  panCard: "PAN card",
+  addressProof: "Address proof (Aadhaar, utility bill or rent agreement)",
+  educationProof: "Education certificates / marksheets",
+  experienceProof: "Experience, relieving or service letter",
+  candidatePhoto: "Recent passport-size photograph",
+  bankProof: "Bank proof (cancelled cheque or passbook front page)",
+  pfUanProof: "PF / UAN document",
+  esicProof: "ESIC document",
+  taxDeclaration: "Tax declaration or investment proof",
+  signedAgreement: "Signed offer, appointment or confidentiality agreement",
+  otherDocument: "Other document requested by HR",
+};
 const educationFields = [
   "tenthInstitution",
-  "tenthBoard",
-  "tenthPassingYear",
   "tenthScore",
   "twelfthInstitution",
-  "twelfthBoard",
-  "twelfthPassingYear",
   "twelfthScore",
   "collegeName",
   "collegeDegree",
   "collegePassingYear",
   "collegeScore",
 ] as const;
+const schoolEducationFields = new Set([
+  "tenthBoard",
+  "tenthPassingYear",
+  "twelfthBoard",
+  "twelfthPassingYear",
+]);
 const walkInFields = new Set([
   "firstName",
   "lastName",
@@ -310,6 +326,7 @@ export function CandidateForm({
   publicWalkIn = false,
   formRequirements,
   formFields,
+  requestedDocuments = [],
   context = "public",
   showInterviewDetails = mode === "WALK_IN",
 }: {
@@ -322,6 +339,7 @@ export function CandidateForm({
   publicWalkIn?: boolean;
   formRequirements?: { experience?: string; skills?: string };
   formFields?: string[];
+  requestedDocuments?: string[];
   context?: "public" | "hr-preview";
   showInterviewDetails?: boolean;
 }) {
@@ -622,7 +640,7 @@ export function CandidateForm({
     configuredFields
       ? [...requiredFormFields, ...configuredFields.filter((name) => name !== "employmentHistory")]
       : defaultFieldOrder
-  ) as Array<keyof typeof initialFields>;
+  ).filter((name) => !schoolEducationFields.has(name)) as Array<keyof typeof initialFields>;
   const showEmploymentHistory = !formFields || formFields.includes("employmentHistory");
 
   return submittedReference ? (
@@ -1127,6 +1145,32 @@ export function CandidateForm({
             }}
           />
         </label>
+        {requestedDocuments
+          .filter((key) => requestedDocumentLabels[key])
+          .map((key) => (
+            <label key={key}>
+              <span>{requestedDocumentLabels[key]}</span>
+              <input
+                type="file"
+                accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
+                onChange={(event) => {
+                  const file = event.target.files?.[0];
+                  if (!file) return;
+                  const labelledFile = new File(
+                    [file],
+                    `${requestedDocumentLabels[key]} - ${file.name}`,
+                    { type: file.type },
+                  );
+                  void upload(labelledFile, "SUPPORTING").catch((error) =>
+                    setMessage(error.message),
+                  );
+                }}
+              />
+              <small className="form-field-help">
+                Upload only if HR requested this document for your stage.
+              </small>
+            </label>
+          ))}
         <label className="checkbox">
           <input required type="checkbox" /> I confirm the declaration and consent to processing of
           this application.

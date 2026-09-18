@@ -91,6 +91,7 @@ export async function createInterview(data: {
   candidateId: string;
   applicationId: string;
   round: number;
+  stage: "ONLINE" | "PHYSICAL";
   participantIds: string[];
   templateId?: string;
   scheduledStart: string;
@@ -117,6 +118,34 @@ export async function createInterview(data: {
     });
     if (!candidate || !application)
       throw new AppError("NOT_FOUND", "Candidate application was not found", 404);
+    if (
+      data.stage === "ONLINE" &&
+      !["APPLIED", "SCREENING", "SHORTLISTED", "INTERVIEW"].includes(candidate.status)
+    )
+      throw new AppError(
+        "CONFLICT",
+        "Only candidates in the active review workflow can enter the online interview stage",
+        409,
+      );
+    if (data.stage === "PHYSICAL") {
+      const onlineInterview = await tx.interview.findFirst({
+        where: {
+          organizationId: data.organizationId,
+          candidateId: data.candidateId,
+          applicationId: data.applicationId,
+          stage: "ONLINE",
+          status: "COMPLETED",
+          mode: { in: ["VIDEO", "PHONE"] },
+        },
+        select: { id: true },
+      });
+      if (!onlineInterview)
+        throw new AppError(
+          "CONFLICT",
+          "Complete a video or phone interview before scheduling the physical interview",
+          409,
+        );
+    }
     const members = await tx.membership.findMany({
       where: {
         organizationId: data.organizationId,
@@ -141,6 +170,7 @@ export async function createInterview(data: {
       where: {
         organizationId: data.organizationId,
         candidateId: data.candidateId,
+        stage: data.stage,
         status: { not: "CANCELLED" },
       },
       select: {
@@ -232,6 +262,7 @@ export async function createInterview(data: {
         applicationId: data.applicationId,
         templateId: data.templateId || undefined,
         round: data.round,
+        stage: data.stage,
         scheduledStart: start,
         scheduledEnd: end,
         timezone: data.timezone,
@@ -248,6 +279,24 @@ export async function createInterview(data: {
         },
       },
     });
+    if (["APPLIED", "SCREENING", "SHORTLISTED"].includes(candidate.status)) {
+      await tx.candidate.update({
+        where: { id: candidate.id },
+        data: { status: "INTERVIEW" },
+      });
+      await tx.candidateActivity.create({
+        data: {
+          organizationId: data.organizationId,
+          candidateId: candidate.id,
+          actorUserId: data.actorUserId,
+          action: "CANDIDATE_MOVED_TO_INTERVIEW",
+          fromStatus: candidate.status,
+          toStatus: "INTERVIEW",
+          note: `${data.stage === "PHYSICAL" ? "Physical" : "Online"} interview scheduled`,
+          metadata: { stage: data.stage, interviewId: interview.id },
+        },
+      });
+    }
     await tx.candidateActivity.create({
       data: {
         organizationId: data.organizationId,
@@ -258,6 +307,7 @@ export async function createInterview(data: {
           interviewId: interview.id,
           applicationId: data.applicationId,
           round: data.round,
+          stage: data.stage,
         },
       },
     });
@@ -267,7 +317,7 @@ export async function createInterview(data: {
         interviewId: interview.id,
         actorUserId: data.actorUserId,
         action: "INTERVIEW_CREATED",
-        metadata: { round: data.round },
+        metadata: { round: data.round, stage: data.stage },
       },
     });
     const users = await tx.user.findMany({
@@ -337,6 +387,12 @@ export async function updateInterview(data: {
     const end = data.patch.scheduledEnd ? new Date(data.patch.scheduledEnd) : current.scheduledEnd;
     if (end <= start)
       throw new AppError("VALIDATION_ERROR", "Interview end must be after interview start", 422);
+    if (current.stage === "PHYSICAL" && data.patch.mode && data.patch.mode !== "IN_PERSON")
+      throw new AppError(
+        "VALIDATION_ERROR",
+        "Physical interviews must use in-person mode",
+        422,
+      );
     const participantIds =
       data.patch.participantIds ||
       (

@@ -7,7 +7,7 @@ import { assessInterviewRatings } from "@/modules/candidates/constants";
 type ReviewCandidate = {
   id: string;
   status: string;
-  interviews: Array<{ status: string }>;
+  interviews: Array<{ stage: string; status: string }>;
   hrInterviewScheduledBy?: string | null;
   hrInterviewerName?: string | null;
   hrCommunicationRating?: string | null;
@@ -35,7 +35,9 @@ export function CandidateHrReview({
   onSaved: (review: ReviewFields) => void;
 }) {
   const router = useRouter();
-  const completed = candidate.interviews.some((interview) => interview.status === "COMPLETED");
+  const completed = candidate.interviews.some(
+    (interview) => interview.status === "COMPLETED",
+  );
   const [communicationRating, setCommunicationRating] = useState(
     candidate.hrCommunicationRating || "",
   );
@@ -119,27 +121,6 @@ export function CandidateHrReview({
       const result = await response.json();
       if (!response.ok) return setMessage(result.error?.message || "Could not save HR review");
       onSaved(result.data);
-      if (reviewStatus === "SHORTLISTED" || reviewStatus === "REJECTED") {
-        const shouldSend = window.confirm(
-          `HR review saved. Would you like to email the candidate about the ${reviewStatus === "SHORTLISTED" ? "shortlist" : "rejection"} decision?`,
-        );
-        if (shouldSend) {
-          setMessage("Sending decision email…");
-          const emailResponse = await fetch(`/api/v1/candidates/${candidate.id}/decision-email`, {
-            method: "POST",
-            headers: { "content-type": "application/json" },
-            body: JSON.stringify({ status: reviewStatus }),
-          });
-          const emailResult = await emailResponse.json();
-          if (!emailResponse.ok)
-            return setMessage(
-              `HR review saved, but the decision email was not sent: ${emailResult.error?.message || "delivery failed"}`,
-            );
-          setMessage("HR review saved and decision email sent");
-          router.push("/hr/candidates");
-          return;
-        }
-      }
       setMessage("HR review saved");
       router.push("/hr/candidates");
     } catch {
@@ -153,17 +134,17 @@ export function CandidateHrReview({
     return (
       <div className="workflow-lock" role="status">
         <strong>HR review locked</strong>
-        <span>Complete check-out/interview before filling the HR review.</span>
+        <span>Complete the scheduled interview before filling the HR review.</span>
       </div>
     );
   return (
-    <form className="hr-review-form" onSubmit={save}>
+    <form className="hr-review-form hr-review-workspace" onSubmit={save}>
       {closed && (
         <p role="status">
           This review is closed because the candidate is {candidate.status.toLowerCase()}.
         </p>
       )}
-      <fieldset disabled={saving || closed} className="review-fields">
+      <fieldset disabled={saving || closed} className="review-fields hr-review-fields">
         <div className="hr-review-heading">
           <div>
             <p className="eyebrow">For HR use only</p>
@@ -172,8 +153,8 @@ export function CandidateHrReview({
           <span className="hr-review-private-badge">Private review</span>
         </div>
         <p className="hr-review-intro">
-          Capture the interview outcome and assessment for this candidate. HR identity is taken from
-          the signed-in profile.
+          Capture the completed interview assessment for the Master review package. This is an HR
+          recommendation, not a final hiring decision.
         </p>
         <div className="hr-review-identity">
           <div>
@@ -214,18 +195,19 @@ export function CandidateHrReview({
               className="min-h-12 w-full rounded-lg border border-border bg-muted px-3 text-foreground"
             />
             <small>
-              Average of both ratings. 4–5 suggests Shortlisted; 3–below 4 suggests On hold; below 3
-              suggests Rejected. Changing a rating updates the suggestion; you can override it
-              before saving.
+              Average of both ratings. The recommendation is included in the Master review package;
+              it does not create an employee or move the candidate to onboarding.
             </small>
           </label>
         </div>
-        <fieldset>
+        <fieldset className="hr-review-recommendation">
           <legend>
-            1. Recommendation <small>Choose one outcome</small>
+            1. HR recommendation <small>Included for Master review</small>
           </legend>
           <div className="hr-review-status">
-            <label className={reviewStatus === "SHORTLISTED" ? "is-selected" : ""}>
+            <label
+              className={`hr-review-option hr-review-option-shortlisted ${reviewStatus === "SHORTLISTED" ? "is-selected" : ""}`}
+            >
               <input
                 name="hr-review-status"
                 required
@@ -236,10 +218,12 @@ export function CandidateHrReview({
               />
               <span>
                 <strong>Shortlisted</strong>
-                <small>Continue with the hiring process</small>
+                <small>Recommend continuing to Master review</small>
               </span>
             </label>
-            <label className={reviewStatus === "HOLD" ? "is-selected" : ""}>
+            <label
+              className={`hr-review-option hr-review-option-hold ${reviewStatus === "HOLD" ? "is-selected" : ""}`}
+            >
               <input
                 name="hr-review-status"
                 type="radio"
@@ -249,10 +233,12 @@ export function CandidateHrReview({
               />
               <span>
                 <strong>On hold</strong>
-                <small>Keep the candidate under review</small>
+                <small>Keep the package under review</small>
               </span>
             </label>
-            <label className={reviewStatus === "REJECTED" ? "is-selected" : ""}>
+            <label
+              className={`hr-review-option hr-review-option-rejected ${reviewStatus === "REJECTED" ? "is-selected" : ""}`}
+            >
               <input
                 name="hr-review-status"
                 type="radio"
@@ -262,7 +248,7 @@ export function CandidateHrReview({
               />
               <span>
                 <strong>Rejected</strong>
-                <small>Close this application</small>
+                <small>Flag concerns for Master review</small>
               </span>
             </label>
           </div>

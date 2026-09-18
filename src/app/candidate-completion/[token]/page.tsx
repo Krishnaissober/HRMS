@@ -1,5 +1,7 @@
 "use client";
 
+import { BrandLogo } from "@/components/layout/brand-logo";
+
 import { useEffect, useState } from "react";
 
 const labels: Record<string, string> = {
@@ -10,18 +12,6 @@ const labels: Record<string, string> = {
   state: "State",
   postalCode: "Postal code",
   education: "Education",
-  tenthInstitution: "10th school / institution",
-  tenthBoard: "10th board",
-  tenthPassingYear: "10th passing year",
-  tenthScore: "10th percentage / CGPA",
-  twelfthInstitution: "12th school / institution",
-  twelfthBoard: "12th board",
-  twelfthPassingYear: "12th passing year",
-  twelfthScore: "12th percentage / CGPA",
-  collegeName: "College / university",
-  collegeDegree: "Degree / course",
-  collegePassingYear: "College passing year",
-  collegeScore: "College percentage / CGPA",
   employmentHistory: "Employment history",
   currentCompany: "Current / last company",
   howFound: "How did you find Triple Minds?",
@@ -30,11 +20,18 @@ const labels: Record<string, string> = {
   ctc: "Current CTC",
   hikePercentage: "Expected hike (%)",
   noticePeriod: "Notice period",
+  bankAccountName: "Account holder name",
+  bankName: "Bank name",
+  bankBranchName: "Branch name",
+  bankAccountNumber: "Account number",
+  bankIfscCode: "IFSC code",
+  bankAccountType: "Account type",
   aadhaarNumber: "Aadhaar number",
   panNumber: "PAN number",
   aadhaarImage: "Aadhaar card image",
   panImage: "PAN card image",
 };
+
 type Document = {
   kind: "AADHAAR_IMAGE" | "PAN_IMAGE";
   objectKey: string;
@@ -62,11 +59,16 @@ export default function CandidateCompletionPage({
   params: Promise<{ token: string }>;
 }) {
   const [token, setToken] = useState("");
-  const [candidate, setCandidate] = useState<{ firstName: string; lastName: string } | null>(null);
+  const [candidate, setCandidate] = useState<{
+    firstName: string;
+    lastName: string;
+    roleOfInterest?: string;
+  } | null>(null);
   const [requestedFields, setRequestedFields] = useState<string[]>([]);
   const [fields, setFields] = useState<Record<string, string>>({});
+  const [completedDocuments, setCompletedDocuments] = useState<string[]>([]);
   const [documents, setDocuments] = useState<Document[]>([]);
-  const [message, setMessage] = useState("Loading secure completion form…");
+  const [message, setMessage] = useState("Loading secure onboarding form…");
   const [busy, setBusy] = useState(false);
   const [consent, setConsent] = useState(false);
 
@@ -79,12 +81,15 @@ export default function CandidateCompletionPage({
       );
       const result = await response.json();
       if (!response.ok)
-        return setMessage(result.error?.message || "This completion link is unavailable.");
+        return setMessage(result.error?.message || "This onboarding link is unavailable.");
       setCandidate(result.data.candidate);
       setRequestedFields(result.data.requestedFields);
+      setFields(result.data.values || {});
+      setCompletedDocuments(result.data.completedDocuments || []);
       setMessage("");
     })();
   }, [params]);
+
   async function addFile(kind: Document["kind"], file?: File) {
     if (!file) return;
     setBusy(true);
@@ -110,6 +115,7 @@ export default function CandidateCompletionPage({
           byteSize: result.data.byteSize,
         },
       ]);
+      setCompletedDocuments((current) => current.filter((item) => item !== kind));
       setMessage(`${labels[kind === "AADHAAR_IMAGE" ? "aadhaarImage" : "panImage"]} uploaded.`);
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "Upload failed");
@@ -117,14 +123,15 @@ export default function CandidateCompletionPage({
       setBusy(false);
     }
   }
-  async function submit(event: React.FormEvent) {
-    event.preventDefault();
+
+  async function save(finalize: boolean) {
     setBusy(true);
+    setMessage(finalize ? "Submitting your onboarding details…" : "Saving your progress…");
     try {
       const response = await fetch("/api/v1/public/candidate-completion", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ token, fields, documents, consent }),
+        body: JSON.stringify({ token, fields, documents, consent, finalize }),
       });
       const result = await response.json();
       if (!response.ok) {
@@ -136,13 +143,18 @@ export default function CandidateCompletionPage({
             : [];
         throw new Error(errors.join(" ") || result.error?.message || "Could not save details");
       }
-      setMessage("Details submitted successfully. HR can now review them.");
+      setMessage(
+        finalize
+          ? "Onboarding details submitted successfully. HR can now verify them."
+          : "Progress saved. You can safely return to this link later.",
+      );
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "Could not save details");
     } finally {
       setBusy(false);
     }
   }
+
   if (!candidate)
     return (
       <main className="page-shell">
@@ -151,20 +163,28 @@ export default function CandidateCompletionPage({
         </section>
       </main>
     );
+
   return (
     <main className="page-shell">
       <section className="panel completion-form">
-        <p className="eyebrow">Triple Minds HR</p>
-        <h1>Complete your details</h1>
+        <div className="mb-6"><BrandLogo /></div>
+        <p className="eyebrow">Triple Minds HR · Candidate onboarding</p>
+        <h1>Complete your onboarding details</h1>
         <p className="page-intro">
-          Hello {candidate.firstName} {candidate.lastName}. Please provide only the missing
-          information requested by HR.
+          Hello {candidate.firstName} {candidate.lastName}. HR is preparing your onboarding for{" "}
+          <strong>{candidate.roleOfInterest || "your selected position"}</strong>. Only the missing
+          information requested by HR is shown here.
         </p>
         <p className="sensitive-data-note">
-          Aadhaar and PAN information is sensitive. Submit it only through this secure link. It will
-          be protected and visible only to authorized HR users.
+          You can save your progress and return later. Aadhaar, PAN, and banking information is
+          protected and shared only with authorized HR users.
         </p>
-        <form onSubmit={submit}>
+        <form
+          onSubmit={(event) => {
+            event.preventDefault();
+            void save(true);
+          }}
+        >
           <div className="form-grid">
             {requestedFields
               .filter((field) => !["aadhaarImage", "panImage", "gender"].includes(field))
@@ -185,31 +205,18 @@ export default function CandidateCompletionPage({
                           ? "[A-Z]{5}[0-9]{4}[A-Z]"
                           : undefined
                     }
-                    title={
-                      field === "aadhaarNumber"
-                        ? "Enter exactly 12 digits"
-                        : field === "panNumber"
-                          ? "Enter PAN as 5 letters, 4 digits, and 1 letter"
-                          : undefined
-                    }
                     onChange={(event) =>
                       setFields((current) => ({
                         ...current,
                         [field]:
                           field === "aadhaarNumber"
-                            ? event.target.value.replace(/\\D/g, "").slice(0, 12)
+                            ? event.target.value.replace(/\D/g, "").slice(0, 12)
                             : field === "panNumber"
                               ? formatPan(event.target.value)
                               : event.target.value,
                       }))
                     }
-                    inputMode={
-                      field === "aadhaarNumber"
-                        ? "numeric"
-                        : field === "panNumber"
-                          ? "text"
-                          : undefined
-                    }
+                    inputMode={field === "aadhaarNumber" ? "numeric" : undefined}
                   />
                 </label>
               ))}
@@ -237,22 +244,24 @@ export default function CandidateCompletionPage({
               <label>
                 <span>{labels.aadhaarImage}</span>
                 <input
-                  required
+                  required={!completedDocuments.includes("AADHAAR_IMAGE")}
                   type="file"
                   accept="image/jpeg,image/png"
                   onChange={(event) => void addFile("AADHAAR_IMAGE", event.target.files?.[0])}
                 />
+                {completedDocuments.includes("AADHAAR_IMAGE") && <small>Already received</small>}
               </label>
             )}
             {requestedFields.includes("panImage") && (
               <label>
                 <span>{labels.panImage}</span>
                 <input
-                  required
+                  required={!completedDocuments.includes("PAN_IMAGE")}
                   type="file"
                   accept="image/jpeg,image/png"
                   onChange={(event) => void addFile("PAN_IMAGE", event.target.files?.[0])}
                 />
+                {completedDocuments.includes("PAN_IMAGE") && <small>Already received</small>}
               </label>
             )}
           </div>
@@ -261,14 +270,18 @@ export default function CandidateCompletionPage({
               type="checkbox"
               checked={consent}
               onChange={(event) => setConsent(event.target.checked)}
-              required
             />
-            I consent to Triple Minds HR collecting and securely processing the identity information
-            submitted through this link.
+            I consent to Triple Minds HR collecting and securely processing the information
+            submitted through this onboarding link.
           </label>
-          <button type="submit" disabled={busy}>
-            {busy ? "Saving…" : "Submit details"}
-          </button>
+          <div className="flex flex-wrap gap-3">
+            <button type="button" disabled={busy} onClick={() => void save(false)}>
+              {busy ? "Saving…" : "Save progress"}
+            </button>
+            <button type="submit" disabled={busy || !consent}>
+              {busy ? "Submitting…" : "Submit onboarding details"}
+            </button>
+          </div>
         </form>
         {message && (
           <p role="status" className="form-message">

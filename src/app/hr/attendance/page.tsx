@@ -20,15 +20,15 @@ type Visit = {
 };
 
 const STATUS_COLORS: Record<string, string> = {
-  REGISTERED: "bg-blue-100 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300",
-  CHECKED_IN: "bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300",
-  CHECKED_OUT: "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400",
+  REGISTERED: "bg-info-light dark:bg-info-light/60 text-info-ink dark:text-info-ink",
+  CHECKED_IN: "bg-success-light dark:bg-success-light/60 text-success-ink dark:text-success-ink",
+  CHECKED_OUT: "bg-muted dark:bg-muted text-muted-foreground dark:text-muted-foreground",
 };
 
 const DOT_COLORS: Record<string, string> = {
-  REGISTERED: "bg-blue-500 animate-pulse",
-  CHECKED_IN: "bg-emerald-500 animate-pulse",
-  CHECKED_OUT: "bg-slate-400",
+  REGISTERED: "bg-info animate-pulse",
+  CHECKED_IN: "bg-success animate-pulse",
+  CHECKED_OUT: "bg-muted",
 };
 
 export default function AttendancePage() {
@@ -77,18 +77,18 @@ export default function AttendancePage() {
   return (
     <main className="page-shell space-y-6 pb-12">
       {/* Hero Banner */}
-      <section className="prism-light relative overflow-hidden rounded-3xl border border-indigo-500/20 bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 p-6 md:p-8 text-white shadow-2xl">
-        <div className="absolute -right-16 -top-16 h-64 w-64 rounded-full bg-indigo-500/20 blur-3xl pointer-events-none" />
-        <div className="absolute right-1/3 -bottom-16 h-48 w-48 rounded-full bg-purple-500/20 blur-3xl pointer-events-none" />
+      <section className="enterprise-hero prism-light relative overflow-hidden rounded-xl border border-primary/20 bg-card p-6 md:p-8 text-foreground shadow-sm">
+        <div className="absolute -right-16 -top-16 h-64 w-64 rounded-full bg-primary/20 blur-3xl pointer-events-none" />
+        <div className="absolute right-1/3 -bottom-16 h-48 w-48 rounded-full bg-info/20 blur-3xl pointer-events-none" />
         <div className="relative z-10 flex flex-col md:flex-row md:items-start justify-between gap-6">
           <div className="space-y-2">
-            <p className="text-xs font-extrabold uppercase tracking-widest text-indigo-300">
+            <p className="text-xs font-semibold uppercase tracking-widest text-primary-ink">
               Candidate Attendance
             </p>
-            <h1 className="text-2xl md:text-3xl font-black tracking-tight text-white">
+            <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-foreground">
               Attendance & Visitor Records
             </h1>
-            <p className="text-sm text-indigo-100/75 font-medium max-w-lg">
+            <p className="text-sm text-primary-ink/75 font-medium max-w-lg">
               Track check-ins, check-outs, and visit exceptions for candidates and visitors.
             </p>
           </div>
@@ -96,14 +96,14 @@ export default function AttendancePage() {
             <button
               type="button"
               onClick={() => void load()}
-              className="inline-flex items-center gap-2 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/20 px-4 py-2.5 text-xs font-bold text-white shadow-lg backdrop-blur-md transition-all active:scale-95"
+              className="inline-flex items-center gap-2 rounded-2xl bg-muted hover:bg-muted border border-white/20 px-4 py-2.5 text-xs font-bold text-foreground shadow-lg backdrop-blur-md transition-all active:scale-95"
             >
               <RefreshCw className={cn("h-3.5 w-3.5", isLoading && "animate-spin")} />
               Refresh
             </button>
             <Link
               href="/hr/visitors"
-              className="inline-flex items-center gap-2 rounded-2xl bg-indigo-500 hover:bg-indigo-400 border border-indigo-400/40 px-4 py-2.5 text-xs font-bold text-white shadow-lg transition-all active:scale-95"
+              className="inline-flex items-center gap-2 rounded-2xl bg-primary hover:bg-primary border border-primary/40 px-4 py-2.5 text-xs font-bold text-foreground shadow-lg transition-all active:scale-95"
             >
               <Users className="h-3.5 w-3.5" />
               Register Visitor
@@ -113,30 +113,30 @@ export default function AttendancePage() {
       </section>
 
       {/* Records Section */}
-      <section className="rounded-3xl border border-border/60 bg-card shadow-sm overflow-hidden">
+      <section className="rounded-xl border border-border/60 bg-card shadow-sm overflow-hidden">
         <div className="flex items-center justify-between border-b border-border/50 px-6 py-4">
           <div>
-            <p className="text-xs font-extrabold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">
+            <p className="text-xs font-semibold uppercase tracking-wider text-primary-ink dark:text-primary-ink">
               Visit Records
             </p>
-            <h2 className="text-lg font-extrabold text-foreground">Today&apos;s Attendance</h2>
+            <h2 className="text-lg font-semibold text-foreground">Today&apos;s Attendance</h2>
           </div>
           <div className="flex items-center gap-2">
             <Clock className="h-4 w-4 text-muted-foreground" />
-            <span className="text-sm font-black text-foreground">{items.length}</span>
+            <span className="text-sm font-bold text-foreground">{items.length}</span>
           </div>
         </div>
 
         <div className="p-6 space-y-3">
           {isLoading && (
             <div className="flex items-center gap-3 rounded-2xl bg-muted/60 p-4 animate-pulse">
-              <RefreshCw className="h-4 w-4 animate-spin text-indigo-600" />
+              <RefreshCw className="h-4 w-4 animate-spin text-primary-ink" />
               <span className="text-sm font-semibold text-muted-foreground">{message}</span>
             </div>
           )}
           {!isLoading && message && (
-            <div className="rounded-2xl border border-rose-500/20 bg-rose-500/5 p-4">
-              <p className="text-sm font-semibold text-rose-600 dark:text-rose-400">{message}</p>
+            <div className="rounded-2xl border border-destructive/20 bg-destructive/5 p-4">
+              <p className="text-sm font-semibold text-destructive-ink dark:text-destructive-ink">{message}</p>
             </div>
           )}
           {!isLoading && !message && items.length === 0 && (
@@ -151,7 +151,7 @@ export default function AttendancePage() {
           {items.map((item) => (
             <article
               key={item.id}
-              className="rounded-2xl border border-border/50 bg-background/60 p-4 transition-all duration-200 hover:border-indigo-500/40 hover:bg-card hover:shadow-md"
+              className="rounded-2xl border border-border/50 bg-background/60 p-4 transition-all duration-200 hover:border-primary/40 hover:bg-card hover:shadow-md"
             >
               <div className="flex items-start gap-4">
                 {/* Status dot */}
@@ -159,7 +159,7 @@ export default function AttendancePage() {
                   <span
                     className={cn(
                       "h-3 w-3 rounded-full",
-                      DOT_COLORS[item.status] || "bg-slate-400",
+                      DOT_COLORS[item.status] || "bg-muted",
                     )}
                   />
                 </div>
@@ -168,7 +168,7 @@ export default function AttendancePage() {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-start justify-between gap-3 flex-wrap">
                     <div>
-                      <span className="block font-extrabold text-sm text-foreground">
+                      <span className="block font-semibold text-sm text-foreground">
                         {item.candidate.firstName} {item.candidate.lastName}
                       </span>
                       <span className="block text-xs text-muted-foreground font-medium">
@@ -178,7 +178,7 @@ export default function AttendancePage() {
                     </div>
                     <span
                       className={cn(
-                        "inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase shrink-0",
+                        "inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase shrink-0",
                         STATUS_COLORS[item.status] || "bg-muted text-muted-foreground",
                       )}
                     >
@@ -189,8 +189,8 @@ export default function AttendancePage() {
                   {/* Late/early flags */}
                   {(item.lateArrivalMinutes || item.earlyDepartureMinutes) && (
                     <div className="mt-2 flex items-center gap-2">
-                      <AlertTriangle className="h-3.5 w-3.5 text-amber-500" />
-                      <span className="text-xs font-semibold text-amber-600 dark:text-amber-400">
+                      <AlertTriangle className="h-3.5 w-3.5 text-warning-ink" />
+                      <span className="text-xs font-semibold text-warning-ink dark:text-warning-ink">
                         {item.lateArrivalMinutes ? `${item.lateArrivalMinutes}m late` : ""}
                         {item.lateArrivalMinutes && item.earlyDepartureMinutes ? " · " : ""}
                         {item.earlyDepartureMinutes ? `${item.earlyDepartureMinutes}m early` : ""}
@@ -205,7 +205,7 @@ export default function AttendancePage() {
                     <button
                       type="button"
                       onClick={() => void updateVisit(item.id, "check-in")}
-                      className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 px-3 py-1.5 text-xs font-bold text-white transition-colors"
+                      className="inline-flex items-center gap-1.5 rounded-xl bg-success hover:bg-success px-3 py-1.5 text-xs font-bold text-white transition-colors"
                     >
                       <LogIn className="h-3 w-3" />
                       Check In
@@ -215,7 +215,7 @@ export default function AttendancePage() {
                     <button
                       type="button"
                       onClick={() => void updateVisit(item.id, "check-out")}
-                      className="inline-flex items-center gap-1.5 rounded-xl bg-amber-600 hover:bg-amber-700 px-3 py-1.5 text-xs font-bold text-white transition-colors"
+                      className="inline-flex items-center gap-1.5 rounded-xl bg-warning hover:bg-warning px-3 py-1.5 text-xs font-bold text-white transition-colors"
                     >
                       <LogOut className="h-3 w-3" />
                       Check Out
@@ -224,7 +224,7 @@ export default function AttendancePage() {
                   <button
                     type="button"
                     onClick={() => void addException(item.id)}
-                    className="inline-flex items-center gap-1.5 rounded-xl border border-border/60 bg-card hover:bg-rose-50 dark:hover:bg-rose-950/40 hover:border-rose-500/40 px-3 py-1.5 text-xs font-bold text-muted-foreground hover:text-rose-600 transition-colors"
+                    className="inline-flex items-center gap-1.5 rounded-xl border border-border/60 bg-card hover:bg-destructive-light dark:hover:bg-destructive-light/40 hover:border-destructive/40 px-3 py-1.5 text-xs font-bold text-muted-foreground hover:text-destructive-ink transition-colors"
                   >
                     <AlertTriangle className="h-3 w-3" />
                     Exception

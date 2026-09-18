@@ -24,18 +24,40 @@ const schema = z.object({
     )
     .max(2)
     .default([]),
-  consent: z.literal(true),
+  consent: z.boolean().default(false),
+  finalize: z.boolean().default(true),
 });
 export async function GET(request: NextRequest) {
   const id = requestId(request);
   try {
     const token = request.nextUrl.searchParams.get("token") || "";
-    const { getCandidateCompletionLink } = await import("@/modules/candidates/completion");
+    const { getCandidateCompletionLink, candidateCompletionFields } =
+      await import("@/modules/candidates/completion");
     const link = await getCandidateCompletionLink(token);
+    const values = Object.fromEntries(
+      candidateCompletionFields
+        .filter((field) => (link.requestedFields as string[]).includes(field))
+        .map((field) => [field, link.candidate[field] || ""]),
+    );
+    const completedDocuments = link.candidate.documents
+      .filter(
+        (document) =>
+          (document.kind === "AADHAAR_IMAGE" || document.kind === "PAN_IMAGE") &&
+          (link.requestedFields as string[]).includes(
+            document.kind === "AADHAAR_IMAGE" ? "aadhaarImage" : "panImage",
+          ),
+      )
+      .map((document) => document.kind);
     return successResponse(
       {
-        candidate: { firstName: link.candidate.firstName, lastName: link.candidate.lastName },
+        candidate: {
+          firstName: link.candidate.firstName,
+          lastName: link.candidate.lastName,
+          roleOfInterest: link.candidate.roleOfInterest,
+        },
         requestedFields: link.requestedFields,
+        values,
+        completedDocuments,
         expiresAt: link.expiresAt,
       },
       id,

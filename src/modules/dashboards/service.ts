@@ -1,4 +1,5 @@
 import { db } from "@/lib/db";
+import { CANDIDATE_REMOVAL_ACTIONS } from "@/modules/candidates/constants";
 import type { DashboardRange } from "@/modules/dashboards/schemas";
 
 const deliveredOfferStatuses = ["SENT", "VIEWED", "ACCEPTED", "DECLINED", "EXPIRED"];
@@ -111,7 +112,15 @@ function dateWhere(range: DashboardRange, field: "createdAt" | "scheduledStart")
 }
 
 export async function recruitmentDashboard(organizationId: string, range: DashboardRange) {
-  const applicationWhere = { organizationId, ...dateWhere(range, "createdAt") };
+  const activeCandidateWhere = {
+    employee: null,
+    activities: { none: { action: { in: [...CANDIDATE_REMOVAL_ACTIONS] } } },
+  };
+  const applicationWhere = {
+    organizationId,
+    ...dateWhere(range, "createdAt"),
+    candidate: activeCandidateWhere,
+  };
   const interviewWhere = { organizationId, ...dateWhere(range, "scheduledStart") };
   const offerWhere = { organizationId, ...dateWhere(range, "createdAt") };
   const evaluationWhere = { organizationId, status: "SUBMITTED", ...dateWhere(range, "createdAt") };
@@ -172,7 +181,11 @@ export async function recruitmentDashboard(organizationId: string, range: Dashbo
         referenceNo: true,
         title: true,
         openedAt: true,
-        _count: { select: { applications: true } },
+        _count: {
+          select: {
+            applications: { where: { candidate: activeCandidateWhere } },
+          },
+        },
       },
       orderBy: { openedAt: "desc" },
       take: 10,

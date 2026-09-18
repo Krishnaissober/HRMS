@@ -40,11 +40,23 @@ export async function getEmployee(organizationId: string, id: string) {
 }
 export async function listEmployees(
   organizationId: string,
-  query: { q?: string; status?: string; page: number; pageSize: number },
+  query: {
+    q?: string;
+    status?: string;
+    view?: "archive";
+    separationType?: "FIRED" | "LEFT_COMPANY";
+    page: number;
+    pageSize: number;
+  },
 ) {
   const where = {
     organizationId,
-    ...(query.status ? { status: query.status } : {}),
+    ...(query.view === "archive"
+      ? { status: { in: ["EXITED", "INACTIVE"] } }
+      : query.status
+        ? { status: query.status }
+        : { status: { notIn: ["EXITED", "INACTIVE"] } }),
+    ...(query.separationType ? { separationType: query.separationType } : {}),
     ...(query.q
       ? {
           OR: [
@@ -73,6 +85,9 @@ export async function listEmployees(
         jobTitle: true,
         department: true,
         status: true,
+        separationType: true,
+        separationReason: true,
+        separatedAt: true,
         joiningDate: true,
       },
     }),
@@ -91,7 +106,10 @@ export async function listOnboarding(
   organizationId: string,
   query: { status?: string; page: number; pageSize: number },
 ) {
-  const where = { organizationId, ...(query.status ? { status: query.status } : {}) };
+  const where = {
+    organizationId,
+    ...(query.status ? { status: query.status } : { status: { not: "ARCHIVED" } }),
+  };
   const [items, total] = await db.$transaction([
     db.onboardingInstance.findMany({
       where,

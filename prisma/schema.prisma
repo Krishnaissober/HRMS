@@ -333,6 +333,15 @@ model Candidate {
   hrComments                      String?
   hrReviewedByUserId              String?
   hrReviewedAt                    DateTime?
+  hiringApprovalStatus            String                    @default("NOT_REQUESTED")
+  hiringApprovalRequestedAt       DateTime?
+  hiringApprovalRequestedByUserId String?
+  masterDecisionAt                DateTime?
+  masterDecisionByUserId          String?
+  masterDecisionReason            String?
+  finalDecisionAt                 DateTime?
+  finalDecisionByUserId           String?
+  finalDecisionReason             String?
   createdAt                       DateTime                  @default(now())
   updatedAt                       DateTime                  @updatedAt
   organization                    Organization              @relation(fields: [organizationId], references: [id], onDelete: Cascade)
@@ -362,6 +371,7 @@ model CandidateCompletionLink {
   requestedFields Json
   expiresAt       DateTime
   usedAt          DateTime?
+  revokedAt       DateTime?
   createdByUserId String
   createdAt       DateTime     @default(now())
   organization    Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
@@ -524,6 +534,7 @@ model Interview {
   scheduledEnd          DateTime
   timezone              String
   mode                  String
+  stage                 String                  @default("ONLINE")
   location              String?
   meetingLink           String?
   instructions          String?
@@ -782,6 +793,9 @@ model Employee {
   probationEndDate         DateTime?
   confirmationDate         DateTime?
   status                   String                     @default("PROBATION")
+  separationType           String?
+  separationReason         String?
+  separatedAt              DateTime?
   managerEmployeeId        String?
   createdAt                DateTime                   @default(now())
   updatedAt                DateTime                   @updatedAt
@@ -810,6 +824,7 @@ model Employee {
   exitCase                 ExitCase?
 
   @@index([organizationId, status])
+  @@index([organizationId, separationType])
   @@index([organizationId, department])
 }
 

@@ -1,8 +1,13 @@
 import { writeAuditEvent } from "@/lib/audit";
 import { db } from "@/lib/db";
-import { notFoundError, validationError } from "@/lib/errors";
+import { AppError, notFoundError, validationError } from "@/lib/errors";
 import { createDownloadUrl, verifyStoredObject } from "@/lib/storage";
-import { canTransition, type CandidateStatus } from "@/modules/candidates/constants";
+import type { Prisma } from "@prisma/client";
+import {
+  CANDIDATE_REMOVAL_ACTIONS,
+  canTransition,
+  type CandidateStatus,
+} from "@/modules/candidates/constants";
 import {
   createCandidateIntake,
   findOrganizationBySlug,
@@ -115,6 +120,18 @@ export async function changeCandidateStatus(input: {
     throw validationError({
       status: [`Invalid transition from ${current.status} to ${input.status}`],
     });
+  if (
+    input.status === "SHORTLISTED" &&
+    !current.interviews.some((interview) => interview.status === "COMPLETED")
+  ) {
+    throw validationError({
+      status: ["A candidate can be shortlisted only after completing an interview"],
+    });
+  }
+  if (input.status === "SELECTED")
+    throw validationError({
+      status: ["A candidate can be selected only through the final HR hiring action."],
+    });
   if ((input.status === "HOLD" || input.status === "REJECTED") && !input.reason?.trim())
     throw validationError({ reason: ["A reason is required for hold or rejection"] });
   const result = await updateCandidateStatus(
@@ -128,6 +145,137 @@ export async function changeCandidateStatus(input: {
   );
   if (!result) throw notFoundError();
   return result.candidate;
+}
+
+type CandidateRemovalInput = {
+  organizationId: string;
+  actorUserId: string;
+  reason: string;
+  requestId?: string;
+};
+
+async function removeCandidateRecords(
+  tx: Prisma.TransactionClient,
+  input: CandidateRemovalInput & { candidateIds: string[]; requireSelected: boolean },
+) {
+  const candidateIds = [...new Set(input.candidateIds)];
+  const candidates = await tx.candidate.findMany({
+    where: { id: { in: candidateIds }, organizationId: input.organizationId },
+    include: {
+      employee: { select: { id: true } },
+      activities: {
+        where: { action: { in: [...CANDIDATE_REMOVAL_ACTIONS] } },
+        select: { id: true },
+        take: 1,
+      },
+    },
+  });
+  if (candidates.length !== candidateIds.length) throw notFoundError();
+
+  const employeeCandidate = candidates.find((candidate) => candidate.employee);
+  if (employeeCandidate)
+    throw new AppError(
+      "CONFLICT",
+      "One selected candidate is already an employee. Use the employee removal action instead.",
+      409,
+    );
+  if (candidates.some((candidate) => candidate.activities.length))
+    throw new AppError("CONFLICT", "One selected candidate has already been removed", 409);
+  if (input.requireSelected && candidates.some((candidate) => candidate.status !== "SELECTED"))
+    throw new AppError("CONFLICT", "Only selected candidates can be removed from this queue", 409);
+
+  const removedAt = new Date();
+  for (const candidate of candidates) {
+    const action =
+      candidate.status === "SELECTED" ? "SELECTED_CANDIDATE_REMOVED" : "CANDIDATE_REMOVED";
+    const update = await tx.candidate.updateMany({
+      where: {
+        id: candidate.id,
+        organizationId: input.organizationId,
+        status: candidate.status,
+        updatedAt: candidate.updatedAt,
+      },
+      data: {
+        status: "REJECTED",
+        statusReason: input.reason.trim(),
+        statusNotes:
+          candidate.status === "SELECTED"
+            ? "Removed from selected candidate onboarding"
+            : "Removed from candidate pipeline",
+        hiringApprovalStatus: "FINAL_REJECTED",
+        finalDecisionAt: removedAt,
+        finalDecisionByUserId: input.actorUserId,
+        finalDecisionReason: input.reason.trim(),
+      },
+    });
+    if (update.count !== 1)
+      throw new AppError("CONFLICT", "Candidate status changed while being removed", 409);
+
+    await tx.application.updateMany({
+      where: { organizationId: input.organizationId, candidateId: candidate.id },
+      data: { status: "REJECTED" },
+    });
+    await tx.candidateCompletionLink.updateMany({
+      where: {
+        organizationId: input.organizationId,
+        candidateId: candidate.id,
+        usedAt: null,
+        revokedAt: null,
+      },
+      data: { revokedAt: removedAt },
+    });
+    await tx.offer.updateMany({
+      where: {
+        organizationId: input.organizationId,
+        candidateId: candidate.id,
+        status: { notIn: ["DECLINED", "EXPIRED", "WITHDRAWN"] },
+      },
+      data: { status: "WITHDRAWN", responseNotes: input.reason.trim() },
+    });
+    await tx.candidateActivity.create({
+      data: {
+        organizationId: input.organizationId,
+        candidateId: candidate.id,
+        actorUserId: input.actorUserId,
+        action,
+        fromStatus: candidate.status,
+        toStatus: "REJECTED",
+        note: input.reason.trim(),
+      },
+    });
+    await writeAuditEvent(tx, {
+      organizationId: input.organizationId,
+      actorUserId: input.actorUserId,
+      action,
+      entityType: "Candidate",
+      entityId: candidate.id,
+      requestId: input.requestId,
+      metadata: { reason: input.reason.trim() },
+    });
+  }
+
+  return candidateIds;
+}
+
+export async function removeSelectedCandidate(input: CandidateRemovalInput & { id: string }) {
+  return db.$transaction(async (tx) => {
+    await removeCandidateRecords(tx, {
+      ...input,
+      candidateIds: [input.id],
+      requireSelected: true,
+    });
+    return tx.candidate.findUniqueOrThrow({ where: { id: input.id } });
+  });
+}
+
+export async function removeCandidates(input: CandidateRemovalInput & { candidateIds: string[] }) {
+  return db.$transaction(async (tx) => {
+    const candidateIds = await removeCandidateRecords(tx, {
+      ...input,
+      requireSelected: false,
+    });
+    return { count: candidateIds.length, candidateIds };
+  });
 }
 
 export async function getCandidateDocumentUrl(input: {

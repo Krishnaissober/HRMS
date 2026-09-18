@@ -54,6 +54,31 @@ describe("deployment environment validation", () => {
     vi.stubEnv("S3_ENDPOINT", "not-a-url");
     await expect(import("../src/lib/env")).rejects.toThrow("S3_ENDPOINT");
   });
+  it("requires Microsoft Graph settings as a complete set", async () => {
+    validEnvironment();
+    vi.stubEnv("MICROSOFT_TENANT_ID", "tenant-id");
+    await expect(import("../src/lib/env")).rejects.toThrow("MICROSOFT_TENANT_ID");
+  });
+  it("accepts Resend in production without Microsoft Graph credentials", async () => {
+    validEnvironment();
+    vi.stubEnv("NODE_ENV", "production");
+    vi.stubEnv("BETTER_AUTH_SECRET", "production-secret-with-at-least-32-characters");
+    vi.stubEnv("EMAIL_PROVIDER", "resend");
+    vi.stubEnv("RESEND_API_KEY", "re_test_key");
+    vi.stubEnv("EMAIL_FROM", "noreply@tripleminds.co");
+    const { env } = await import("../src/lib/env");
+    expect(env.EMAIL_PROVIDER).toBe("resend");
+    expect(env.MICROSOFT_TENANT_ID).toBeUndefined();
+  });
+  it("allows the local console mail provider in an isolated production-mode E2E server", async () => {
+    validEnvironment();
+    vi.stubEnv("NODE_ENV", "production");
+    vi.stubEnv("E2E_TEST_MODE", "1");
+    vi.stubEnv("BETTER_AUTH_SECRET", "e2e-secret-with-at-least-32-characters");
+    vi.stubEnv("EMAIL_PROVIDER", "console");
+    const { env } = await import("../src/lib/env");
+    expect(env.EMAIL_PROVIDER).toBe("console");
+  });
   it("resolves provider-injected database references", async () => {
     validEnvironment();
     vi.stubEnv("DATABASE_URL", "$NEON_POSTGRES_PRISMA_URL");

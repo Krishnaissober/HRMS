@@ -17,7 +17,13 @@ export const EMPLOYEE_STATUS_TRANSITIONS: Record<EmployeeStatus, readonly Employ
   EXITED: ["INACTIVE"],
   INACTIVE: [],
 };
-export const ONBOARDING_STATUSES = ["PRE_JOINING", "IN_PROGRESS", "COMPLETED", "BLOCKED"] as const;
+export const ONBOARDING_STATUSES = [
+  "PRE_JOINING",
+  "IN_PROGRESS",
+  "COMPLETED",
+  "BLOCKED",
+  "ARCHIVED",
+] as const;
 export const ONBOARDING_TASK_STATUSES = [
   "NOT_STARTED",
   "IN_PROGRESS",

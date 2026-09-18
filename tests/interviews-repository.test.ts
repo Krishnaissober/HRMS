@@ -92,4 +92,18 @@ describe("interview repository remediation", () => {
       expect.objectContaining({ action: "INTERVIEW_NO_SHOW", organizationId: "org-a" }),
     );
   });
+
+  it("rejects remote mode updates for a physical interview", async () => {
+    db.tx.interview.findFirst.mockResolvedValueOnce({ ...current, stage: "PHYSICAL" });
+
+    await expect(
+      updateInterview({
+        organizationId: "org-a",
+        actorUserId: "user-hr",
+        id: "interview-1",
+        patch: { mode: "PHONE" },
+      }),
+    ).rejects.toMatchObject({ code: "VALIDATION_ERROR" });
+    expect(db.tx.interview.update).not.toHaveBeenCalled();
+  });
 });

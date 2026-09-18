@@ -86,6 +86,11 @@ export default function Documents() {
     setMsg(r.ok ? `Document ${status.toLowerCase()}` : "Could not update document");
     if (r.ok) await load();
   }
+  async function deleteDocument(id: string, title: string) {
+    if (!window.confirm(`Delete “${title}”? This document will be removed from the active repository.`))
+      return;
+    await state(id, "DELETED");
+  }
   async function download(id: string) {
     const r = await fetch(`/api/v1/documents/${id}/download`),
       j = await r.json();
@@ -332,10 +337,17 @@ export default function Documents() {
                 {d.ownerType} · version {d.currentVersionNumber}
               </span>
               <span>{d.expiresAt ? `Expires ${d.expiresAt.slice(0, 10)}` : "No expiry"}</span>
-              <span>
-                {d.status}
-                <button onClick={() => void state(d.id, "ARCHIVED")}>Archive</button>
-                <button onClick={() => void download(d.id)}>Download</button>
+              <span className="document-row-actions">
+                <small>{d.status}</small>
+                <button type="button" onClick={() => void state(d.id, "ARCHIVED")}>Archive</button>
+                <button type="button" onClick={() => void download(d.id)}>Download</button>
+                <button
+                  type="button"
+                  className="document-delete-button"
+                  onClick={() => void deleteDocument(d.id, d.title)}
+                >
+                  Delete
+                </button>
               </span>
             </article>
           ))}

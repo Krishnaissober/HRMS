@@ -153,9 +153,7 @@ export default function LeaveManagePage() {
           <button type="button" onClick={() => void load()}>
             Refresh
           </button>
-          <a href={`/hr/leave/calendar?organizationId=${encodeURIComponent(organizationId)}`}>
-            Leave calendar
-          </a>
+          <a href="/hr/alerts">People calendar</a>
         </div>
         {message && <p role="status">{message}</p>}
         <h2>Configure leave policy</h2>

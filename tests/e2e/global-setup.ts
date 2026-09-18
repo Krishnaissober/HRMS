@@ -47,6 +47,8 @@ export default async function globalSetup() {
     "dashboard.hr.read",
     "dashboard.recruitment.read",
     "candidates.read",
+    "candidates.update",
+    "candidates.status.update",
     "interviews.read",
     "interviews.create",
     "interviews.update",

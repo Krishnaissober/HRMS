@@ -293,12 +293,38 @@ test("persists the authenticated Phase 12 offboarding workflow and security boun
   expect(
     (await page.request.post(`/api/v1/exit/${exitCase.id}/complete`, { headers })).ok(),
   ).toBeTruthy();
-  expect((await db.employee.findUniqueOrThrow({ where: { id: exitingEmployee.id } })).status).toBe(
-    "EXITED",
-  );
+  const exitedEmployee = await db.employee.findUniqueOrThrow({
+    where: { id: exitingEmployee.id },
+  });
+  expect(exitedEmployee.status).toBe("EXITED");
+  expect(exitedEmployee.separationType).toBe("LEFT_COMPANY");
   expect(
     (await db.systemAccessProvisioning.findUniqueOrThrow({ where: { id: access.id } })).status,
   ).toBe("REVOKED");
+
+  const removal = await page.request.delete(`/api/v1/employees/${otherEmployee.id}`, {
+    headers,
+    data: { separationType: "FIRED", reason: "Persisted termination validation" },
+  });
+  expect(removal.ok()).toBeTruthy();
+  const removedEmployee = await db.employee.findUniqueOrThrow({ where: { id: otherEmployee.id } });
+  expect(removedEmployee.status).toBe("INACTIVE");
+  expect(removedEmployee.separationType).toBe("FIRED");
+
+  const activeEmployees = await page.request.get("/api/v1/employees?page=1&pageSize=100", {
+    headers,
+  });
+  expect(activeEmployees.ok()).toBeTruthy();
+  expect(
+    (await activeEmployees.json()).data.items.some(
+      (employee: { id: string }) => employee.id === otherEmployee.id,
+    ),
+  ).toBeFalsy();
+
+  await page.goto("/hr/archive/employees");
+  await expect(page.getByRole("heading", { name: "Former employees" })).toBeVisible();
+  await page.getByRole("button", { name: "Fired" }).click();
+  await expect(page.getByText(otherEmployee.employeeNo)).toBeVisible();
   expect(
     (
       await page.request.patch(`/api/v1/employees/${exitingEmployee.id}`, {

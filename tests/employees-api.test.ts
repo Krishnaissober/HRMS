@@ -10,6 +10,7 @@ const {
   createOnboarding,
   completeTask,
   assignMentor,
+  removeEmployee,
 } = vi.hoisted(() => ({
   getAuthenticatedContext: vi.fn(),
   requirePermission: vi.fn(),
@@ -18,6 +19,7 @@ const {
   createOnboarding: vi.fn(),
   completeTask: vi.fn(),
   assignMentor: vi.fn(),
+  removeEmployee: vi.fn(),
 }));
 vi.mock("@/lib/tenant", () => ({ getAuthenticatedContext }));
 vi.mock("@/lib/rbac", () => ({ requirePermission }));
@@ -26,6 +28,7 @@ vi.mock("@/modules/employees/service", () => ({
   createOnboarding,
   completeTask,
   assignMentor,
+  removeEmployee,
 }));
 vi.mock("@/modules/employees/repository", () => ({
   getEmployee,
@@ -35,7 +38,10 @@ vi.mock("@/modules/employees/repository", () => ({
 }));
 
 import { POST as convertRoute } from "@/app/api/v1/candidates/[id]/convert-to-employee/route";
-import { GET as employeeRoute } from "@/app/api/v1/employees/[id]/route";
+import {
+  DELETE as removeEmployeeRoute,
+  GET as employeeRoute,
+} from "@/app/api/v1/employees/[id]/route";
 import { POST as onboardingRoute } from "@/app/api/v1/onboarding/route";
 import { POST as mentorRoute } from "@/app/api/v1/employees/[id]/mentor/route";
 
@@ -60,6 +66,32 @@ describe("employee and onboarding API authorization", () => {
     getEmployee.mockResolvedValue({ id: "employee-1", organizationId: "org-a" });
     createOnboarding.mockResolvedValue({ id: "onboarding-1" });
     assignMentor.mockResolvedValue({ id: "mentor-1" });
+    removeEmployee.mockResolvedValue({
+      id: "employee-1",
+      status: "INACTIVE",
+      separationType: "LEFT_COMPANY",
+    });
+  });
+  it("requires status permission and records the selected separation type", async () => {
+    const response = await removeEmployeeRoute(
+      request("/api/v1/employees/employee-1", "DELETE", {
+        separationType: "FIRED",
+        reason: "Policy violation",
+      }),
+      { params: Promise.resolve({ id: "employee-1" }) },
+    );
+
+    expect(response.status).toBe(200);
+    expect(requirePermission).toHaveBeenCalledWith("user-a", "org-a", "employees.status.update");
+    expect(removeEmployee).toHaveBeenCalledWith(
+      expect.objectContaining({
+        organizationId: "org-a",
+        actorUserId: "user-a",
+        id: "employee-1",
+        separationType: "FIRED",
+        reason: "Policy violation",
+      }),
+    );
   });
   it("protects conversion and employee retrieval", async () => {
     getAuthenticatedContext.mockRejectedValueOnce(unauthenticatedError());

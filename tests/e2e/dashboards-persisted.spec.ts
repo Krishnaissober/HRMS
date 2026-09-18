@@ -68,8 +68,8 @@ test("loads persisted HR and recruitment dashboards with RBAC and tenant isolati
   await page.getByRole("link", { name: "Open recruitment" }).click();
   await expect(page).toHaveURL(/\/hr\/recruitment\/dashboard$/);
   await expect(page.getByRole("heading", { name: "Recruitment pipeline" })).toBeVisible();
-  await expect(page.getByRole("link", { name: /INTERVIEW 1/ })).toBeVisible();
-  await page.getByRole("link", { name: /INTERVIEW 1/ }).click();
+  await expect(page.getByRole("link", { name: /INTERVIEW 1/i })).toBeVisible();
+  await page.getByRole("link", { name: /INTERVIEW 1/i }).click();
   await expect(page).toHaveURL(/\/hr\/candidates\?.*status=INTERVIEW/);
   await expect(page.getByText("Phase Candidate")).toBeVisible();
 
@@ -93,6 +93,7 @@ test("loads persisted HR and recruitment dashboards with RBAC and tenant isolati
 
   const restricted = await playwrightRequest.newContext({
     baseURL: process.env.E2E_BASE_URL || "http://localhost:3002",
+    extraHTTPHeaders: { "x-hrms-tab-id": "e2e00000000000000000000000000000" },
   });
   try {
     expect(

@@ -28,10 +28,10 @@ describe("candidate intake validation", () => {
     expect(() => candidateFieldsSchema.parse({ ...validFields, consentAccepted: false })).toThrow();
   });
 
-  it("requires a requisition for public applications", () => {
-    expect(() =>
-      publicCandidateSchema.parse({ ...validFields, organizationSlug: "acme" }),
-    ).toThrow();
+  it("supports general applications and applications for a published requisition", () => {
+    expect(
+      publicCandidateSchema.parse({ ...validFields, organizationSlug: "acme" }).requisitionId,
+    ).toBeUndefined();
     expect(
       publicCandidateSchema.parse({
         ...validFields,
@@ -52,10 +52,12 @@ describe("candidate intake validation", () => {
 });
 
 describe("candidate status transitions", () => {
-  it("allows the SRS pipeline progression", () => {
+  it("requires the interview workflow before shortlisting", () => {
     expect(canTransition("APPLIED", "SCREENING")).toBe(true);
-    expect(canTransition("APPLIED", "SHORTLISTED")).toBe(true);
-    expect(canTransition("SCREENING", "SHORTLISTED")).toBe(true);
+    expect(canTransition("APPLIED", "SHORTLISTED")).toBe(false);
+    expect(canTransition("SCREENING", "SHORTLISTED")).toBe(false);
+    expect(canTransition("SCREENING", "INTERVIEW")).toBe(true);
+    expect(canTransition("INTERVIEW", "SHORTLISTED")).toBe(true);
     expect(canTransition("SHORTLISTED", "INTERVIEW")).toBe(true);
   });
 

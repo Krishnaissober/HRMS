@@ -311,6 +311,7 @@ test("loads persisted Phase 11 analytics, filters, drill-downs, exports, RBAC, a
 
     const restricted = await playwrightRequest.newContext({
       baseURL: process.env.E2E_BASE_URL || "http://localhost:3002",
+      extraHTTPHeaders: { "x-hrms-tab-id": "e2e00000000000000000000000000000" },
     });
     try {
       expect(
